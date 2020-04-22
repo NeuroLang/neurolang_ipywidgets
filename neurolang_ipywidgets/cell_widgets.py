@@ -1,5 +1,5 @@
-from ipywidgets import Checkbox, DOMWidget, register
-from traitlets import Unicode, Float, Int
+from ipywidgets import Checkbox, DOMWidget, register, Tab
+from traitlets import Unicode, Float, Int, List
 
 
 @register
@@ -84,3 +84,17 @@ class NlCheckbox(Checkbox):
     opacity = Float(0.45).tag(sync=True)
 
     # TODO check opacity value.
+
+
+@register
+class NlIconTab(Tab):
+    _view_name = Unicode('IconTabView').tag(sync=True)
+    _model_name = Unicode('IconTabModel').tag(sync=True)
+    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+
+    _view_module_version = Unicode("0.1.0").tag(sync=True)
+    _model_module_version = Unicode('^0.1.0').tag(sync=True)
+
+    # Widget specific properties
+    title_icons = List().tag(sync=True)

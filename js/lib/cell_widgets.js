@@ -86,8 +86,8 @@ var ProgressView = widgets.DOMWidgetView.extend({
 // Model with default values for NlCheckbox widget
 var NCheckboxModel = controls.CheckboxModel.extend({
     defaults: _.extend(controls.CheckboxModel.prototype.defaults(), {
-        _model_name : 'NlCheckboxModel',
-        _view_name : 'NlCheckboxView',
+        _model_name : 'NCheckboxModel',
+        _view_name : 'NCheckboxView',
         _model_module : 'neurolang-ipywidgets',
         _view_module : 'neurolang-ipywidgets',
         _model_module_version : '0.1.0',
@@ -125,11 +125,71 @@ var NCheckboxView = controls.CheckboxView.extend({
 });
 
 
+// Model with default values for NlIconTab widget
+var IconTabModel = controls.TabModel.extend({
+    defaults: _.extend(controls.TabModel.prototype.defaults(), {
+        _model_name : 'IconTabModel',
+        _view_name : 'IconTabView',
+        _model_module : 'neurolang-ipywidgets',
+        _view_module : 'neurolang-ipywidgets',
+        _model_module_version : '0.1.0',
+        _view_module_version : '0.1.0',
+	title_icons : []
+    })
+});
+
+
+// View for NlIconTab widget that renders the widget model.
+var IconTabView = controls.TabView.extend({
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	controls.TabView.prototype.render.call(this);
+        this.model.on('change:title_icons', this.icons_changed, this);
+    },
+        
+    icons_changed: function() {
+	const title_icons = this.model.get('title_icons');
+        const tabBar = this.pWidget.tabBar;
+        const tabBarTitles = tabBar.node.childNodes[0].childNodes;
+            
+        for(var i=0 ; i < tabBarTitles.length; i++) {
+	    // if an icon is specified for the tab at index i
+            if (title_icons[i] != null) {
+                var ic = null;
+
+		// check if icon tag i is already added to tab title
+		// tab title contains 3 child nodes without the icon
+                if (tabBarTitles[i].childNodes.length < 4) {
+                    ic = document.createElement('i');
+                    ic.style = "width: 20px !important; padding-top:5px;";
+                    tabBarTitles[i].appendChild(ic);
+                }
+		// if i tag is already added, set ic to i tag.
+		else {
+		    ic = tabBarTitles[i].childNodes[3];
+
+		    // remove icon classes that already exists
+                    var cl_length= ic.classList.length;
+                    for (var j = cl_length - 1 ; j >= 0; j--) {
+                        ic.classList.remove(ic.classList[j]);
+                    }
+                }
+
+                ic.classList.add('fa');
+                ic.classList.add('fa-' + title_icons[i]);
+            }
+        }
+    }
+});
+
+
 module.exports = {
     LinkModel: LinkModel,
     LinkView: LinkView,
     ProgressModel: ProgressModel,
     ProgressView: ProgressView,
     NCheckboxModel: NCheckboxModel,
-    NCheckboxView: NCheckboxView
+    NCheckboxView: NCheckboxView,
+    IconTabModel: IconTabModel,
+    IconTabView: IconTabView
 };
