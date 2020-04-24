@@ -139,6 +139,8 @@ var IconTabModel = controls.TabModel.extend({
 });
 
 
+// TODO
+// fix problem with long titles
 // View for NlIconTab widget that renders the widget model.
 var IconTabView = controls.TabView.extend({
     // Defines how the widget gets rendered into the DOM
@@ -149,12 +151,11 @@ var IconTabView = controls.TabView.extend({
         
     icons_changed: function() {
 	const title_icons = this.model.get('title_icons');
-        const tabBar = this.pWidget.tabBar;
-        const tabBarTitles = tabBar.node.childNodes[0].childNodes;
+        const tabBarTitles = this.pWidget.tabBar.node.childNodes[0].childNodes;
             
         for(var i=0 ; i < tabBarTitles.length; i++) {
 	    // if an icon is specified for the tab at index i
-            if (title_icons[i] != null) {
+            if (title_icons[i] != '') {
                 var ic = null;
 
 		// check if icon tag i is already added to tab title
