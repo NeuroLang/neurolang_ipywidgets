@@ -3,8 +3,7 @@ var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
 
-var bowser = require('papaya-viewer/lib/bowser');
-var papaya = require('papaya-viewer/release/current/standard/papaya');
+//var papaya = require('./papaya.js');
 
 
 // Model with default values for NlPapayaViewer widget
@@ -25,7 +24,7 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 var PapayaView = widgets.DOMWidgetView.extend({
     // Defines how the widget gets rendered into the DOM
     render: function() {
-//	console.log(papaya)
+	//console.log(papaya)
 	this.papaya = document.createElement('div');
 	this.papaya.classList.add('papaya');
 	this.el.appendChild(this.papaya);
