@@ -2,6 +2,8 @@ from ._version import version_info, __version__
 
 from .cell_widgets import *
 
+from .viewer_widgets import *
+
 
 def _jupyter_nbextension_paths():
     """Called by Jupyter Notebook Server to detect if it is a valid nbextension and

@@ -40,7 +40,7 @@ module.exports = [
         module: {
             rules: rules
         },
-        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls']
+        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls', 'papaya-viewer/lib', 'papaya-viewer/release/current/standard']
     },
     {// Embeddable neurolang-ipywidgets bundle
      //
@@ -67,6 +67,6 @@ module.exports = [
         module: {
             rules: rules
         },
-        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls']
+        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls', 'papaya-viewer/lib', 'papaya-viewer/release/current/standard']
     }
 ];
