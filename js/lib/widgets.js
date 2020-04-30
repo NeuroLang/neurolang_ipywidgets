@@ -3,8 +3,9 @@ var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
 
-//var papaya = require('./papaya.js');
+window.bowser = require('papaya-viewer/lib/bowser.js');
 
+window.papaya = require('papaya-viewer/release/current/standard/papaya.js');
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -204,10 +205,23 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 var PapayaView = widgets.DOMWidgetView.extend({
     // Defines how the widget gets rendered into the DOM
     render: function() {
-	//console.log(papaya)
-	this.papaya = document.createElement('div');
-	this.papaya.classList.add('papaya');
-	this.el.appendChild(this.papaya);
+	// TODO find another way to add css
+	var papaya_css = document.createElement('link');
+	papaya_css.setAttribute('href','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css');
+	papaya_css.setAttribute('type', 'text/css');
+	papaya_css.setAttribute('rel', 'stylesheet');
+	document.head.appendChild(papaya_css);
+
+	var params = [];
+        params["worldSpace"] = true;
+        params["kioskMode"] = false;
+
+	
+	this.papaya_div = document.createElement('div');
+	this.papaya_div.classList.add('papaya');
+	this.papaya_div.setAttribute('data-params', 'params');
+	this.el.appendChild(this.papaya_div);
+
     }
 
 });
