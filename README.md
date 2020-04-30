@@ -14,6 +14,9 @@ To install use pip:
 To install for jupyterlab
 
     $ jupyter labextension install neurolang_ipywidgets
+	
+To be able to run extensions in jupyterlab 
+    $ jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 For a development installation (requires npm),
 
