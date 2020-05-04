@@ -3,9 +3,6 @@ var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
 
-window.bowser = require('papaya-viewer/lib/bowser.js');
-
-window.papaya = require('papaya-viewer/release/current/standard/papaya.js');
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -203,25 +200,53 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 
 // View for NlPapayaViewer widget that renders the widget model.
 var PapayaView = widgets.DOMWidgetView.extend({
+    initialize: function() {
+	PapayaView.__super__.initialize.apply(this, arguments);
+
+	this.params = {};
+        this.params['worldSpace'] = true;
+        this.params['kioskMode'] = true;
+	this.params["images"] = ["avg152T1_brain.nii.gz"];
+
+
+	if (window.papaya === undefined) {
+
+	    window.bowser = require('papaya-viewer/lib/bowser.js');
+	    window.pako = require('papaya-viewer/lib/pako-inflate.js');
+	    window.nifti = require('papaya-viewer/lib/nifti-reader.js');
+
+	    var papaya_css = document.createElement('link');
+	    papaya_css.setAttribute('href','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css');
+	    papaya_css.setAttribute('type', 'text/css');
+	    papaya_css.setAttribute('rel', 'stylesheet');
+	    document.head.appendChild(papaya_css);
+
+	    var papaya_js = document.createElement('script');
+	    papaya_js.setAttribute('src','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.js');
+	    papaya_js.setAttribute('type', 'text/javascript');
+	    document.head.appendChild(papaya_js);
+
+
+	    papaya_js.onreadystatechange = this.start_papaya;
+	    papaya_js.onload = this.start_papaya;
+	} else {
+	    console.log('calling other');
+	    // TODO generate another container
+	}
+    },
+    
     // Defines how the widget gets rendered into the DOM
     render: function() {
-	// TODO find another way to add css
-	var papaya_css = document.createElement('link');
-	papaya_css.setAttribute('href','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css');
-	papaya_css.setAttribute('type', 'text/css');
-	papaya_css.setAttribute('rel', 'stylesheet');
-	document.head.appendChild(papaya_css);
-
-	var params = [];
-        params["worldSpace"] = true;
-        params["kioskMode"] = false;
-
-	
 	this.papaya_div = document.createElement('div');
 	this.papaya_div.classList.add('papaya');
-	this.papaya_div.setAttribute('data-params', 'params');
+	this.papaya_div.setAttribute("data-params", "");
+	this.papaya_div.setAttribute("data-params", JSON.stringify(this.params));
+	
 	this.el.appendChild(this.papaya_div);
+    },
 
+    start_papaya: function() {
+	window.papaya.Container.startPapaya();
     }
 
 });
