@@ -31,11 +31,18 @@ When actively developing your extension, build Jupyter Lab with the command:
 
     $ jupyter lab --watch
 	
-Using notebook:
-	$ jupyter notebook
-
 This take a minute or so to get started, but then allows you to hot-reload your javascript extension.
 To see a change, save your javascript, watch the terminal for an update.
 
 Note on first `jupyter lab --watch`, you may need to touch a file to get Jupyter Lab to open.
+
+Using notebook:
+	$ jupyter notebook
+	
+- After making Python code changes, restarting the notebook kernel will be enough to reflect changes
+- After making JavaScript code changes:
+
+   * cd js
+   * npm run build
+   * Refresh browser to reflect changes
 
