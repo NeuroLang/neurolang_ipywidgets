@@ -11,12 +11,13 @@ To install use pip:
     $ pip install neurolang_ipywidgets
     $ jupyter nbextension enable --py --sys-prefix neurolang_ipywidgets
 
-To install for jupyterlab
+To install for jupyterlab:
 
     $ jupyter labextension install neurolang_ipywidgets
 	
-To be able to run extensions in jupyterlab 
-    $ jupyter labextension install @jupyter-widgets/jupyterlab-manager
+> To be able to run extensions in jupyterlab:
+>    $ jupyter labextension install @jupyter-widgets/jupyterlab-manager
+> This should be installed before installing neurolang_ipywidgets
 
 For a development installation (requires npm),
 
