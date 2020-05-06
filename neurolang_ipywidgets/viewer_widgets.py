@@ -29,7 +29,7 @@ class NlPapayaViewer(DOMWidget):
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
     coordinate = List().tag(sync=True)
-    atlas = Any().tag(sync=True)
+  #  atlas = Any().tag(sync=True)
 
     # Todo validate mainView value
 
