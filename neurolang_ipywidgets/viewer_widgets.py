@@ -2,6 +2,8 @@ from ipywidgets import DOMWidget, register
 from traitlets import Unicode, Bool, List
 import numpy as np
 import nibabel as nib
+import base64
+import json
 
 
 @register
@@ -27,6 +29,7 @@ class NlPapayaViewer(DOMWidget):
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
     coordinate = List().tag(sync=True)
+    atlas = Any().tag(sync=True)
 
     # Todo validate mainView value
 
@@ -36,3 +39,9 @@ class NlPapayaViewer(DOMWidget):
         coords = np.transpose(image.get_fdata().nonzero()).mean(0).astype(int)
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
+
+    @staticmethod
+    def encode_image(image):
+        nifti_image = nib.Nifti2Image(image.get_fdata(), affine=image.affine)
+        encoded_image = base64.b64encode(nifti_image.to_bytes())
+        return json.dumps(encoded_image)
