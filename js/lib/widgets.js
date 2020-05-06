@@ -2,7 +2,7 @@ var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
-
+var index = -1;
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -222,15 +222,11 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['mainView'] = this.model.get('mainView');
 //	this.params['coordinate'] = this.model.get('coordinate');
 	
-	this.params["images"] = ["avg152T1_brain.nii.gz"];
-
-        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView', this.ui_params_changed, this);
-
-        this.model.on('change:coordinate', this.coordinate_changed, this);
+//	this.params["images"] = ["avg152T1_brain.nii.gz"];
 
 	if (window.papaya === undefined) {
-
-    	    this.index = 0;
+	    index++;
+    	    this.index = index;
 
 	    window.bowser = require('papaya-viewer/lib/bowser.js');
 	    window.pako = require('papaya-viewer/lib/pako-inflate.js');
@@ -254,6 +250,10 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	    console.log('calling other');
 	    // TODO generate another container
 	}
+
+        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView', this.ui_params_changed, this);
+
+        this.model.on('change:coordinate', this.coordinate_changed, this);
     },
     
     // Defines how the widget gets rendered into the DOM
@@ -277,7 +277,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	    }
 	    this.update_params();
 	    window.papaya.Container.resetViewer(this.index, this.params);
-	    console.log(window.papayaContainers[this.index].viewer);
 	}
     },
 
