@@ -2,7 +2,7 @@ var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
-
+var index = -1;
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -192,8 +192,16 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
         _model_module : 'neurolang-ipywidgets',
         _view_module : 'neurolang-ipywidgets',
         _model_module_version : '0.1.0',
-        _view_module_version : '0.1.0'
-
+        _view_module_version : '0.1.0',
+	worldSpace : true,
+	kioskMode: true,
+	fullScreen: false,
+	allowScroll: true,
+	showControls: true,
+	showControlBar: true,
+	orthogonal: true,
+	mainView: "axial",
+	coordinate:[]
     })
 });
 
@@ -204,12 +212,21 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	PapayaView.__super__.initialize.apply(this, arguments);
 
 	this.params = {};
-        this.params['worldSpace'] = true;
-        this.params['kioskMode'] = true;
-	this.params["images"] = ["avg152T1_brain.nii.gz"];
-
+        this.params['worldSpace'] = this.model.get('worldSpace');
+        this.params['kioskMode'] = this.model.get('kioskMode');
+	this.params['fullScreenl'] = this.model.get('fullScreen');
+	this.params['allowScroll'] = this.model.get('allowScroll');
+	this.params['showControls'] = this.model.get('showControls');
+	this.params['showControlBar'] = this.model.get('showControlBar');
+	this.params['orthogonal'] = this.model.get('orthogonal');
+	this.params['mainView'] = this.model.get('mainView');
+//	this.params['coordinate'] = this.model.get('coordinate');
+	
+//	this.params["images"] = ["avg152T1_brain.nii.gz"];
 
 	if (window.papaya === undefined) {
+	    index++;
+    	    this.index = index;
 
 	    window.bowser = require('papaya-viewer/lib/bowser.js');
 	    window.pako = require('papaya-viewer/lib/pako-inflate.js');
@@ -233,20 +250,52 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	    console.log('calling other');
 	    // TODO generate another container
 	}
+
+        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView', this.ui_params_changed, this);
+
+        this.model.on('change:coordinate', this.coordinate_changed, this);
     },
     
     // Defines how the widget gets rendered into the DOM
     render: function() {
 	this.papaya_div = document.createElement('div');
 	this.papaya_div.classList.add('papaya');
-	this.papaya_div.setAttribute("data-params", JSON.stringify(this.params));
+	this.papaya_div.dataset.params = JSON.stringify(this.params);
 	
 	this.el.appendChild(this.papaya_div);
     },
 
     start_papaya: function() {
 	window.papaya.Container.startPapaya();
+    },
+
+    ui_params_changed: function(event) {
+	if (event !== undefined) {
+	    for ( const [key,value] of Object.entries( event.changed ) ) {
+		this.params[key] = value;
+
+	    }
+	    this.update_params();
+	    window.papaya.Container.resetViewer(this.index, this.params);
+	}
+    },
+
+    coordinate_changed: function() {
+	this.params['coordinate'] = this.model.get('coordinate');
+	this.update_params();
+	window.papayaContainers[this.index].viewer.gotoCoordinate(this.params['coordinate'], true);
+    },
+
+    update_params: function() {
+	window.papayaContainers[this.index].params = this.params;
+	window.papayaContainers[this.index].readGlobalParams();
     }
+
+    // TODO
+    // add image
+    // remove image
+    // set image color
+    
 
 });
 

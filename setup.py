@@ -1,4 +1,5 @@
 from __future__ import print_function
+from distutils import log
 from setuptools import setup, find_packages, Command
 from setuptools.command.sdist import sdist
 from setuptools.command.build_py import build_py
@@ -14,15 +15,15 @@ is_repo = os.path.exists(os.path.join(here, '.git'))
 
 npm_path = os.pathsep.join([
     os.path.join(node_root, 'node_modules', '.bin'),
-                os.environ.get('PATH', os.defpath),
+    os.environ.get('PATH', os.defpath),
 ])
 
-from distutils import log
 log.set_verbosity(log.DEBUG)
 log.info('setup.py entered')
 log.info('$PATH=%s' % os.environ['PATH'])
 
 LONG_DESCRIPTION = 'A custom jupyter widget library for neurolang web application.'
+
 
 def js_prerelease(command, strict=False):
     """decorator for building minified js/css prior to another command"""
@@ -49,6 +50,7 @@ def js_prerelease(command, strict=False):
             command.run(self)
             update_package_data(self.distribution)
     return DecoratedCommand
+
 
 def update_package_data(distribution):
     """update package_data to catch changes during setup"""
@@ -77,14 +79,14 @@ class NPM(Command):
         pass
 
     def get_npm_name(self):
-        npmName = 'npm';
+        npmName = 'npm'
         if platform.system() == 'Windows':
-            npmName = 'npm.cmd';
-            
-        return npmName;
-    
+            npmName = 'npm.cmd'
+
+        return npmName
+
     def has_npm(self):
-        npmName = self.get_npm_name();
+        npmName = self.get_npm_name()
         try:
             check_call([npmName, '--version'])
             return True
@@ -99,15 +101,18 @@ class NPM(Command):
     def run(self):
         has_npm = self.has_npm()
         if not has_npm:
-            log.error("`npm` unavailable.  If you're running this command using sudo, make sure `npm` is available to sudo")
+            log.error(
+                "`npm` unavailable.  If you're running this command using sudo, make sure `npm` is available to sudo")
 
         env = os.environ.copy()
         env['PATH'] = npm_path
 
         if self.should_run_npm_install():
-            log.info("Installing build dependencies with npm.  This may take a while...")
-            npmName = self.get_npm_name();
-            check_call([npmName, 'install'], cwd=node_root, stdout=sys.stdout, stderr=sys.stderr)
+            log.info(
+                "Installing build dependencies with npm.  This may take a while...")
+            npmName = self.get_npm_name()
+            check_call([npmName, 'install'], cwd=node_root,
+                       stdout=sys.stdout, stderr=sys.stderr)
             os.utime(self.node_modules, None)
 
         for t in self.targets:
@@ -119,6 +124,7 @@ class NPM(Command):
 
         # update package data in case this created new files
         update_package_data(self.distribution)
+
 
 version_ns = {}
 with open(os.path.join(here, 'neurolang_ipywidgets', '_version.py')) as f:
@@ -136,10 +142,12 @@ setup_args = {
             'neurolang_ipywidgets/static/index.js',
             'neurolang_ipywidgets/static/index.js.map',
         ],),
-        ('etc/jupyter/nbconfig/notebook.d' ,['neurolang-ipywidgets.json'])
+        ('etc/jupyter/nbconfig/notebook.d', ['neurolang-ipywidgets.json'])
     ],
     'install_requires': [
         'ipywidgets>=7.0.0',
+        'numpy',
+        'nibabel'
     ],
     'packages': find_packages(),
     'zip_safe': False,
