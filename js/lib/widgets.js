@@ -1,8 +1,27 @@
+// requirejs.config({
+//     baseUrl: '../node_modules/papaya-viewer',
+//     paths: {
+//         // the left side is the module ID,
+//         // the right side is the path to
+//         // the jQuery file, relative to baseUrl.
+//         // Also, the path should NOT include
+//         // the '.js' file extension. This example
+//         // is using jQuery 1.9.0 located at
+//         // js/lib/jquery-1.9.0.js, relative to
+//         // the HTML page.
+//         jquery: 'lib/jquery.js',
+// 	bowsers: 'lib/bowser.js',
+// 	papaya: 'release/current/standard/papaya.js'
+//     }
+// });
+
 var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
+
 var index = -1;
+
 
 
 // Model with default values for NlLink widget
@@ -185,30 +204,6 @@ var IconTabView = controls.TabView.extend({
     }
 });
 
-// from https://stackoverflow.com/questions/21797299/convert-base64-string-to-arraybuffer/21797381
-var _base64ToArrayBuffer = function(base64) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
-}
-
-var deserialize_atlas= function(atlas) {
-    console.log('deserialize atlas');
-    console.log(atlas);
-    if (atlas != null) {
-//	base64_string = unescape(encodeURIComponent( atlas ));
-	buffer = _base64ToArrayBuffer(atlas);
-
-	window.nifti = require('papaya-viewer/lib/nifti-reader.js');
- 	console.log("isnifti");
-	console.log(window.nifti.isNIFTI2(buffer));
-	return buffer;
-    }
-};
 
 // Model with default values for NlPapayaViewer widget
 var PapayaModel = widgets.DOMWidgetModel.extend({
@@ -228,13 +223,7 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	orthogonal: true,
 	mainView: "axial",
 	coordinate:[]
-        }),
-     }, {
-    serializers: _.extend({
-        atlas: {
-            deserialize: deserialize_atlas
-        }
-    }, widgets.DOMWidgetModel.serializers),
+    }),
 });
 
 
@@ -254,21 +243,15 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['mainView'] = this.model.get('mainView');
 //	this.params['coordinate'] = this.model.get('coordinate');
 	
-	//	this.params["images"] = ["avg152T1_brain.nii.gz"];
-	console.log('inside initialize');
-	console.log(this.model.get('atlas'));
-	this.params["binaryImages"] = [this.model.get('atlas')]; 
-	// var myEncodedDataRef = this.model.get('atlas');
-	// this.params["encodedImages"] = ["myEncodedDataRef"];
+	window.atlas = this.model.get('atlas');
+	this.params["encodedImages"] = ["atlas"];
+
 	if (window.papaya === undefined) {
 	    index++;
     	    this.index = index;
-
 	    window.bowser = require('papaya-viewer/lib/bowser.js');
 	    window.pako = require('papaya-viewer/lib/pako-inflate.js');
 	    window.nifti = require('papaya-viewer/lib/nifti-reader.js');
-	    window.Base64Binary = require('papaya-viewer/lib/base64-binary.js');
-
 
 	    var papaya_css = document.createElement('link');
 	    papaya_css.setAttribute('href','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css');
@@ -282,7 +265,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	    document.head.appendChild(papaya_js);
 
 
-	    papaya_js.onreadystatechange = this.start_papaya;
+	    //papaya_js.onreadystatechange = this.start_papaya;
 	    papaya_js.onload = this.start_papaya;
 	} else {
 	    console.log('calling other');
@@ -299,7 +282,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.papaya_div = document.createElement('div');
 	this.papaya_div.classList.add('papaya');
 	this.papaya_div.dataset.params = JSON.stringify(this.params);
-	
 	this.el.appendChild(this.papaya_div);
     },
 
