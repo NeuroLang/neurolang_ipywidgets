@@ -275,6 +275,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
         this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView', this.ui_params_changed, this);
 
         this.model.on('change:coordinate', this.coordinate_changed, this);
+        this.model.on('change:image', this.image_changed, this);
     },
     
     // Defines how the widget gets rendered into the DOM
@@ -309,6 +310,12 @@ var PapayaView = widgets.DOMWidgetView.extend({
     update_params: function() {
 	window.papayaContainers[this.index].params = this.params;
 	window.papayaContainers[this.index].readGlobalParams();
+    },
+
+    image_changed: function() {
+	window.image = this.model.get('image');
+	this.params["encodedImages"] = ["atlas", "image"];
+	papaya.Container.addImage(this.index, "image", {"min": 4, "max": 8, "lut": "Red Overlay"});
     }
 
     // TODO

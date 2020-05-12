@@ -1,16 +1,8 @@
 from ipywidgets import DOMWidget, register
-from traitlets import Unicode, Bool, List, Any
+from traitlets import Bool, List, Unicode
 import numpy as np
 import nibabel as nib
-import base64
-
-
-def encode_image(image, widget):
-    if image is not None:
-        nifti_image = nib.Nifti2Image(image.get_fdata(), affine=image.affine)
-        encoded_image = base64.encodebytes(nifti_image.to_bytes())
-        enc = encoded_image.decode("utf-8")
-        return enc
+from .neurolang_traitlets import Image, image_serialization
 
 
 @register
@@ -18,6 +10,8 @@ class NlPapayaViewer(DOMWidget):
     """A widget to display papaya viewer.
 
     """
+
+    MAX_IMAGE_COUNT = 8
 
     _view_name = Unicode("PapayaView").tag(sync=True)
     _model_name = Unicode('PapayaModel').tag(sync=True)
@@ -36,13 +30,17 @@ class NlPapayaViewer(DOMWidget):
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
     coordinate = List().tag(sync=True)
-    atlas = Any().tag(sync=True, to_json=encode_image)
+
+    atlas = Image().tag(sync=True, **image_serialization)
+    image = Image().tag(sync=True, **image_serialization)
 
     # Todo validate mainView value
 
     def __init__(self, **kwargs):
         super(DOMWidget, self).__init__(**kwargs)
-        self.atlas = nib.load("avg152T1_brain.nii.gz")
+        if self.atlas is None:
+            self.atlas = nib.load("avg152T1_brain.nii.gz")
+        self.trial = {"deneme": "as", "deneme1": "as1"}
 
     @staticmethod
     def calculate_coords(image):
@@ -50,3 +48,18 @@ class NlPapayaViewer(DOMWidget):
         coords = np.transpose(image.get_fdata().nonzero()).mean(0).astype(int)
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
+
+    def add(self, images, conf):
+        pass
+
+    def remove(self, images):
+        pass
+
+    def set_center(self, widget, image):
+        pass
+
+    def plot(self):
+        pass
+
+    def reset():
+        pass
