@@ -27,12 +27,13 @@ class NlPapayaViewer(DOMWidget):
     allowScroll = Bool(True).tag(sync=True)
     showControls = Bool(True).tag(sync=True)
     showControlBar = Bool(True).tag(sync=True)
+    showImageButtons = Bool(True).tag(sync=True)
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
     coordinate = List().tag(sync=True)
 
     atlas = Image().tag(sync=True, **image_serialization)
-    image = Image().tag(sync=True, **image_serialization)
+    images = List().tag(sync=True, **image_serialization)
 
     # Todo validate mainView value
 
@@ -40,7 +41,9 @@ class NlPapayaViewer(DOMWidget):
         super(DOMWidget, self).__init__(**kwargs)
         if self.atlas is None:
             self.atlas = nib.load("avg152T1_brain.nii.gz")
-        self.trial = {"deneme": "as", "deneme1": "as1"}
+        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
+        self.center_widget = None
+        self.all_images = []
 
     @staticmethod
     def calculate_coords(image):
@@ -49,17 +52,31 @@ class NlPapayaViewer(DOMWidget):
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
 
-    def add(self, images, conf):
-        pass
+    def add(self, images):
+        for image in images:
+            self.all_images.append(image)
+        self._set_images()
 
     def remove(self, images):
-        pass
+        for image in images:
+            self.all_images.remove(image)
+        self._set_images()
+
+    def _set_images(self):
+        image_list = self.all_images
+        len_all_images = len(self.all_images)
+        if len_all_images > 8:
+            image_list = self.all_images[(len_all_images - 8): len_all_images]
+        self.images = [(x, {"min": 0, "max": 10, "lut": "Red Overlay"})
+                       for x in image_list]
 
     def set_center(self, widget, image):
-        pass
+        if widget is not None and image is not None:
+            if self.center_widget is not None:
+                self.center_widget.remove_center()
+            self.center_widget = widget
+            self.coordinate = NlPapayaViewer.calculate_coords(image)
 
-    def plot(self):
-        pass
-
-    def reset():
-        pass
+    def reset(self):
+        self.images.clear()
+        self.all_images.clear()

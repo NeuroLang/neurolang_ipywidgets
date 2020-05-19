@@ -1,26 +1,11 @@
-// requirejs.config({
-//     baseUrl: '../node_modules/papaya-viewer',
-//     paths: {
-//         // the left side is the module ID,
-//         // the right side is the path to
-//         // the jQuery file, relative to baseUrl.
-//         // Also, the path should NOT include
-//         // the '.js' file extension. This example
-//         // is using jQuery 1.9.0 located at
-//         // js/lib/jquery-1.9.0.js, relative to
-//         // the HTML page.
-//         jquery: 'lib/jquery.js',
-// 	bowsers: 'lib/bowser.js',
-// 	papaya: 'release/current/standard/papaya.js'
-//     }
-// });
-
 var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
 
 var _ = require('lodash');
 
 var index = -1;
+
+var papaya_gen = require('./papaya_frame.js');
 
 
 
@@ -220,9 +205,11 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	allowScroll: true,
 	showControls: true,
 	showControlBar: true,
+	showImageButtons: true,
 	orthogonal: true,
 	mainView: "axial",
-	coordinate:[]
+	coordinate:[],
+	images:[]
     }),
 });
 
@@ -232,98 +219,82 @@ var PapayaView = widgets.DOMWidgetView.extend({
     initialize: function() {
 	PapayaView.__super__.initialize.apply(this, arguments);
 
-	this.params = {};
+	this.params = [];
         this.params['worldSpace'] = this.model.get('worldSpace');
         this.params['kioskMode'] = this.model.get('kioskMode');
 	this.params['fullScreenl'] = this.model.get('fullScreen');
 	this.params['allowScroll'] = this.model.get('allowScroll');
 	this.params['showControls'] = this.model.get('showControls');
 	this.params['showControlBar'] = this.model.get('showControlBar');
+	this.params['showImageButtons'] = this.model.get('showImageButtons');
 	this.params['orthogonal'] = this.model.get('orthogonal');
 	this.params['mainView'] = this.model.get('mainView');
-//	this.params['coordinate'] = this.model.get('coordinate');
+	this.params['coordinate'] = this.model.get('coordinate');
+
+	this.added_images = [];
 	
-	window.atlas = this.model.get('atlas');
-	this.params["encodedImages"] = ["atlas"];
+        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView change:coordinate', this.ui_params_changed, this);
 
-	if (window.papaya === undefined) {
-	    index++;
-    	    this.index = index;
-	    window.bowser = require('papaya-viewer/lib/bowser.js');
-	    window.pako = require('papaya-viewer/lib/pako-inflate.js');
-	    window.nifti = require('papaya-viewer/lib/nifti-reader.js');
+	this.model.on('change:atlas', this.atlas_changed, this);
+        this.model.on('change:images', this.images_changed, this);
 
-	    var papaya_css = document.createElement('link');
-	    papaya_css.setAttribute('href','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css');
-	    papaya_css.setAttribute('type', 'text/css');
-	    papaya_css.setAttribute('rel', 'stylesheet');
-	    document.head.appendChild(papaya_css);
-
-	    var papaya_js = document.createElement('script');
-	    papaya_js.setAttribute('src','https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.js');
-	    papaya_js.setAttribute('type', 'text/javascript');
-	    document.head.appendChild(papaya_js);
-
-
-	    //papaya_js.onreadystatechange = this.start_papaya;
-	    papaya_js.onload = this.start_papaya;
-	} else {
-	    console.log('calling other');
-	    // TODO generate another container
-	}
-
-        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView', this.ui_params_changed, this);
-
-        this.model.on('change:coordinate', this.coordinate_changed, this);
-        this.model.on('change:image', this.image_changed, this);
+	this.papaya_frame = papaya_gen.createFrame(this);
     },
     
     // Defines how the widget gets rendered into the DOM
     render: function() {
-	this.papaya_div = document.createElement('div');
-	this.papaya_div.classList.add('papaya');
-	this.papaya_div.dataset.params = JSON.stringify(this.params);
-	this.el.appendChild(this.papaya_div);
+	console.log('in render');
     },
 
-    start_papaya: function() {
-	window.papaya.Container.startPapaya();
+    init_frame: function() {
+ 	this.papaya_frame.init();
+	this.params["encodedImages"] = ["atlas"];
+	this.atlas_changed();
     },
 
+    atlas_changed: function() {
+	this.papaya_frame.set_image("atlas", this.model.get('atlas'));
+ 	this.papaya_frame.reset_viewer(this.params);
+   },
+    
     ui_params_changed: function(event) {
 	if (event !== undefined) {
 	    for ( const [key,value] of Object.entries( event.changed ) ) {
 		this.params[key] = value;
-
 	    }
-	    this.update_params();
-	    window.papaya.Container.resetViewer(this.index, this.params);
+	    this.papaya_frame.reset_viewer(this.params);
 	}
     },
 
-    coordinate_changed: function() {
-	this.params['coordinate'] = this.model.get('coordinate');
-	this.update_params();
-	window.papayaContainers[this.index].viewer.gotoCoordinate(this.params['coordinate'], true);
-    },
+    images_changed: function(event) {
+	console.log(event);
 
-    update_params: function() {
-	window.papayaContainers[this.index].params = this.params;
-	window.papayaContainers[this.index].readGlobalParams();
-    },
+	var images = this.model.get("images");
 
-    image_changed: function() {
-	window.image = this.model.get('image');
-	this.params["encodedImages"] = ["atlas", "image"];
-	papaya.Container.addImage(this.index, "image", {"min": 4, "max": 8, "lut": "Red Overlay"});
+	var imageRefs = ["atlas"];
+	var imageName = "";
+	
+	for (var i = 0; i < images.length; i++) {
+	    imageName = "image"+ i;
+	    imageRefs.push(imageName);
+	    var image = images[i].image;
+	    
+	    if (!this.added_images.includes(image)) {
+		this.added_images.push(image);
+		this.papaya_frame.set_image(imageName, image);
+		
+		this.params["encodedImages"] = imageRefs;
+		this.params[imageName] = images[i].config;
+		//	this.papaya_frame.reset_viewer(this.params);
+		var imageParams = [];
+		imageParams[imageName] = images[i].config;
+		this.papaya_frame.add_image(imageName, imageParams);
+	    }
+
+	}
+	this.papaya_frame.update_params(this.params);
+
     }
-
-    // TODO
-    // add image
-    // remove image
-    // set image color
-    
-
 });
 
 
