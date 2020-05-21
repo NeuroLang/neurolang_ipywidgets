@@ -6,6 +6,22 @@ from .neurolang_traitlets import Image, image_serialization
 
 
 @register
+class NlErrorOverlay(DOMWidget):
+    """A widget to display errors as overlay.
+    """
+
+    _view_name = Unicode("ErrorView").tag(sync=True)
+    _model_name = Unicode('ErrorModel').tag(sync=True)
+    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+
+    _view_module_version = Unicode("0.1.0").tag(sync=True)
+    _model_module_version = Unicode('^0.1.0').tag(sync=True)
+
+    error = Unicode().tag(sync=True)
+
+
+@register
 class NlPapayaViewer(DOMWidget):
     """A widget to display papaya viewer.
 
@@ -21,6 +37,8 @@ class NlPapayaViewer(DOMWidget):
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
 
+    # these are not updated when changed, as papaya expects them to be set
+    # once upon initialization
     worldSpace = Bool(True).tag(sync=True)
     kioskMode = Bool(True).tag(sync=True)
     fullScreen = Bool(False).tag(sync=True)
@@ -30,8 +48,9 @@ class NlPapayaViewer(DOMWidget):
     showImageButtons = Bool(True).tag(sync=True)
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
-    coordinate = List().tag(sync=True)
 
+    # these can be changed
+    coordinate = List().tag(sync=True)
     atlas = Image().tag(sync=True, **image_serialization)
     images = List().tag(sync=True, **image_serialization)
 

@@ -5,9 +5,46 @@ var _ = require('lodash');
 
 var index = -1;
 
-var papaya_gen = require('./papaya_frame.js');
+var papayaGenerator = require('./papaya_frame.js');
 
 
+
+// Model with default values for NlErrorOverlay widget
+var ErrorModel = widgets.DOMWidgetModel.extend({
+    defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
+        _model_name : 'ErrorModel',
+        _view_name : 'ErrorView',
+        _model_module : 'neurolang-ipywidgets',
+        _view_module : 'neurolang-ipywidgets',
+        _model_module_version : '0.1.0',
+        _view_module_version : '0.1.0',
+	error : ''
+    })
+});
+
+
+// View for NlErrorOverlay widget that renders the widget model.
+var ErrorView = widgets.DOMWidgetView.extend({
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	this.error_div = document.createElement('div');
+        this.link.setAttribute('target', '_blank');
+	
+        this.value_changed();
+
+	this.el.appendChild(this.link);
+
+
+        // Observe changes in the value traitlet in Python, and define
+        // a custom callback.
+        this.model.on('change:error', this.value_changed, this);
+    },
+
+    value_changed: function() {
+	this.link.setAttribute('href', this.model.get('href'));
+        this.link.innerHTML = this.model.get('value');
+    }
+});
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -200,8 +237,8 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
 	worldSpace : true,
-	kioskMode: true,
-	fullScreen: false,
+	kioskMode: false,
+	fullScreen: true,
 	allowScroll: true,
 	showControls: true,
 	showControlBar: true,
@@ -222,7 +259,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params = [];
         this.params['worldSpace'] = this.model.get('worldSpace');
         this.params['kioskMode'] = this.model.get('kioskMode');
-	this.params['fullScreenl'] = this.model.get('fullScreen');
+	this.params['fullScreen'] = this.model.get('fullScreen');
 	this.params['allowScroll'] = this.model.get('allowScroll');
 	this.params['showControls'] = this.model.get('showControls');
 	this.params['showControlBar'] = this.model.get('showControlBar');
@@ -230,43 +267,37 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['orthogonal'] = this.model.get('orthogonal');
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
-
-	this.added_images = [];
 	
-        this.model.on('change:worldSpace change:kioskMode change:fullScreen change:allowScroll change:showControls change:showControlBar change:orthogonal change:mainView change:coordinate', this.ui_params_changed, this);
-
-	this.model.on('change:atlas', this.atlas_changed, this);
-        this.model.on('change:images', this.images_changed, this);
-
-	this.papaya_frame = papaya_gen.createFrame(this);
+	this.params["encodedImages"] = ["atlas"];
+	this.papayaFrame = papayaGenerator.createFrame(this);
     },
-    
+
+    /**
+    * When the new papaya frame loads, initializes window and containers for papaya.
+    */
+    initFrame: function() {
+ 	this.papayaFrame.init(this.params, this.model.get('atlas'));
+    },
+
+    atlasChanged: function() {
+	this.papayaFrame.setImage("atlas", this.model.get('atlas'));
+ 	this.papayaFrame.resetViewer(this.params);
+    },
+
+    coordinateChanged: function() {
+	this.params['coordinate'] = this.model.get('coordinate');
+ 	this.papayaFrame.resetViewer(this.params);
+    },
+
     // Defines how the widget gets rendered into the DOM
     render: function() {
 	console.log('in render');
-    },
-
-    init_frame: function() {
- 	this.papaya_frame.init();
-	this.params["encodedImages"] = ["atlas"];
-	this.atlas_changed();
-    },
-
-    atlas_changed: function() {
-	this.papaya_frame.set_image("atlas", this.model.get('atlas'));
- 	this.papaya_frame.reset_viewer(this.params);
+        this.model.on('change:coordinate', this.coordinateChanged, this);
+	this.model.on('change:atlas', this.atlasChanged, this);
+        // this.model.on('change:images', this.imagesChanged, this);
    },
-    
-    ui_params_changed: function(event) {
-	if (event !== undefined) {
-	    for ( const [key,value] of Object.entries( event.changed ) ) {
-		this.params[key] = value;
-	    }
-	    this.papaya_frame.reset_viewer(this.params);
-	}
-    },
 
-    images_changed: function(event) {
+   imagesChanged: function(event) {
 	console.log(event);
 
 	var images = this.model.get("images");
@@ -279,20 +310,16 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	    imageRefs.push(imageName);
 	    var image = images[i].image;
 	    
-	    if (!this.added_images.includes(image)) {
-		this.added_images.push(image);
-		this.papaya_frame.set_image(imageName, image);
-		
-		this.params["encodedImages"] = imageRefs;
-		this.params[imageName] = images[i].config;
-		//	this.papaya_frame.reset_viewer(this.params);
+	    this.papayaFrame.set_image(imageName, image);
+	    this.params[imageName] = images[i].config;
 		var imageParams = [];
 		imageParams[imageName] = images[i].config;
-		this.papaya_frame.add_image(imageName, imageParams);
-	    }
-
+		this.papayaFrame.add_image(imageName, imageParams);
 	}
-	this.papaya_frame.update_params(this.params);
+
+	this.params["encodedImages"] = imageRefs;
+	this.papayaFrame.reset_viewer(this.params);
+	this.papayaFrame.updateParams(this.params);
 
     }
 });

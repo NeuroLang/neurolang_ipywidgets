@@ -12,7 +12,9 @@ var papaya_src = `
     </head>
 
     <body>
-        <div class="papaya" data-params="params"></div>
+        <div id="papaya_parent">
+            <div class="papaya" data-params="params"></div>
+        </div>
     </body>
 </html>`;
 
@@ -21,67 +23,97 @@ var papaya_src = `
 var index = 0;
 
 let PapayaFrame = class {
+    /**
+     * Creates a new frame and puts the papaya viewer inside the frame
+     * to isolate it from the main window.
+     *
+     * index: index of the frame.
+     * parent: parent element in the main window to add this frame.
+     */
     constructor(index, parent) {
-	this.frame = document.createElement("IFRAME");
-	this.frame.name = "papaya_frame" + index;
-	this.frame.srcdoc = papaya_src;
-	this.frame.width="100%";
-	this.frame.height="100%";
+	var frameElement = document.createElement("IFRAME");
+	this.name = "papayaFrame" + index;
 	this.index = index;
 
-	var that = parent;
-	this.frame.onload = function() {
-	    that.init_frame();
+	// create frame for papaya and add it to parent
+	frameElement.srcdoc = papaya_src;
+	frameElement.name = this.name;
+	frameElement.width="100%";
+	frameElement.height="100%";
+	frameElement.onload = function() {
+	    console.log(this);
+	    that.initFrame();
 	}
 
-	parent.el.appendChild(this.frame);
+	var that = parent;
+	parent.el.appendChild(frameElement);
     }
 
-    // initializes window and 
-    init() {
-	this.window =  window[this.frame.name];
+    /** 
+     * Sets the window and papaya container when the frame is
+     * initialized. It also updates parameters and sets the atlas.
+     *
+     * params: papaya parameters to be set.
+     * atlas_image: base64 encoded atlas image. 
+     *
+     * Note: "atlas" should exist as 0th element in the params["encodedImages"]
+     * array as below:
+     * params["encodedImages"] = ["atlas", "image1", "image2"];
+     *
+     */
+    init(params, atlas_image) {
+	console.log(params);
+	this.window =  window[this.name];
 	this.container = this.window.papayaContainers[this.index];
+
+	this.setImage("atlas", atlas_image);
+	this.resetViewer(params);
 	console.log(this.window);
     }
 
-    add_atlas(atlas) {
-	this.window.papaya.Atlas.data = atlas;
-    }
-    
-    reset_viewer(params) {
+    /**
+     * Updates window parameters and resets the viewer with params.
+     * 
+     * params: papaya parameters to be set.
+     */
+    resetViewer(params) {
 	this.window.params = params;
 	this.window.papaya.Container.resetViewer(this.index, params);
-	this.container = this.window.papayaContainers[this.index];
     }
 
-    update_params(params) {
+    /**
+     * Updates parameters.
+     * 
+     * params: papaya parameters to be set. 
+     * 
+     * Note: This does not update the view with the params set.
+     */
+    updateParams(params) {
 	this.window.params = params;
-//	this.container.params = params;
-//	this.container.viewer.params = params;
-//	this.container.readGlobalParams();
+	this.container.readGlobalParams();
     }
 
-    set_image(name, image) {
+    /**
+     * Sets the image as a global variable with the specified name.
+     *
+     * name: name of the image variable.
+     * image: base64 encoded image.
+     */
+    setImage(name, image) {
 	this.window[name] = image;
-	console.log(this.window);
     }
 
     add_image(imageRefs, params) {
 	this.window.papaya.Container.addImage(this.index, imageRefs, params);
     }
 
-    set_viewer_coordinates(params) {
-	this.update_params(params);
-	this.container.viewer.gotoCoordinate(params['coordinate'], true);
-    }
-
 };
 
 var createFrame = function(parent) {
-    var papaya_frame = new PapayaFrame(index, parent);
+    var papayaFrame = new PapayaFrame(index, parent);
     index++;
 
-    return papaya_frame;
+    return papayaFrame;
 }
 
 
