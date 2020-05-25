@@ -8,44 +8,6 @@ var index = -1;
 var papayaGenerator = require('./papaya_frame.js');
 
 
-
-// Model with default values for NlErrorOverlay widget
-var ErrorModel = widgets.DOMWidgetModel.extend({
-    defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
-        _model_name : 'ErrorModel',
-        _view_name : 'ErrorView',
-        _model_module : 'neurolang-ipywidgets',
-        _view_module : 'neurolang-ipywidgets',
-        _model_module_version : '0.1.0',
-        _view_module_version : '0.1.0',
-	error : ''
-    })
-});
-
-
-// View for NlErrorOverlay widget that renders the widget model.
-var ErrorView = widgets.DOMWidgetView.extend({
-    // Defines how the widget gets rendered into the DOM
-    render: function() {
-	this.error_div = document.createElement('div');
-        this.link.setAttribute('target', '_blank');
-	
-        this.value_changed();
-
-	this.el.appendChild(this.link);
-
-
-        // Observe changes in the value traitlet in Python, and define
-        // a custom callback.
-        this.model.on('change:error', this.value_changed, this);
-    },
-
-    value_changed: function() {
-	this.link.setAttribute('href', this.model.get('href'));
-        this.link.innerHTML = this.model.get('value');
-    }
-});
-
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
     defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
@@ -182,17 +144,21 @@ var IconTabModel = controls.TabModel.extend({
 });
 
 
-// TODO
-// fix problem with long titles
 // View for NlIconTab widget that renders the widget model.
 var IconTabView = controls.TabView.extend({
+    initialize: function() {
+	IconTabView.__super__.initialize.apply(this, arguments);
+        this.model.on('change:title_icons', this.iconsChanged, this);
+   },
+    
     // Defines how the widget gets rendered into the DOM
     render: function() {
-	controls.TabView.prototype.render.call(this);
-        this.model.on('change:title_icons', this.icons_changed, this);
+	IconTabView.__super__.render.apply(this, arguments);
+	// this has no effect on initially displaying icons, can be removed
+	this.iconsChanged();
     },
         
-    icons_changed: function() {
+    iconsChanged: function() {
 	const title_icons = this.model.get('title_icons');
         const tabBarTitles = this.pWidget.tabBar.node.childNodes[0].childNodes;
             
@@ -237,16 +203,17 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
 	worldSpace : true,
-	kioskMode: false,
-	fullScreen: true,
-	allowScroll: true,
-	showControls: true,
-	showControlBar: true,
-	showImageButtons: true,
-	orthogonal: true,
-	mainView: "axial",
-	coordinate:[],
-	images:[]
+	kioskMode : false,
+	fullScreen : true,
+	allowScroll : true,
+	showControls : true,
+	showControlBar : true,
+	showImageButtons : true,
+	orthogonal : true,
+	mainView : "axial",
+	coordinate : [],
+	images : [],
+	error : ""
     }),
 });
 
@@ -291,11 +258,28 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     // Defines how the widget gets rendered into the DOM
     render: function() {
+	PapayaView.__super__.render.apply(this, arguments);
 	console.log('in render');
         this.model.on('change:coordinate', this.coordinateChanged, this);
 	this.model.on('change:atlas', this.atlasChanged, this);
+	this.model.on('change:error', this.errorChanged, this);
         // this.model.on('change:images', this.imagesChanged, this);
-   },
+    },
+
+    errorChanged: function() {
+	var error = this.model.get("error");
+	console.log("error");
+	console.log(error);
+	if (error != "") {
+	    alert(error);
+	    this.model.set('error', '', { updated_view: this });
+	    // below two lines does not update model in backend
+	    // this.model.save_changes();
+	    // this.touch();
+	}
+
+    },
+
 
    imagesChanged: function(event) {
 	console.log(event);
