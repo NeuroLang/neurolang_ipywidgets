@@ -8,6 +8,7 @@ from .neurolang_traitlets import Image, image_serialization
 @register
 class NlErrorOverlay(DOMWidget):
     """A widget to display errors as overlay.
+
     """
 
     _view_name = Unicode("ErrorView").tag(sync=True)
@@ -53,6 +54,7 @@ class NlPapayaViewer(DOMWidget):
     coordinate = List().tag(sync=True)
     atlas = Image().tag(sync=True, **image_serialization)
     images = List().tag(sync=True, **image_serialization)
+    error = Unicode().tag(sync=True)
 
     # Todo validate mainView value
 
@@ -71,12 +73,21 @@ class NlPapayaViewer(DOMWidget):
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
 
-    def add(self, images):
-        for image in images:
-            self.all_images.append(image)
-        self._set_images()
+    def can_add(self, images):
+        return (len(self.all_images) + len(images)) <= 8
 
-    def remove(self, images):
+    def add(self, widget, images):
+        if (self.can_add(images)):
+            for image in images:
+                self.all_images.append(image)
+            self._set_images()
+        else:
+            widget.unselect_region_without_remove()
+            self.error = "Papaya viewer reached maximum number of 8 overlays. \nPlease unselect a region to be able to add a new one!"
+            # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
+            self.error = ""
+
+    def remove(self, widget, images):
         for image in images:
             self.all_images.remove(image)
         self._set_images()
