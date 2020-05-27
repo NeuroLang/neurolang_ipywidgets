@@ -78,8 +78,10 @@ let PapayaFrame = class {
      * params: papaya parameters to be set.
      */
     resetViewer(params) {
-	this.window.params = params;
-	this.window.papaya.Container.resetViewer(0, params);
+	var exParams = this.window.papayaContainers[0].params;
+	var newParams = $.extend({}, exParams, params);
+	this.window.params = newParams;
+	this.window.papaya.Container.resetViewer(0, newParams);
     }
 
     /**
