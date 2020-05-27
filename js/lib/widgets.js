@@ -237,6 +237,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	
 	this.params["encodedImages"] = ["atlas"];
 	this.papayaFrame = papayaGenerator.createFrame(this);
+
+	this.images = []
     },
 
     /**
@@ -263,7 +265,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
         this.model.on('change:coordinate', this.coordinateChanged, this);
 	this.model.on('change:atlas', this.atlasChanged, this);
 	this.model.on('change:error', this.errorChanged, this);
-        // this.model.on('change:images', this.imagesChanged, this);
+        this.model.on('change:images', this.imagesChanged, this);
     },
 
     errorChanged: function() {
@@ -272,7 +274,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	console.log(error);
 	if (error != "") {
 	    alert(error);
-	    this.model.set('error', '', { updated_view: this });
+	    // this.model.set('error', '', { updated_view: this });
 	    // below two lines does not update model in backend
 	    // this.model.save_changes();
 	    // this.touch();
@@ -282,29 +284,24 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
 
    imagesChanged: function(event) {
-	console.log(event);
+       this.images = this.model.get("images");
 
-	var images = this.model.get("images");
+       var imageParams = [];
+       var imageRefs = ["atlas"];
+       var imageName = "";
 
-	var imageRefs = ["atlas"];
-	var imageName = "";
-	
-	for (var i = 0; i < images.length; i++) {
-	    imageName = "image"+ i;
-	    imageRefs.push(imageName);
-	    var image = images[i].image;
-	    
-	    this.papayaFrame.set_image(imageName, image);
-	    this.params[imageName] = images[i].config;
-		var imageParams = [];
-		imageParams[imageName] = images[i].config;
-		this.papayaFrame.add_image(imageName, imageParams);
-	}
-
-	this.params["encodedImages"] = imageRefs;
-	this.papayaFrame.reset_viewer(this.params);
-	this.papayaFrame.updateParams(this.params);
-
+       for (var i = 0; i < this.images.length; i++) {
+	   imageName = "image"+ i;
+	   imageRefs.push(imageName);
+	   
+	   // update/set image with imageName, and config
+	   this.papayaFrame.setImage(imageName, this.images[i].image);
+	   imageParams[imageName] = this.images[i].config;
+	   imageParams["encodedImages"] = imageRefs;
+       }
+       
+       this.papayaFrame.resetViewer($.extend({}, this.params, imageParams));
+       
     }
 });
 

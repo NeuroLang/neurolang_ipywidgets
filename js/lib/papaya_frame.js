@@ -40,12 +40,13 @@ let PapayaFrame = class {
 	frameElement.name = this.name;
 	frameElement.width="100%";
 	frameElement.height="100%";
+
+	var that = parent;
 	frameElement.onload = function() {
 	    console.log(this);
 	    that.initFrame();
 	}
 
-	var that = parent;
 	parent.el.appendChild(frameElement);
     }
 
@@ -64,7 +65,6 @@ let PapayaFrame = class {
     init(params, atlas_image) {
 	console.log(params);
 	this.window =  window[this.name];
-	this.container = this.window.papayaContainers[this.index];
 
 	this.setImage("atlas", atlas_image);
 	this.resetViewer(params);
@@ -90,7 +90,9 @@ let PapayaFrame = class {
      */
     updateParams(params) {
 	this.window.params = params;
-	this.container.readGlobalParams();
+	this.window.papayaContainers[this.index].params = params;
+	// this.container.viewer.processParams(params);
+	// this.container.readGlobalParams();
     }
 
     /**
@@ -103,11 +105,34 @@ let PapayaFrame = class {
 	this.window[name] = image;
     }
 
-    add_image(imageRefs, params) {
-	this.window.papaya.Container.addImage(this.index, imageRefs, params);
+    /**
+     * Deletes the global variable with the specified name.
+     *
+     */
+    unsetImage(name) {
+	delete this.window[name];
+    }
+
+    /**
+     *
+     *
+     */
+    addImage(imageRefs, params) {
+//	this.updateParams(params);
+	this.window.papaya.Container.addImage(this.index, imageRefs);
+    }
+
+    /**
+     *
+     *
+     */
+    removeImage(index) {
+	console.log(this.window.papayaContainers[this.index].combineParametric);
+	this.window.papaya.Container.removeImage(this.index, index);
     }
 
 };
+
 
 var createFrame = function(parent) {
     var papayaFrame = new PapayaFrame(index, parent);

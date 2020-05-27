@@ -93,12 +93,8 @@ class NlPapayaViewer(DOMWidget):
         self._set_images()
 
     def _set_images(self):
-        image_list = self.all_images
-        len_all_images = len(self.all_images)
-        if len_all_images > 8:
-            image_list = self.all_images[(len_all_images - 8): len_all_images]
         self.images = [(x, {"min": 0, "max": 10, "lut": "Red Overlay"})
-                       for x in image_list]
+                       for x in self.all_images]
 
     def set_center(self, widget, image):
         if widget is not None and image is not None:
