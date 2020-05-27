@@ -63,6 +63,7 @@ let PapayaFrame = class {
      *
      */
     init(params, atlas_image) {
+	console.log(this.index);
 	console.log(params);
 	this.window =  window[this.name];
 
@@ -78,7 +79,7 @@ let PapayaFrame = class {
      */
     resetViewer(params) {
 	this.window.params = params;
-	this.window.papaya.Container.resetViewer(this.index, params);
+	this.window.papaya.Container.resetViewer(0, params);
     }
 
     /**
@@ -90,7 +91,7 @@ let PapayaFrame = class {
      */
     updateParams(params) {
 	this.window.params = params;
-	this.window.papayaContainers[this.index].params = params;
+	this.window.papayaContainers[0].params = params;
 	// this.container.viewer.processParams(params);
 	// this.container.readGlobalParams();
     }
@@ -119,7 +120,7 @@ let PapayaFrame = class {
      */
     addImage(imageRefs, params) {
 //	this.updateParams(params);
-	this.window.papaya.Container.addImage(this.index, imageRefs);
+	this.window.papaya.Container.addImage(0, imageRefs);
     }
 
     /**
@@ -127,8 +128,8 @@ let PapayaFrame = class {
      *
      */
     removeImage(index) {
-	console.log(this.window.papayaContainers[this.index].combineParametric);
-	this.window.papaya.Container.removeImage(this.index, index);
+	console.log(this.window.papayaContainers[0].combineParametric);
+	this.window.papaya.Container.removeImage(0, index);
     }
 
 };

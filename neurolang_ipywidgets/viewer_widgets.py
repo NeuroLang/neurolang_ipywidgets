@@ -62,9 +62,7 @@ class NlPapayaViewer(DOMWidget):
         super(DOMWidget, self).__init__(**kwargs)
         if self.atlas is None:
             self.atlas = nib.load("avg152T1_brain.nii.gz")
-        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
-        self.center_widget = None
-        self.all_images = []
+        self.reset()
 
     @staticmethod
     def calculate_coords(image):
@@ -104,5 +102,10 @@ class NlPapayaViewer(DOMWidget):
             self.coordinate = NlPapayaViewer.calculate_coords(image)
 
     def reset(self):
-        self.images.clear()
-        self.all_images.clear()
+        self.images = []
+        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
+        self.center_widget = None
+        self.all_images = []
+        self.error = ""
+
+        # TODO reset other values
