@@ -63,17 +63,13 @@ let PapayaFrame = class {
      *
      */
     init(params, atlas_image) {
-	console.log(this.index);
-	console.log(params);
 	this.window =  window[this.name];
-
 	this.setImage("atlas", atlas_image);
 	this.resetViewer(params);
-	console.log(this.window);
     }
 
     /**
-     * Updates window parameters and resets the viewer with params.
+     * Resets the papaya container viewer with params.
      * 
      * params: papaya parameters to be set.
      */
@@ -113,7 +109,6 @@ let PapayaFrame = class {
      *
      */
     addImage(imageName, params) {
-//	this.extendParams(params);
 	this.window.papaya.Container.addImage(0, imageName, params);
     }
 
@@ -148,8 +143,6 @@ let PapayaFrame = class {
 	    imageParams[imageName] = config;
 	    this.addImage(imageName, imageParams);
 	}
-	console.log("leaving");
-	
     }
 
 };
