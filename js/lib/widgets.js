@@ -286,8 +286,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
        var initial_length = this.images.length;
 
-       // unset window images which exceeds the number of new images
-       // delete also configurations in this.params
+       // remove all images
        for (var i = initial_length; i > 0; i--) {
        	   this.papayaFrame.removeImage(i);
        }
@@ -295,7 +294,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
        var index = 0;
 
        this.images = this.model.get("images");
-       this.papayaFrame.loadFunction(index, ["atlas"], this.images);
+       // add new images
+       this.papayaFrame.loadFunction(index, this.images);
    }
     
 });

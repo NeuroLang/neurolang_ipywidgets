@@ -124,18 +124,17 @@ let PapayaFrame = class {
      *
      *
      */
-    loadFunction(index, refs, images) {
+    loadFunction(index, images) {
 	var that = this;
 	if (index < images.length) {
 	    var imageName = "image" + index;
-	    refs.push(imageName);
 	    var image = images[index].image;
 	    var config = images[index].config;
 
 	    this.setImage(imageName, image);
 
 	    config = $.extend({}, config, {loadingComplete: function() {
-		that.loadFunction(index + 1, refs, images);
+		that.loadFunction(index + 1, images);
 	    } });
 
 	    var imageParams = [];
