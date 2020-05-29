@@ -220,8 +220,29 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 
 // View for NlPapayaViewer widget that renders the widget model.
 var PapayaView = widgets.DOMWidgetView.extend({
-    initialize: function() {
-	PapayaView.__super__.initialize.apply(this, arguments);
+
+    /**
+    * When the new papaya frame loads, initializes window and containers for papaya.
+    */
+    initFrame: function() {
+	var imageParams = {"encodedImages" : ["atlas"]};
+ 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'));
+    },
+
+    atlasChanged: function() {
+	// think of keeping images or removing all when atlas changed
+	// this.papayaFrame.setImage("atlas", this.model.get('atlas'));
+ 	// this.papayaFrame.resetViewer(this.params);
+	// do not forget to change coordinate
+    },
+
+    coordinateChanged: function() {
+ 	this.papayaFrame.changeCoordinate(this.model.get('coordinate'));
+    },
+
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	PapayaView.__super__.render.apply(this, arguments);
 
 	this.params = [];
         this.params['worldSpace'] = this.model.get('worldSpace');
@@ -237,33 +258,10 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	
 	this.papayaFrame = papayaGenerator.createFrame(this);
 
-	this.images = []
-    },
+	this.images = [];
 
-    /**
-    * When the new papaya frame loads, initializes window and containers for papaya.
-    */
-    initFrame: function() {
-	var imageParams = [];
-	imageParams["encodedImages"] = ["atlas"];
- 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'));
-    },
-
-    atlasChanged: function() {
-	// think of keeping images or removing all when atlas changed
-	// this.papayaFrame.setImage("atlas", this.model.get('atlas'));
- 	// this.papayaFrame.resetViewer(this.params);
-    },
-
-    coordinateChanged: function() {
-	this.params['coordinate'] = this.model.get('coordinate');
- 	this.papayaFrame.resetViewer(this.params);
-    },
-
-    // Defines how the widget gets rendered into the DOM
-    render: function() {
-	PapayaView.__super__.render.apply(this, arguments);
-        this.model.on('change:coordinate', this.coordinateChanged, this);
+	
+	this.model.on('change:coordinate', this.coordinateChanged, this);
 	this.model.on('change:atlas', this.atlasChanged, this);
 	this.model.on('change:error', this.errorChanged, this);
         this.model.on('change:images', this.imagesChanged, this);
@@ -285,25 +283,21 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
 
    imagesChanged: function(event) {
-       this.images = this.model.get("images");
 
-       var imageParams = [];
-       var imageRefs = ["atlas"];
-       var imageName = "";
+       var initial_length = this.images.length;
 
-       for (var i = 0; i < this.images.length; i++) {
-	   imageName = "image"+ i;
-	   imageRefs.push(imageName);
-	   
-	   // update/set image with imageName, and config
-	   this.papayaFrame.setImage(imageName, this.images[i].image);
-	   imageParams[imageName] = this.images[i].config;
-	   imageParams["encodedImages"] = imageRefs;
+       // unset window images which exceeds the number of new images
+       // delete also configurations in this.params
+       for (var i = initial_length; i > 0; i--) {
+       	   this.papayaFrame.removeImage(i);
        }
-       
-       this.papayaFrame.resetViewer($.extend({}, this.params, imageParams));
-       
-    }
+
+       var index = 0;
+
+       this.images = this.model.get("images");
+       this.papayaFrame.loadFunction(index, ["atlas"], this.images);
+   }
+    
 });
 
 
