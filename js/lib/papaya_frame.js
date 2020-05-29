@@ -78,24 +78,16 @@ let PapayaFrame = class {
      * params: papaya parameters to be set.
      */
     resetViewer(params) {
-	var exParams = this.window.papayaContainers[0].params;
-	var newParams = $.extend({}, exParams, params);
-	this.window.params = newParams;
-	this.window.papaya.Container.resetViewer(0, newParams);
+	this.window.papaya.Container.resetViewer(0, params);
     }
 
     /**
-     * Updates parameters.
-     * 
-     * params: papaya parameters to be set. 
-     * 
-     * Note: This does not update the view with the params set.
+     *
+     *
      */
-    updateParams(params) {
-	this.window.params = params;
-	this.window.papayaContainers[0].params = params;
-	// this.container.viewer.processParams(params);
-	// this.container.readGlobalParams();
+    changeCoordinate(coord) {
+	var coord = new this.window.papaya.core.Coordinate(coord[0], coord[1], coord[2]);
+	this.window.papayaContainers[0].viewer.gotoWorldCoordinate(coord, false);
     }
 
     /**
@@ -120,9 +112,9 @@ let PapayaFrame = class {
      *
      *
      */
-    addImage(imageRefs, params) {
-//	this.updateParams(params);
-	this.window.papaya.Container.addImage(0, imageRefs);
+    addImage(imageName, params) {
+//	this.extendParams(params);
+	this.window.papaya.Container.addImage(0, imageName, params);
     }
 
     /**
@@ -130,8 +122,34 @@ let PapayaFrame = class {
      *
      */
     removeImage(index) {
-	console.log(this.window.papayaContainers[0].combineParametric);
 	this.window.papaya.Container.removeImage(0, index);
+    }
+
+    /**
+     *
+     *
+     */
+    loadFunction(index, refs, images) {
+	var that = this;
+	if (index < images.length) {
+	    var imageName = "image" + index;
+	    refs.push(imageName);
+	    var image = images[index].image;
+	    var config = images[index].config;
+
+	    this.setImage(imageName, image);
+
+	    config = $.extend({}, config, {loadingComplete: function() {
+		that.loadFunction(index + 1, refs, images);
+	    } });
+
+	    var imageParams = [];
+
+	    imageParams[imageName] = config;
+	    this.addImage(imageName, imageParams);
+	}
+	console.log("leaving");
+	
     }
 
 };
