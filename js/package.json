@@ -33,8 +33,9 @@
   "dependencies": {
     "@jupyter-widgets/base": "^1.1 || ^2 || ^3",
     "@jupyter-widgets/controls": "^1.1 || ^2",
-    "papaya-viewer": "1.0.1449",
-    "lodash": "^4.17.4"
+    "codemirror": "^5.54.0",
+    "lodash": "^4.17.4",
+    "papaya-viewer": "1.0.1449"
   },
   "jupyterlab": {
     "extension": "lib/labplugin"
