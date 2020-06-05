@@ -2,6 +2,8 @@ from ipywidgets import DOMWidget, register
 from traitlets import Bool, List, Unicode
 import numpy as np
 import nibabel as nib
+from copy import deepcopy
+
 from .neurolang_traitlets import Image, image_serialization
 
 
@@ -66,26 +68,25 @@ class NlPapayaViewer(DOMWidget):
             self.set_error(
                 "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
 
-    def set_error(self, error):
-        self.error = error
-        # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
-        self.error = ""
-
     def remove(self, images):
         for image in images:
             self.all_images.remove(image)
         self._set_images()
 
     def _set_images(self):
-        self.images = [(x, {"min": 0, "max": 10, "lut": "Red Overlay"})
-                       for x in self.all_images]
+        self.images = deepcopy(self.all_images)
 
     def set_center(self, widget, image):
         if widget is not None and image is not None:
             if self.center_widget is not None:
                 self.center_widget.remove_center()
             self.center_widget = widget
-            self.coordinate = NlPapayaViewer.calculate_coords(image)
+            self.coordinate = NlPapayaViewer.calculate_coords(image.image)
+
+    def set_error(self, error):
+        self.error = error
+        # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
+        self.error = ""
 
     def reset(self):
         self.images = []

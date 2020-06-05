@@ -108,7 +108,8 @@ let PapayaFrame = class {
      *
      *
      */
-    addImage(imageName, params) {
+    addImage(imageName, image, params) {
+	this.setImage(imageName, image);
 	this.window.papaya.Container.addImage(0, imageName, params);
     }
 
@@ -127,20 +128,20 @@ let PapayaFrame = class {
     loadFunction(index, images) {
 	var that = this;
 	if (index < images.length) {
-	    var imageName = "image" + index;
-	    var image = images[index].image;
-	    var config = images[index].config;
+	    var papayaImage = images[index];
+	    var imageName = "image" + papayaImage.id //.replace(/-/g,"");
+	    var image = papayaImage.image;
 
-	    this.setImage(imageName, image);
-
-	    config = $.extend({}, config, {loadingComplete: function() {
+	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
 		that.loadFunction(index + 1, images);
 	    } });
 
-	    var imageParams = [];
+	    console.log("adding image " + imageName);
 
-	    imageParams[imageName] = config;
-	    this.addImage(imageName, imageParams);
+	    var imageParams = [];
+	    imageParams[imageName] = config;	    
+	    
+	    this.addImage(imageName, image, imageParams);
 	}
     }
 

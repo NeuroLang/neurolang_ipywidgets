@@ -24,7 +24,7 @@ def image_to_json(pydt, manager):
         return None
     else:
         if isinstance(pydt, list):
-            return [dict(image=encode(x[0]), config=x[1]) for x in pydt]
+            return [dict(id=str(x.id), image=encode(x.image), config=x.config) for x in pydt]
         else:
             return encode(pydt)
 

@@ -289,6 +289,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
        // remove all images
        for (var i = initial_length; i > 0; i--) {
        	   this.papayaFrame.removeImage(i);
+	   this.papayaFrame.unsetImage("image" + this.images[i - 1].id);
        }
 
        var index = 0;
