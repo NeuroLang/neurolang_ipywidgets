@@ -63,7 +63,7 @@ class NlPapayaViewer(DOMWidget):
         if (self.can_add(images)):
             for image in images:
                 self.all_images.append(image)
-            self._set_images()
+            self.set_images()
         else:
             self.set_error(
                 "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
@@ -71,9 +71,9 @@ class NlPapayaViewer(DOMWidget):
     def remove(self, images):
         for image in images:
             self.all_images.remove(image)
-        self._set_images()
+        self.set_images()
 
-    def _set_images(self):
+    def set_images(self):
         self.images = deepcopy(self.all_images)
 
     def set_center(self, widget, image):
