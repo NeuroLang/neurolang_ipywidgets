@@ -1,5 +1,6 @@
 var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
+const CodeMirror = require('codemirror');
 
 var _ = require('lodash');
 
@@ -300,6 +301,69 @@ var PapayaView = widgets.DOMWidgetView.extend({
     
 });
 
+var CodeEditorModel = widgets.DOMWidgetModel.extend({
+    defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
+        _model_name : 'CodeEditorModel',
+        _view_name : 'CodeEditorView',
+        _model_module : 'neurolang-ipywidgets',
+        _view_module : 'neurolang-ipywidgets',
+        _model_module_version : '0.1.0',
+        _view_module_version : '0.1.0',
+	text : "",
+	marks : [], // errors, warnings etc.
+    }),
+});
+
+var CodeEditorView = widgets.DOMWidgetView.extend({
+    render: function() {
+	let ta = document.createElement('textarea');
+	this.el.appendChild(ta);
+        this.editor = CodeMirror.fromTextArea(ta,
+	  {
+	    lineNumbers: true,
+	    gutters: ["CodeMirror-linenumbers", 
+	      {className: "marks",
+	       style: "width: .8em"}]
+	  });
+        this.editor.refresh();
+        this.editor.setSize(null, 100);
+        this.editor.on("change", this.text_edited.bind(this));
+
+        this.model.on('change:text', this.text_changed, this);
+        this.model.on('change:marks', this.marks_changed, this);
+
+        this.text_changed();
+        this.marks_changed();
+    },
+
+    text_changed: function() {
+      const modelValue = this.model.get('text');
+      if(modelValue != this.editor.getValue()){
+	this.editor.setValue(modelValue);
+      }
+    },
+
+    marks_changed: function() {
+      this.editor.clearGutter('marks');
+      const marks = this.model.get('marks');
+      marks.forEach((elt) => {
+        this.editor.setGutterMarker(elt.line, 'marks', makeMarker(elt.text));
+      });
+    },
+
+    text_edited: function() {
+      this.model.set('text', this.editor.getValue());
+      this.touch();
+    }
+});
+
+function makeMarker(title){
+  let marker = document.createElement("div");
+  marker.style.color = "#822";
+  marker.innerHTML = "🚫";
+  marker.setAttribute("title", title);
+  return marker;
+}
 
 module.exports = {
     LinkModel: LinkModel,
@@ -311,5 +375,7 @@ module.exports = {
     IconTabModel: IconTabModel,
     IconTabView: IconTabView,
     PapayaModel: PapayaModel,
-    PapayaView: PapayaView
+    PapayaView: PapayaView,
+    CodeEditorModel,
+    CodeEditorView,
 };

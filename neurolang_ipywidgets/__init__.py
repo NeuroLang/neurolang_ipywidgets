@@ -1,7 +1,7 @@
 from ._version import version_info, __version__
 
 from .cell_widgets import *
-
+from .editor_widgets import *
 from .viewer_widgets import *
 
 
