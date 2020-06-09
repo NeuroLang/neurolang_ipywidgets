@@ -17,3 +17,8 @@ class NlCodeEditor(DOMWidget):
 
     text = Unicode().tag(sync=True)
     marks = List().tag(sync=True)
+
+    def __init__(self, text=None, **kwargs):
+        if text is not None:
+            self.text = text
+        super().__init__(**kwargs)

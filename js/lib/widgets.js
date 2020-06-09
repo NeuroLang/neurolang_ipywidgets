@@ -1,6 +1,7 @@
 var widgets = require('@jupyter-widgets/base');
 var controls = require('@jupyter-widgets/controls');
 const CodeMirror = require('codemirror');
+require('codemirror/addon/display/autorefresh');
 
 var _ = require('lodash');
 
@@ -320,12 +321,12 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
 	this.el.appendChild(ta);
         this.editor = CodeMirror.fromTextArea(ta,
 	  {
+	    autoRefresh: true,
 	    lineNumbers: true,
 	    gutters: ["CodeMirror-linenumbers", 
 	      {className: "marks",
 	       style: "width: .9em"}]
 	  });
-        this.editor.refresh();
         this.editor.setSize(null, 100);
         this.editor.on("change", this.text_edited.bind(this));
 
