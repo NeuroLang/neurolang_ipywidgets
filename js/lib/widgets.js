@@ -313,6 +313,7 @@ var CodeEditorModel = widgets.DOMWidgetModel.extend({
         _view_module_version : '0.1.0',
 	text : "",
 	marks : [], // errors, warnings etc.
+	text_marks : [], // spans of text that will be marked (e.g. squiggly underline)
     }),
 });
 
@@ -333,9 +334,11 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
 
         this.model.on('change:text', this.text_changed, this);
         this.model.on('change:marks', this.marks_changed, this);
+        this.model.on('change:text_marks', this.text_marks_changed, this);
 
         this.text_changed();
         this.marks_changed();
+        this.text_marks_changed();
     },
 
     text_changed: function() {
@@ -350,6 +353,19 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
       const marks = this.model.get('marks');
       marks.forEach((elt) => {
         this.editor.setGutterMarker(elt.line, 'marks', makeMarker(elt.text));
+      });
+    },
+
+    text_marks_changed: function() {
+      this.editor.getAllMarks().forEach((elt) => elt.clear());
+
+      const textMarks = this.model.get('text_marks');
+      textMarks.forEach((elt) => {
+	this.editor.markText(
+	  elt.from, 
+	  elt.to,
+	  {css: "text-decoration: red wavy underline"},
+	);
       });
     },
 
