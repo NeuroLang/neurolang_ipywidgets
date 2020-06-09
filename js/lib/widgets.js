@@ -323,7 +323,7 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
 	    lineNumbers: true,
 	    gutters: ["CodeMirror-linenumbers", 
 	      {className: "marks",
-	       style: "width: .8em"}]
+	       style: "width: .9em"}]
 	  });
         this.editor.refresh();
         this.editor.setSize(null, 100);
@@ -360,7 +360,7 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
 function makeMarker(title){
   let marker = document.createElement("div");
   marker.style.color = "#822";
-  marker.innerHTML = "🚫";
+  marker.innerHTML = "❌";
   marker.setAttribute("title", title);
   return marker;
 }
