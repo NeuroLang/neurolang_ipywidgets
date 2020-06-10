@@ -383,6 +383,40 @@ function makeMarker(title){
   return marker;
 }
 
+// Model with default values for NlVBoxOverlay widget
+var VBoxOverlayModel = controls.VBoxModel.extend({
+    defaults: _.extend(controls.VBoxModel.prototype.defaults(), {
+        _model_name : 'VBoxOverlayModel',
+        _view_name : 'VBoxOverlayView',
+        _model_module : 'neurolang-ipywidgets',
+        _view_module : 'neurolang-ipywidgets',
+        _model_module_version : '0.1.0',
+        _view_module_version : '0.1.0'
+    })
+});
+
+
+// View for NlVBoxOverlay widget that renders the widget model.
+var VBoxOverlayView = controls.VBoxView.extend({
+
+    initialize: function() {
+	VBoxOverlayView.__super__.initialize.apply(this, arguments);
+    },
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	VBoxOverlayView.__super__.render.apply(this, arguments);
+
+	this.el.style.zIndex = 1000;
+	this.el.style.position = "relative";
+	this.el.style.overflow = "visible";
+	this.el.style.background = "rgb(221, 221, 221)";
+	this.el.style.border = "solid";
+	this.el.style.borderWidth = "1px";
+	this.el.style.borderColor="rgb(89, 89, 89)";
+	this.el.style.opacity = 1;
+    }
+});
+
 module.exports = {
     LinkModel: LinkModel,
     LinkView: LinkView,
@@ -396,4 +430,6 @@ module.exports = {
     PapayaView: PapayaView,
     CodeEditorModel,
     CodeEditorView,
+    VBoxOverlayModel,
+    VBoxOverlayView
 };

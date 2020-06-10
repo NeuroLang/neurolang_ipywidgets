@@ -1,4 +1,4 @@
-from ipywidgets import Checkbox, DOMWidget, register, Tab
+from ipywidgets import Checkbox, DOMWidget, register, Tab, VBox
 from traitlets import Unicode, Float, Int, List
 
 
@@ -98,3 +98,20 @@ class NlIconTab(Tab):
 
     # Widget specific properties
     title_icons = List().tag(sync=True)
+
+
+@register
+class NlVBoxOverlay(VBox):
+    """A VBox widget that is viewed as overlay.
+
+    Parameters
+    ----------
+    """
+
+    _view_name = Unicode('VBoxOverlayView').tag(sync=True)
+    _model_name = Unicode('VBoxOverlayModel').tag(sync=True)
+    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+
+    _view_module_version = Unicode("0.1.0").tag(sync=True)
+    _model_module_version = Unicode('^0.1.0').tag(sync=True)
