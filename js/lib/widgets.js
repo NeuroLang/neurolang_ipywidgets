@@ -325,6 +325,7 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
 	  {
 	    autoRefresh: true,
 	    lineNumbers: true,
+	    lineWrapping: true,
 	    gutters: ["CodeMirror-linenumbers", 
 	      {className: "marks",
 	       style: "width: .9em"}]
