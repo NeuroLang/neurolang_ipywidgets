@@ -19,13 +19,14 @@ class NlCodeEditor(DOMWidget):
     text = Unicode().tag(sync=True)
 
     # marks should be a list of dicts containing keys "line" and "text"
-    # lines are 0-based (CodeMirror convention)
+    # lines are 0-indexed (CodeMirror convention)
     # e.g. [{line: 3, text: "parse error: expected end of file"}]
     marks = List().tag(sync=True)
 
     # text_marks should be a list of dict containing "from" and "to"
     # keys, with values of the form {"line" : line, "ch": ch}
     # e.g. [{"from": {"line": 0, "ch": 2}, "to": {"line": 0, "ch": 7}}]
+    # Note that lines and characters/columns are 0-indexed
     text_marks = List().tag(sync=True)
 
     def __init__(self, text=None, **kwargs):
