@@ -1,4 +1,7 @@
-from uuid import uuid4
+import hashlib
+
+from nibabel.spatialimages import SpatialImage  # type: ignore
+from nibabel import Nifti2Image  # type: ignore
 
 
 class PapayaImage:
@@ -10,10 +13,19 @@ class PapayaImage:
 
         Parameters
         ----------
-        image:
+        image: nibabel.spatialimages.SpatialImage or nibabel.Nifti2Image
             image to display
         """
-        self.__id = str(uuid4()).replace("-", "")
+        m = hashlib.sha256()
+        if isinstance(image, Nifti2Image):
+            bimage = image.to_bytes()
+        elif isinstance(image, SpatialImage):
+            bimage = image.dataobj.tobytes()
+        else:
+            raise ValueError("Image format not supported!")
+
+        m.update(bimage)
+        self.__id = m.hexdigest()
         self.__image = image
         if config is None:
             self.__config = {}
