@@ -80,7 +80,7 @@ maxp = BoundedIntText(
 )
 
 sym = Checkbox(
-    value=False,
+    value=config.get("symmetric", "false") == "true",
     description="symmetric",
     description_tooltip="When selected, sets the negative range of a parametric pair to the same size as the positive range.",
     disabled=False,
@@ -105,9 +105,5 @@ vb = NlVBoxOverlay([
 #vb.layout = vb_layout
 vb
 # -
-
-min.keys
-
-min.style.keys
 
 
