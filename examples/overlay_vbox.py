@@ -1,5 +1,5 @@
 # +
-from ipywidgets import BoundedFloatText, BoundedIntText, Button, Checkbox, Dropdown, FloatSlider, HBox, Layout
+from ipywidgets import BoundedIntText, Button, Checkbox, Dropdown, FloatSlider, FloatText, HBox, Layout
 
 from neurolang_ipywidgets import NlVBoxOverlay
 
@@ -45,7 +45,7 @@ nlut = Dropdown(
     description_tooltip="The color table name used by the negative side of the parametric pair.",
 )
 
-min = BoundedFloatText(
+min = FloatText(
     value=config.get("min", None),
     description="min:",
     description_tooltip="The display range minimum.",
@@ -62,7 +62,7 @@ minp = BoundedIntText(
     disabled=False,
 )
 
-max = BoundedFloatText(
+max = FloatText(
     value=config.get("max", None),
     description="max:",
     description_tooltip="The display range maximum.",
