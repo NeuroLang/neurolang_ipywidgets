@@ -1,7 +1,6 @@
 import base64
 import hashlib
 
-from nibabel.spatialimages import SpatialImage  # type: ignore
 from nibabel import Nifti2Image  # type: ignore
 
 from traitlets import TraitType
