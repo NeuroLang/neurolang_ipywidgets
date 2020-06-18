@@ -4,7 +4,7 @@ import numpy as np
 import nibabel as nib
 from copy import deepcopy
 
-from .neurolang_traitlets import Image, image_serialization
+from .papaya_model import Image, image_serialization, papaya_image_serialization
 
 
 @register
@@ -38,7 +38,7 @@ class NlPapayaViewer(DOMWidget):
     # these can be changed
     coordinate = List().tag(sync=True)
     atlas = Image().tag(sync=True, **image_serialization)
-    images = List().tag(sync=True, **image_serialization)
+    images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
 
     # Todo validate mainView value
