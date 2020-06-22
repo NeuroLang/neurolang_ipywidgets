@@ -43,7 +43,6 @@ let PapayaFrame = class {
 
 	var that = parent;
 	frameElement.onload = function() {
-	    console.log(this);
 	    that.initFrame();
 	}
 
@@ -135,8 +134,6 @@ let PapayaFrame = class {
 	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
 		that.loadFunction(index + 1, images);
 	    } });
-
-	    console.log("adding image " + imageName);
 
 	    var imageParams = [];
 	    imageParams[imageName] = config;	    
