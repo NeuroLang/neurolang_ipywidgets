@@ -28,25 +28,42 @@ let PapayaFrame = class {
      * to isolate it from the main window.
      *
      * index: index of the frame.
-     * parent: parent element in the main window to add this frame.
+     * parentView: PapayaView instance that contains this frame.
      */
-    constructor(index, parent) {
-	var frameElement = document.createElement("IFRAME");
+    constructor(index, parentView) {
 	this.name = "papayaFrame" + index;
 	this.index = index;
 
-	// create frame for papaya and add it to parent
+	var papayaFrameDiv = document.createElement('div')
+	papayaFrameDiv.style.width = "100%"
+	papayaFrameDiv.style.height = "100%"
+	papayaFrameDiv.id = "papaya-viewer"
+
+	// create frame for papaya viewer
+	var frameElement = document.createElement("IFRAME");
 	frameElement.srcdoc = papaya_src;
 	frameElement.name = this.name;
 	frameElement.width="100%";
 	frameElement.height="100%";
 
-	var that = parent;
+	papayaFrameDiv.appendChild(frameElement);
+
+	
+	this.papayaFrameDiv = papayaFrameDiv;
+	
+	var that = parentView;
 	frameElement.onload = function() {
 	    that.initFrame();
 	}
 
-	parent.el.appendChild(frameElement);
+    }
+
+    
+    /**
+     * Returns the dom element for papaya viewer.
+     */
+    getDiv() {
+	return this.papayaFrameDiv;
     }
 
     /** 
@@ -145,8 +162,8 @@ let PapayaFrame = class {
 };
 
 
-var createFrame = function(parent) {
-    var papayaFrame = new PapayaFrame(index, parent);
+var createFrame = function(parentView) {
+    var papayaFrame = new PapayaFrame(index, parentView);
     index++;
 
     return papayaFrame;

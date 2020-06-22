@@ -223,6 +223,36 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 // View for NlPapayaViewer widget that renders the widget model.
 var PapayaView = widgets.DOMWidgetView.extend({
 
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	PapayaView.__super__.render.apply(this, arguments);
+
+	this.params = [];
+        this.params['worldSpace'] = this.model.get('worldSpace');
+        this.params['kioskMode'] = this.model.get('kioskMode');
+	this.params['fullScreen'] = this.model.get('fullScreen');
+	this.params['allowScroll'] = this.model.get('allowScroll');
+	this.params['showControls'] = this.model.get('showControls');
+	this.params['showControlBar'] = this.model.get('showControlBar');
+	this.params['showImageButtons'] = this.model.get('showImageButtons');
+	this.params['orthogonal'] = this.model.get('orthogonal');
+	this.params['mainView'] = this.model.get('mainView');
+	this.params['coordinate'] = this.model.get('coordinate');
+
+	// PapayaFrame instance to access papaya viewer functionality
+	this.papayaFrame = papayaGenerator.createFrame(this);
+
+	this.el.appendChild(this.papayaFrame.getDiv());
+
+	this.images = [];
+
+	
+	this.model.on('change:coordinate', this.coordinateChanged, this);
+	this.model.on('change:atlas', this.atlasChanged, this);
+	this.model.on('change:error', this.errorChanged, this);
+        this.model.on('change:images', this.imagesChanged, this);
+    },
+
     /**
     * When the new papaya frame loads, initializes window and containers for papaya.
     */
@@ -240,33 +270,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     coordinateChanged: function() {
  	this.papayaFrame.changeCoordinate(this.model.get('coordinate'));
-    },
-
-    // Defines how the widget gets rendered into the DOM
-    render: function() {
-	PapayaView.__super__.render.apply(this, arguments);
-
-	this.params = [];
-        this.params['worldSpace'] = this.model.get('worldSpace');
-        this.params['kioskMode'] = this.model.get('kioskMode');
-	this.params['fullScreen'] = this.model.get('fullScreen');
-	this.params['allowScroll'] = this.model.get('allowScroll');
-	this.params['showControls'] = this.model.get('showControls');
-	this.params['showControlBar'] = this.model.get('showControlBar');
-	this.params['showImageButtons'] = this.model.get('showImageButtons');
-	this.params['orthogonal'] = this.model.get('orthogonal');
-	this.params['mainView'] = this.model.get('mainView');
-	this.params['coordinate'] = this.model.get('coordinate');
-	
-	this.papayaFrame = papayaGenerator.createFrame(this);
-
-	this.images = [];
-
-	
-	this.model.on('change:coordinate', this.coordinateChanged, this);
-	this.model.on('change:atlas', this.atlasChanged, this);
-	this.model.on('change:error', this.errorChanged, this);
-        this.model.on('change:images', this.imagesChanged, this);
     },
 
     errorChanged: function() {
