@@ -30,16 +30,15 @@ let ColorBar = class {
 	// create colorbar
 	var div = document.createElement('div');
 	div.id = "colorBar"
-//	div.style.width=(height -100) + "px";
-	div.style.width = "100%";
-	div.style.height = "50px";
-	div.style.position = "relative";
-	div.style.left = "20px";
-	div.style.top = "-60px";
-	
+	div.style.width="60%";
+	div.style.height = "20px";
+	div.style.position = "absolute";
+	div.style.left = "-24%";
+	div.style.top = "33%";
+	div.style.transform = "rotate(90deg)";
 	this.colorBar = div;
 
-	this.colorBar.appendChild(this.create_colorBar());
+	this.colorBar.appendChild(this.create_colorBarChildren());
 	
     }
 
@@ -59,45 +58,47 @@ let ColorBar = class {
 	this.divImg.src = imageSrc;
     }
 
-    create_colorBar() {
+    create_colorBarChildren() {
 	var divParent = document.createElement('div');
 	divParent.style.width = "100%";
 	divParent.style.height = "100%";
 
-	var divMin = document.createElement('div');
-	divMin.id = "min-div";
-	divMin.style.position = "absolute";
-	divMin.style.left = "6%";
-	divMin.style.top = "-100%";
-	divMin.style.transform = "rotate(-90deg)";
-	this.divMin = divMin;
-
-	var divMax = document.createElement('div');
-	divMax.id = "max-div";
-	divMax.style.position = "relative";
-	divMax.style.display = "inline-block";
-	divMax.style.right = "-10%";
-	divMax.style.top = "-100%";
-	divMax.style.transform = "rotate(-90deg)";
-	this.divMax = divMax;
-
-
-	var img = document.createElement("IMG");
-	img.style.width = "95%";
-	img.style.height = "100%";
-	img.style.left = "10%";
-	img.style.position = "relative";
-	this.divImg = img;
-
 	var div = document.createElement('div');
 	div.id = "image-div"
 	div.style.width="80%";
-	div.style.height = "30px";
+	div.style.height = "100%";
 	div.style.position = "absolute";
+	div.style.left = "10%";
+
+	var divMin = document.createElement('div');
+	divMin.id = "min-div";
+	divMin.style.position = "absolute";
+	divMin.style.left = "-8%";
+	divMin.style.top = "-50%";
+	divMin.style.transform = "rotate(-90deg)";
+	divMin.style.backgroundColor = "beige";
+	this.divMin = divMin;
+
+	var img = document.createElement("IMG");
+	img.style.width = "100%";
+	img.style.height = "100%";
+	this.divImg = img;
+
+	var divMax = document.createElement('div');
+	divMax.id = "max-div";
+	divMax.style.position = "absolute";
+	divMax.style.right = "-8%";
+	divMax.style.top = "-50%";
+	divMax.style.transform = "rotate(-90deg)";
+	divMax.style.backgroundColor = "beige";
+	
+	this.divMax = divMax;
+
 
 	div.appendChild(divMin);
 	div.appendChild(img);
 	div.appendChild(divMax);
+
 	divParent.appendChild(div);
 	    
 	return divParent;
@@ -128,6 +129,7 @@ let PapayaFrame = class {
 	frameElement.name = this.name;
 	frameElement.style.width="100%";
 	frameElement.style.height="100%";
+	frameElement.style.display = "inline-block";
 
 	this.colorBar = colorBar;
 	
