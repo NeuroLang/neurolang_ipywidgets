@@ -22,6 +22,89 @@ var papaya_src = `
 
 var index = 0;
 
+let ColorBar = class {
+    constructor(height, width) {
+	this.height = height;
+	this.width = width;
+	
+	// create colorbar
+	var div = document.createElement('div');
+	div.id = "colorBar"
+//	div.style.width=(height -100) + "px";
+	div.style.width = "100%";
+	div.style.height = "50px";
+	div.style.position = "relative";
+	div.style.left = "20px";
+	div.style.top = "-60px";
+	
+	this.colorBar = div;
+
+	this.colorBar.appendChild(this.create_colorBar());
+	
+    }
+
+    getDiv() {
+	return this.colorBar;
+    }
+
+    setMin(min) {
+	this.divMin.textContent = min;
+    }
+
+    setMax(max) {
+	this.divMax.textContent = max;
+    }
+
+    setImageSrc(imageSrc) {
+	this.divImg.src = imageSrc;
+    }
+
+    create_colorBar() {
+	var divParent = document.createElement('div');
+	divParent.style.width = "100%";
+	divParent.style.height = "100%";
+
+	var divMin = document.createElement('div');
+	divMin.id = "min-div";
+	divMin.style.position = "absolute";
+	divMin.style.left = "6%";
+	divMin.style.top = "-100%";
+	divMin.style.transform = "rotate(-90deg)";
+	this.divMin = divMin;
+
+	var divMax = document.createElement('div');
+	divMax.id = "max-div";
+	divMax.style.position = "relative";
+	divMax.style.display = "inline-block";
+	divMax.style.right = "-10%";
+	divMax.style.top = "-100%";
+	divMax.style.transform = "rotate(-90deg)";
+	this.divMax = divMax;
+
+
+	var img = document.createElement("IMG");
+	img.style.width = "95%";
+	img.style.height = "100%";
+	img.style.left = "10%";
+	img.style.position = "relative";
+	this.divImg = img;
+
+	var div = document.createElement('div');
+	div.id = "image-div"
+	div.style.width="80%";
+	div.style.height = "30px";
+	div.style.position = "absolute";
+
+	div.appendChild(divMin);
+	div.appendChild(img);
+	div.appendChild(divMax);
+	divParent.appendChild(div);
+	    
+	return divParent;
+    }
+
+}
+
 let PapayaFrame = class {
     /**
      * Creates a new frame and puts the papaya viewer inside the frame
@@ -30,24 +113,26 @@ let PapayaFrame = class {
      * index: index of the frame.
      * parentView: PapayaView instance that contains this frame.
      */
-    constructor(index, parentView) {
+    constructor(index, parentView, colorBar) {
 	this.name = "papayaFrame" + index;
 	this.index = index;
 
 	var papayaFrameDiv = document.createElement('div')
-	papayaFrameDiv.style.width = "100%"
-	papayaFrameDiv.style.height = "100%"
-	papayaFrameDiv.id = "papaya-viewer"
+	papayaFrameDiv.style.width = "100%";
+	papayaFrameDiv.style.height = "100%";
+	papayaFrameDiv.id = "papaya-viewer";
 
 	// create frame for papaya viewer
 	var frameElement = document.createElement("IFRAME");
 	frameElement.srcdoc = papaya_src;
 	frameElement.name = this.name;
-	frameElement.width="100%";
-	frameElement.height="100%";
+	frameElement.style.width="100%";
+	frameElement.style.height="100%";
 
+	this.colorBar = colorBar;
+	
 	papayaFrameDiv.appendChild(frameElement);
-
+	papayaFrameDiv.appendChild(this.colorBar.getDiv());
 	
 	this.papayaFrameDiv = papayaFrameDiv;
 	
@@ -57,6 +142,7 @@ let PapayaFrame = class {
 	}
 
     }
+
 
     
     /**
@@ -137,6 +223,16 @@ let PapayaFrame = class {
 	this.window.papaya.Container.removeImage(0, index);
     }
 
+    setColorBar(index) {
+	if (index < this.window.papayaContainers[0].viewer.screenVolumes.length) {
+	    this.colorBar.setMin(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMin.toFixed(2));
+	    
+	    this.colorBar.setMax(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMax.toFixed(2));
+
+	    this.colorBar.setImageSrc(this.window.papayaContainers[0].viewer.screenVolumes[index].colorBar);
+	}
+    }
+
     /**
      *
      *
@@ -149,6 +245,9 @@ let PapayaFrame = class {
 	    var image = papayaImage.image;
 
 	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
+		if (index == 0) {
+		    that.setColorBar(index+1);
+		}
 		that.loadFunction(index + 1, images);
 	    } });
 
@@ -162,8 +261,10 @@ let PapayaFrame = class {
 };
 
 
-var createFrame = function(parentView) {
-    var papayaFrame = new PapayaFrame(index, parentView);
+
+var createFrame = function(parentView, height, width) {
+    let colorBar = new ColorBar(height, width);
+    var papayaFrame = new PapayaFrame(index, parentView, colorBar);
     index++;
 
     return papayaFrame;

@@ -239,13 +239,16 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
 
+	height = this.model.get("layout").attributes["height"].replace("px", "");
+	width = this.model.get("layout").attributes["width"].replace("px", "");
+	console.log(height);
+	    
 	// PapayaFrame instance to access papaya viewer functionality
-	this.papayaFrame = papayaGenerator.createFrame(this);
+	this.papayaFrame = papayaGenerator.createFrame(this, height, width);
 
 	this.el.appendChild(this.papayaFrame.getDiv());
 
 	this.images = [];
-
 	
 	this.model.on('change:coordinate', this.coordinateChanged, this);
 	this.model.on('change:atlas', this.atlasChanged, this);
