@@ -215,7 +215,8 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	mainView : "axial",
 	coordinate : [],
 	images : [],
-	error : ""
+	error : "",
+	color_bar: false
     }),
 });
 
@@ -254,6 +255,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.model.on('change:atlas', this.atlasChanged, this);
 	this.model.on('change:error', this.errorChanged, this);
         this.model.on('change:images', this.imagesChanged, this);
+	this.model.on('change:color_bar', this.colorBarChanged, this);
+
     },
 
     /**
@@ -261,7 +264,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
     */
     initFrame: function() {
 	var imageParams = {"encodedImages" : ["atlas"]};
- 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), true);
+ 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), this.model.get('color_bar'));
     },
 
     atlasChanged: function() {
@@ -305,7 +308,11 @@ var PapayaView = widgets.DOMWidgetView.extend({
        this.images = this.model.get("images");
        // add new images
        this.papayaFrame.loadFunction(index, this.images);
-   }
+   },
+    
+   colorBarChanged: function() {
+ 	this.papayaFrame.showColorBar(this.model.get('color_bar'));
+   },
     
 });
 

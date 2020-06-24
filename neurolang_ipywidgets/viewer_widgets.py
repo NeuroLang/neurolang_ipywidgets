@@ -41,6 +41,8 @@ class NlPapayaViewer(DOMWidget):
     images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
 
+    color_bar = Bool(False).tag(sync=True)
+
     # Todo validate mainView value
 
     def __init__(self, **kwargs):
