@@ -244,7 +244,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	console.log(height);
 	    
 	// PapayaFrame instance to access papaya viewer functionality
-	this.papayaFrame = papayaGenerator.createFrame(this, height, width);
+	this.papayaFrame = papayaGenerator.createFrame(this);
 
 	this.el.appendChild(this.papayaFrame.getDiv());
 
@@ -261,7 +261,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
     */
     initFrame: function() {
 	var imageParams = {"encodedImages" : ["atlas"]};
- 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'));
+ 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), true);
     },
 
     atlasChanged: function() {

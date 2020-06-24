@@ -53,8 +53,7 @@ let ColorBar = class {
 	this.colorBar.id = "colorBar"
 	this.colorBar.style.width = length + "px";
 	this.colorBar.style.height = "20px";
-	this.colorBar.style.top = "-" + top + "px"
-	
+	this.colorBar.style.top = "-" + top + "px";
 
 	var div = document.createElement('div');
 	div.id = "image-div"
@@ -81,7 +80,7 @@ let ColorBar = class {
 	this.colorBar.appendChild(div);
     }
 
-    getDiv() {
+    getElement() {
 	return this.colorBar;
     }
 
@@ -97,6 +96,15 @@ let ColorBar = class {
 	this.divImg.src = imageSrc;
     }
 
+    show(isShow) {
+	if (isShow) {
+	    this.colorBar.style.display = "block";
+	} else {
+	    this.colorBar.style.display = "none";
+	}
+
+    }
+
 }
 
 let PapayaFrame = class {
@@ -107,7 +115,7 @@ let PapayaFrame = class {
      * index: index of the frame.
      * parentView: PapayaView instance that contains this frame.
      */
-    constructor(index, parentView, colorBar) {
+    constructor(index, parentView) {
 	this.name = "papayaFrame" + index;
 	this.index = index;
 
@@ -124,8 +132,6 @@ let PapayaFrame = class {
 	this.frameElement.style.height="100%";
 	this.frameElement.style.display = "inline-block";
 
-	this.colorBar = colorBar;
-	
 	papayaFrameDiv.appendChild(this.frameElement);
 
 	this.papayaFrameDiv = papayaFrameDiv;
@@ -158,23 +164,15 @@ let PapayaFrame = class {
      * params["encodedImages"] = ["atlas", "image1", "image2"];
      *
      */
-    init(params, atlas_image) {
+    init(params, atlas_image, showColorBar) {
 	this.window =  window[this.name];
 
 	if (this.window.document) {
-	   // var frameHead = this.window.document.getElementsByTagName("head")[0];
-	    // var link = this.window.document.createElement("link");
-	    // link.setAttribute("rel", "stylesheet");
-	    // link.setAttribute("type", "text/css");
-	    // link.setAttribute("href", styles);
-
-	    // frameHead.appendChild(link);
-
 	    var papayaViewer = this.window.document.getElementById("papayaViewer0");
-
-	    var viewer = this.window.document.getElementById("papayaParent");
-	    this.colorBar = new ColorBar(parseInt((papayaViewer.style.height).replace("px", "")) * 0.8, parseInt((papayaViewer.style.height).replace("px", "")) + 90);
-	    viewer.appendChild(this.colorBar.getDiv());
+	    this.colorBar = new ColorBar(parseInt((papayaViewer.style.height).replace("px", "")) * 0.8,
+					 parseInt((papayaViewer.style.height).replace("px", "")) + 90);
+	    this.window.document.getElementById("papayaParent").appendChild(this.colorBar.getElement());
+	    this.showColorBar(showColorBar);
 	}
 
 	this.setImage("atlas", atlas_image);
@@ -190,6 +188,12 @@ let PapayaFrame = class {
 	this.window.papaya.Container.resetViewer(0, params);
     }
 
+    showColorBar(show) {
+	if (this.colorBar) {
+	    this.colorBar.show(show);
+	}
+    }
+    
     /**
      *
      *
@@ -273,7 +277,7 @@ let PapayaFrame = class {
 
 
 
-var createFrame = function(parentView, height, width) {
+var createFrame = function(parentView) {
     var papayaFrame = new PapayaFrame(index, parentView);
     index++;
 
