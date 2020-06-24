@@ -13,6 +13,7 @@ var papaya_src = `
 #colorBar {
     position: relative;
     left: 30px;
+    height: 20px;
     transform-origin: left;
     transform: rotate(90deg);
 }
@@ -23,14 +24,15 @@ var papaya_src = `
     top: -50%;
     transform: rotate(-90deg);
     color: beige;
+    font: 13px Arial, sans-serif;
 }
 
 .minValue {
-    left: -30px;
+    left: -20px;
 }
 
 .maxValue {
-    right: -30px;
+    right: -20px;
 }
 
 </style>
@@ -52,7 +54,6 @@ let ColorBar = class {
 	this.colorBar = document.createElement('div');
 	this.colorBar.id = "colorBar"
 	this.colorBar.style.width = length + "px";
-	this.colorBar.style.height = "20px";
 	this.colorBar.style.top = "-" + top + "px";
 
 	var div = document.createElement('div');
