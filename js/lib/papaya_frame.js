@@ -9,35 +9,58 @@ var papaya_src = `
         <script type="text/javascript">
             var params = [];
         </script>
+<style>
+#colorBar {
+    position: relative;
+    left: 30px;
+    transform-origin: left;
+    transform: rotate(90deg);
+}
+
+
+.values {
+    position: absolute;
+    top: -50%;
+    transform: rotate(-90deg);
+    color: beige;
+}
+
+.minValue {
+    left: -30px;
+}
+
+.maxValue {
+    right: -30px;
+}
+
+</style>
     </head>
 
     <body>
-        <div id="papaya_parent">
+        <div id="papayaParent">
             <div class="papaya" data-params="params"></div>
         </div>
     </body>
 </html>`;
 
-require("../css/styles.css");
+//let styles = require("../css/styles.css");
 
 var index = 0;
 
 let ColorBar = class {
-    constructor(height, width) {
-	this.height = height;
-	this.width = width;
+    constructor(length, top) {
+	this.colorBar = document.createElement('div');
+	this.colorBar.id = "colorBar"
+	this.colorBar.style.width = length + "px";
+	this.colorBar.style.height = "20px";
+	this.colorBar.style.top = "-" + top + "px"
 	
-	// create colorbar
-	var div = document.createElement('div');
-	div.id = "colorBar"
-	this.colorBar = div;
 
 	var div = document.createElement('div');
 	div.id = "image-div"
-	div.style.width="80%";
+	div.style.width="100%";
 	div.style.height = "100%";
 	div.style.position = "absolute";
-	div.style.left = "10%";
 
 	this.divMin = document.createElement('div');
 	this.divMin.id = "min-div";
@@ -94,22 +117,21 @@ let PapayaFrame = class {
 	papayaFrameDiv.id = "papaya-viewer";
 
 	// create frame for papaya viewer
-	var frameElement = document.createElement("IFRAME");
-	frameElement.srcdoc = papaya_src;
-	frameElement.name = this.name;
-	frameElement.style.width="100%";
-	frameElement.style.height="100%";
-	frameElement.style.display = "inline-block";
+	this.frameElement = document.createElement("IFRAME");
+	this.frameElement.srcdoc = papaya_src;
+	this.frameElement.name = this.name;
+	this.frameElement.style.width="100%";
+	this.frameElement.style.height="100%";
+	this.frameElement.style.display = "inline-block";
 
 	this.colorBar = colorBar;
 	
-	papayaFrameDiv.appendChild(frameElement);
-	papayaFrameDiv.appendChild(this.colorBar.getDiv());
-	
+	papayaFrameDiv.appendChild(this.frameElement);
+
 	this.papayaFrameDiv = papayaFrameDiv;
 	
 	var that = parentView;
-	frameElement.onload = function() {
+	this.frameElement.onload = function() {
 	    that.initFrame();
 	}
 
@@ -138,6 +160,23 @@ let PapayaFrame = class {
      */
     init(params, atlas_image) {
 	this.window =  window[this.name];
+
+	if (this.window.document) {
+	   // var frameHead = this.window.document.getElementsByTagName("head")[0];
+	    // var link = this.window.document.createElement("link");
+	    // link.setAttribute("rel", "stylesheet");
+	    // link.setAttribute("type", "text/css");
+	    // link.setAttribute("href", styles);
+
+	    // frameHead.appendChild(link);
+
+	    var papayaViewer = this.window.document.getElementById("papayaViewer0");
+
+	    var viewer = this.window.document.getElementById("papayaParent");
+	    this.colorBar = new ColorBar(parseInt((papayaViewer.style.height).replace("px", "")) * 0.8, parseInt((papayaViewer.style.height).replace("px", "")) + 90);
+	    viewer.appendChild(this.colorBar.getDiv());
+	}
+
 	this.setImage("atlas", atlas_image);
 	this.resetViewer(params);
     }
@@ -235,8 +274,7 @@ let PapayaFrame = class {
 
 
 var createFrame = function(parentView, height, width) {
-    let colorBar = new ColorBar(height, width);
-    var papayaFrame = new PapayaFrame(index, parentView, colorBar);
+    var papayaFrame = new PapayaFrame(index, parentView);
     index++;
 
     return papayaFrame;
