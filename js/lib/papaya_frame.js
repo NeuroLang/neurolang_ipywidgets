@@ -257,11 +257,11 @@ let PapayaFrame = class {
 	var that = this;
 	if (index < images.length) {
 	    var papayaImage = images[index];
-	    var imageName = "image" + papayaImage.id //.replace(/-/g,"");
+	    var imageName = "image" + papayaImage.id
 	    var image = papayaImage.image;
 
 	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
-		if (index == 0) {
+		if (index == images.length -1) {
 		    that.setColorBar(index+1);
 		}
 		that.loadFunction(index + 1, images);
