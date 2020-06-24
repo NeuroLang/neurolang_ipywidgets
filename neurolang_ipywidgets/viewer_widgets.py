@@ -1,5 +1,5 @@
 from ipywidgets import DOMWidget, register
-from traitlets import Bool, List, Unicode
+from traitlets import Bool, List, Unicode, Int
 import numpy as np
 import nibabel as nib
 from copy import deepcopy
@@ -42,6 +42,7 @@ class NlPapayaViewer(DOMWidget):
     error = Unicode().tag(sync=True)
 
     color_bar = Bool(False).tag(sync=True)
+    color_bar_index = Int(0).tag(sync=True)
 
     # Todo validate mainView value
 
@@ -89,6 +90,18 @@ class NlPapayaViewer(DOMWidget):
         self.error = error
         # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
         self.error = ""
+
+    def show_image_color_bar(self, index):
+        """Displays the color bar for the image at specified `index`.
+
+        Parameters
+        ----------
+        index: int
+            index of the image. 0 is the index for atlas.
+        """
+        if index >= len(self.images):
+            raise ValueError(f"Invalid image index {index}!")
+        self.color_bar_index = index
 
     def reset(self):
         self.images = []

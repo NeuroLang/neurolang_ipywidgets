@@ -189,12 +189,32 @@ let PapayaFrame = class {
 	this.window.papaya.Container.resetViewer(0, params);
     }
 
+    /**
+     *
+     *
+     */
     showColorBar(show) {
 	if (this.colorBar) {
 	    this.colorBar.show(show);
 	}
     }
     
+    /**
+     *
+     *
+     */
+    setColorBar(index) {
+	console.log("setting color bar at index " + index);
+	if (index < this.window.papayaContainers[0].viewer.screenVolumes.length) {
+	    console.log("entered");
+	    this.colorBar.setMin(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMin.toFixed(2));
+	    
+	    this.colorBar.setMax(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMax.toFixed(2));
+
+	    this.colorBar.setImageSrc(this.window.papayaContainers[0].viewer.screenVolumes[index].colorBar);
+	}
+    }
+
     /**
      *
      *
@@ -237,16 +257,6 @@ let PapayaFrame = class {
      */
     removeImage(index) {
 	this.window.papaya.Container.removeImage(0, index);
-    }
-
-    setColorBar(index) {
-	if (index < this.window.papayaContainers[0].viewer.screenVolumes.length) {
-	    this.colorBar.setMin(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMin.toFixed(2));
-	    
-	    this.colorBar.setMax(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMax.toFixed(2));
-
-	    this.colorBar.setImageSrc(this.window.papayaContainers[0].viewer.screenVolumes[index].colorBar);
-	}
     }
 
     /**

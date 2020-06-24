@@ -216,7 +216,8 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	coordinate : [],
 	images : [],
 	error : "",
-	color_bar: false
+	color_bar: false,
+	color_bar_index: 0
     }),
 });
 
@@ -256,7 +257,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.model.on('change:error', this.errorChanged, this);
         this.model.on('change:images', this.imagesChanged, this);
 	this.model.on('change:color_bar', this.colorBarChanged, this);
-
+	this.model.on('change:color_bar_index', this.colorBarIndexChanged, this);
     },
 
     /**
@@ -265,6 +266,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
     initFrame: function() {
 	var imageParams = {"encodedImages" : ["atlas"]};
  	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), this.model.get('color_bar'));
+	this.colorBarIndexChanged();
     },
 
     atlasChanged: function() {
@@ -308,12 +310,19 @@ var PapayaView = widgets.DOMWidgetView.extend({
        this.images = this.model.get("images");
        // add new images
        this.papayaFrame.loadFunction(index, this.images);
+       this.model.set('color_bar_index', this.images.length, { updated_view: this });
+       this.model.save_changes();
+       this.touch();
    },
     
    colorBarChanged: function() {
  	this.papayaFrame.showColorBar(this.model.get('color_bar'));
    },
-    
+
+    colorBarIndexChanged: function() {
+ 	this.papayaFrame.setColorBar(this.model.get('color_bar_index'));
+   },
+
 });
 
 var CodeEditorModel = widgets.DOMWidgetModel.extend({
