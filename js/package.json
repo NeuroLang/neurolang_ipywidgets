@@ -16,9 +16,9 @@
     "jupyterlab-extension"
   ],
   "files": [
-      "lib/**/*.js",
-      "css/.css,",
-      "dist/*.js"
+    "lib/**/*.js",
+    "css/*.css,",
+    "dist/*.js"
   ],
   "scripts": {
     "clean": "rimraf dist/",
