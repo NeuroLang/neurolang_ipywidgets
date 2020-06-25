@@ -12,7 +12,7 @@ nl
 
 # ## Display Color Bar
 
-nl.color_bar = True
+nl.colorbar = True
 
 # ## Add Overlay
 
@@ -22,7 +22,7 @@ nl.add([papaya_image_overlay])
 # ## Set Color Bar by Image Index
 
 # 0 is index for atlas
-nl.show_image_color_bar(0)
+nl.show_image_colorbar(0)
 
 # ## Add Labels
 

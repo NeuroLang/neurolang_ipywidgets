@@ -203,13 +203,9 @@ let PapayaFrame = class {
      *
      */
     setColorBar(index) {
-	console.log("setting color bar at index " + index);
 	if (index < this.window.papayaContainers[0].viewer.screenVolumes.length) {
-	    console.log("entered");
 	    this.colorBar.setMin(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMin.toFixed(2));
-	    
 	    this.colorBar.setMax(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMax.toFixed(2));
-
 	    this.colorBar.setImageSrc(this.window.papayaContainers[0].viewer.screenVolumes[index].colorBar);
 	}
     }

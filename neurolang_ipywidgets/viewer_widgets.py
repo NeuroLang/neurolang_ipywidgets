@@ -41,8 +41,8 @@ class NlPapayaViewer(DOMWidget):
     images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
 
-    color_bar = Bool(False).tag(sync=True)
-    color_bar_index = Int(0).tag(sync=True)
+    colorbar = Bool(False).tag(sync=True)
+    colorbar_index = Int(0).tag(sync=True)
 
     # Todo validate mainView value
 
@@ -91,7 +91,7 @@ class NlPapayaViewer(DOMWidget):
         # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
         self.error = ""
 
-    def show_image_color_bar(self, index):
+    def show_image_colorbar(self, index):
         """Displays the color bar for the image at specified `index`.
 
         Parameters
@@ -101,7 +101,7 @@ class NlPapayaViewer(DOMWidget):
         """
         if index >= len(self.images):
             raise ValueError(f"Invalid image index {index}!")
-        self.color_bar_index = index
+        self.colorbar_index = index
 
     def reset(self):
         self.images = []
