@@ -9,103 +9,18 @@ var papaya_src = `
         <script type="text/javascript">
             var params = [];
         </script>
-<style>
-#colorBar {
-    position: relative;
-    left: 30px;
-    height: 20px;
-    transform-origin: left;
-    transform: rotate(90deg);
-}
-
-
-.values {
-    position: absolute;
-    top: -50%;
-    transform: rotate(-90deg);
-    color: beige;
-    font: 13px Arial, sans-serif;
-}
-
-.minValue {
-    left: -20px;
-}
-
-.maxValue {
-    right: -20px;
-}
-
-</style>
     </head>
 
     <body>
-        <div id="papayaParent">
+        <div id="papaya_parent">
             <div class="papaya" data-params="params"></div>
         </div>
     </body>
 </html>`;
 
 
+
 var index = 0;
-
-let ColorBar = class {
-    constructor(length, top) {
-	this.colorBar = document.createElement('div');
-	this.colorBar.id = "colorBar"
-	this.colorBar.style.width = length + "px";
-	this.colorBar.style.top = "-" + top + "px";
-
-	var div = document.createElement('div');
-	div.id = "image-div"
-	div.style.width="100%";
-	div.style.height = "100%";
-	div.style.position = "absolute";
-
-	this.divMin = document.createElement('div');
-	this.divMin.id = "min-div";
-	this.divMin.classList.add("values", "minValue");
-
-	this.divImg = document.createElement("IMG");
-	this.divImg.style.width = "100%";
-	this.divImg.style.height = "100%";
-
-	this.divMax = document.createElement('div');
-	this.divMax.id = "max-div";
-	this.divMax.classList.add("values", "maxValue");
-	
-	div.appendChild(this.divMin);
-	div.appendChild(this.divImg);
-	div.appendChild(this.divMax);
-	
-	this.colorBar.appendChild(div);
-    }
-
-    getElement() {
-	return this.colorBar;
-    }
-
-    setMin(min) {
-	this.divMin.textContent = min;
-    }
-
-    setMax(max) {
-	this.divMax.textContent = max;
-    }
-
-    setImageSrc(imageSrc) {
-	this.divImg.src = imageSrc;
-    }
-
-    show(isShow) {
-	if (isShow) {
-	    this.colorBar.style.display = "block";
-	} else {
-	    this.colorBar.style.display = "none";
-	}
-
-    }
-
-}
 
 let PapayaFrame = class {
     /**
@@ -120,29 +35,28 @@ let PapayaFrame = class {
 	this.index = index;
 
 	var papayaFrameDiv = document.createElement('div')
-	papayaFrameDiv.style.width = "100%";
-	papayaFrameDiv.style.height = "100%";
-	papayaFrameDiv.id = "papaya-viewer";
+	papayaFrameDiv.style.width = "100%"
+	papayaFrameDiv.style.height = "100%"
+	papayaFrameDiv.id = "papaya-viewer"
 
 	// create frame for papaya viewer
-	this.frameElement = document.createElement("IFRAME");
-	this.frameElement.srcdoc = papaya_src;
-	this.frameElement.name = this.name;
-	this.frameElement.style.width="100%";
-	this.frameElement.style.height="100%";
-	this.frameElement.style.display = "inline-block";
+	var frameElement = document.createElement("IFRAME");
+	frameElement.srcdoc = papaya_src;
+	frameElement.name = this.name;
+	frameElement.width="100%";
+	frameElement.height="100%";
 
-	papayaFrameDiv.appendChild(this.frameElement);
+	papayaFrameDiv.appendChild(frameElement);
 
+	
 	this.papayaFrameDiv = papayaFrameDiv;
 	
 	var that = parentView;
-	this.frameElement.onload = function() {
+	frameElement.onload = function() {
 	    that.initFrame();
 	}
 
     }
-
 
     
     /**
@@ -164,19 +78,10 @@ let PapayaFrame = class {
      * params["encodedImages"] = ["atlas", "image1", "image2"];
      *
      */
-    init(params, atlas_image, isShow) {
+    init(params, atlas_image) {
 	this.window =  window[this.name];
-
 	this.setImage("atlas", atlas_image);
 	this.resetViewer(params);
-	
-	if (this.window.document) {
-	    var papayaViewer = this.window.document.getElementById("papayaViewer0");
-	    this.colorBar = new ColorBar(parseInt((papayaViewer.style.height).replace("px", "")) * 0.8,
-					 parseInt((papayaViewer.style.height).replace("px", "")) + 90);
-	    this.window.document.getElementById("papayaParent").appendChild(this.colorBar.getElement());
-	    this.colorBar.show(isShow);
-	}
     }
 
     /**
@@ -186,28 +91,6 @@ let PapayaFrame = class {
      */
     resetViewer(params) {
 	this.window.papaya.Container.resetViewer(0, params);
-    }
-
-    /**
-     *
-     *
-     */
-    showColorBar(show) {
-	if (this.colorBar) {
-	    this.colorBar.show(show);
-	}
-    }
-    
-    /**
-     *
-     *
-     */
-    setColorBar(index) {
-	if (index < this.window.papayaContainers[0].viewer.screenVolumes.length) {
-	    this.colorBar.setMin(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMin.toFixed(2));
-	    this.colorBar.setMax(this.window.papayaContainers[0].viewer.screenVolumes[index].screenMax.toFixed(2));
-	    this.colorBar.setImageSrc(this.window.papayaContainers[0].viewer.screenVolumes[index].colorBar);
-	}
     }
 
     /**
@@ -262,13 +145,10 @@ let PapayaFrame = class {
 	var that = this;
 	if (index < images.length) {
 	    var papayaImage = images[index];
-	    var imageName = "image" + papayaImage.id
+	    var imageName = "image" + papayaImage.id //.replace(/-/g,"");
 	    var image = papayaImage.image;
 
 	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
-		if (index == images.length -1) {
-		    that.setColorBar(index+1);
-		}
 		that.loadFunction(index + 1, images);
 	    } });
 
@@ -280,7 +160,6 @@ let PapayaFrame = class {
     }
 
 };
-
 
 
 var createFrame = function(parentView) {
