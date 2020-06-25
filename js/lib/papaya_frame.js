@@ -45,7 +45,6 @@ var papaya_src = `
     </body>
 </html>`;
 
-//let styles = require("../css/styles.css");
 
 var index = 0;
 
