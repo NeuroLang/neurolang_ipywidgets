@@ -164,19 +164,19 @@ let PapayaFrame = class {
      * params["encodedImages"] = ["atlas", "image1", "image2"];
      *
      */
-    init(params, atlas_image, showColorBar) {
+    init(params, atlas_image, isShow) {
 	this.window =  window[this.name];
 
+	this.setImage("atlas", atlas_image);
+	this.resetViewer(params);
+	
 	if (this.window.document) {
 	    var papayaViewer = this.window.document.getElementById("papayaViewer0");
 	    this.colorBar = new ColorBar(parseInt((papayaViewer.style.height).replace("px", "")) * 0.8,
 					 parseInt((papayaViewer.style.height).replace("px", "")) + 90);
 	    this.window.document.getElementById("papayaParent").appendChild(this.colorBar.getElement());
-	    this.showColorBar(showColorBar);
+	    this.colorBar.show(isShow);
 	}
-
-	this.setImage("atlas", atlas_image);
-	this.resetViewer(params);
     }
 
     /**
