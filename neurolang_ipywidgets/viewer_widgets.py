@@ -1,5 +1,5 @@
 from ipywidgets import DOMWidget, register
-from traitlets import Bool, List, Unicode
+from traitlets import Bool, List, Unicode, Int
 import numpy as np
 import nibabel as nib
 from copy import deepcopy
@@ -40,6 +40,9 @@ class NlPapayaViewer(DOMWidget):
     atlas = Image().tag(sync=True, **image_serialization)
     images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
+
+    colorbar = Bool(False).tag(sync=True)
+    colorbar_index = Int(0).tag(sync=True)
 
     # Todo validate mainView value
 
@@ -88,6 +91,33 @@ class NlPapayaViewer(DOMWidget):
         # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
         self.error = ""
 
+    def show_image_colorbar_at_index(self, index):
+        """Displays the color bar for the image at specified `index`.
+
+        Parameters
+        ----------
+        index: int
+            zero-based index of the image. Zero corresponds to atlas image.
+        """
+        if index > len(self.images):
+            raise ValueError(f"Invalid image index {index}!")
+        self.colorbar_index = index
+
+    def show_image_colorbar(self, image):
+        """Displays the color bar for the specified `image`.
+
+        Parameters
+        ----------
+        image
+            image for which to display colorbar.
+        """
+
+        index = self._is_image_in_list(image)
+        if index < 0:
+            raise ValueError("Specified image is not in viewer's list.")
+        else:
+            self.show_image_colorbar_at_index(index + 1)
+
     def reset(self):
         self.images = []
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
@@ -96,3 +126,11 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
 
         # TODO reset other values
+
+    def _is_image_in_list(self, image):
+        index = 0
+        for im in self.images:
+            if im.id == image.id:
+                return index
+            index = index + 1
+        return False
