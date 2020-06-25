@@ -111,10 +111,12 @@ class NlPapayaViewer(DOMWidget):
         image
             image for which to display colorbar.
         """
-        if image in self.images:
-            self.show_image_colorbar_at_index(self.images.index(image) + 1)
-        else:
+
+        index = self._is_image_in_list(image)
+        if index < 0:
             raise ValueError("Specified image is not in viewer's list.")
+        else:
+            self.show_image_colorbar_at_index(index + 1)
 
     def reset(self):
         self.images = []
@@ -124,3 +126,11 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
 
         # TODO reset other values
+
+    def _is_image_in_list(self, image):
+        index = 0
+        for im in self.images:
+            if im.id == image.id:
+                return index
+            index = index + 1
+        return False

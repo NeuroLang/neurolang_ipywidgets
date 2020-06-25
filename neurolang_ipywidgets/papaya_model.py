@@ -158,11 +158,11 @@ class PapayaImage(TraitType):
     def base64_encode(self):
         return None
 
-    def __eq__(self, other):
-        """Checks equality of two images by comparing IDs of the images. `config`s of the images can be different."""
-        if not isinstance(other, PapayaImage):
-            return False
-        return self.__id == other.id
+    # def __eq__(self, other):
+    #     """Checks equality of two images by comparing IDs of the images. `config`s of the images can be different."""
+    #     if not isinstance(other, PapayaImage):
+    #         return False
+    #     return self.__id == other.id
 
 
 class PapayaSpatialImage(PapayaImage):
