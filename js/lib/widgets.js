@@ -216,8 +216,8 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	coordinate : [],
 	images : [],
 	error : "",
-	color_bar: false,
-	color_bar_index: 0
+	colorbar: false,
+	colorbar_index: 0
     }),
 });
 
@@ -243,7 +243,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
 	height = this.model.get("layout").attributes["height"].replace("px", "");
 	width = this.model.get("layout").attributes["width"].replace("px", "");
-	console.log(height);
 	    
 	// PapayaFrame instance to access papaya viewer functionality
 	this.papayaFrame = papayaGenerator.createFrame(this);
@@ -256,8 +255,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.model.on('change:atlas', this.atlasChanged, this);
 	this.model.on('change:error', this.errorChanged, this);
         this.model.on('change:images', this.imagesChanged, this);
-	this.model.on('change:color_bar', this.colorBarChanged, this);
-	this.model.on('change:color_bar_index', this.colorBarIndexChanged, this);
+	this.model.on('change:colorbar', this.colorBarChanged, this);
+	this.model.on('change:colorbar_index', this.colorBarIndexChanged, this);
     },
 
     /**
@@ -265,7 +264,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
     */
     initFrame: function() {
 	var imageParams = {"encodedImages" : ["atlas"]};
- 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), this.model.get('color_bar'));
+ 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), this.model.get('colorbar'));
 	this.colorBarIndexChanged();
     },
 
@@ -282,8 +281,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     errorChanged: function() {
 	var error = this.model.get("error");
-	console.log("error");
-	console.log(error);
+//	console.log("error");
+//	console.log(error);
 	if (error != "") {
 	    alert(error);
 	    // this.model.set('error', '', { updated_view: this });
@@ -310,17 +309,17 @@ var PapayaView = widgets.DOMWidgetView.extend({
        this.images = this.model.get("images");
        // add new images
        this.papayaFrame.loadFunction(index, this.images);
-       this.model.set('color_bar_index', this.images.length, { updated_view: this });
+       this.model.set('colorbar_index', this.images.length, { updated_view: this });
        this.model.save_changes();
        this.touch();
    },
     
    colorBarChanged: function() {
- 	this.papayaFrame.showColorBar(this.model.get('color_bar'));
+ 	this.papayaFrame.showColorBar(this.model.get('colorbar'));
    },
 
     colorBarIndexChanged: function() {
- 	this.papayaFrame.setColorBar(this.model.get('color_bar_index'));
+ 	this.papayaFrame.setColorBar(this.model.get('colorbar_index'));
    },
 
 });
