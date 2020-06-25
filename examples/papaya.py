@@ -22,15 +22,18 @@ nl.add([papaya_image_overlay])
 # ## Set Color Bar by Image Index
 
 # 0 is index for atlas
-nl.show_image_colorbar(0)
+nl.show_image_colorbar_at_index(0)
 
 # ## Add Labels
 
 # set config
-config = dict(min=0, max=10, lut="Red Overlay")
+config = dict(min=0, max=10, lut="Green Overlay")
 
 papaya_image1 = PapayaNiftiImage(nib.load("img/L_G_front_sup.nii"), config)
 nl.add([papaya_image1])
+
+# set config
+config = dict(min=0, max=10, lut="Blue Overlay")
 
 papaya_image2 = PapayaNiftiImage(nib.load("img/L_S_circular_insula_sup.nii"), config)
 nl.add([papaya_image2])
@@ -42,5 +45,9 @@ nl.add([papaya_image3, papaya_image4])
 # ## Remove Label
 
 nl.remove([papaya_image4])
+
+# ## Set Color Bar by Image
+
+nl.show_image_colorbar(papaya_image1)
 
 

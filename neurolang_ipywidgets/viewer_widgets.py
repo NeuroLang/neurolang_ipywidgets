@@ -91,17 +91,30 @@ class NlPapayaViewer(DOMWidget):
         # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
         self.error = ""
 
-    def show_image_colorbar(self, index):
+    def show_image_colorbar_at_index(self, index):
         """Displays the color bar for the image at specified `index`.
 
         Parameters
         ----------
         index: int
-            index of the image. 0 is the index for atlas.
+            zero-based index of the image. Zero corresponds to atlas image.
         """
-        if index >= len(self.images):
+        if index > len(self.images):
             raise ValueError(f"Invalid image index {index}!")
         self.colorbar_index = index
+
+    def show_image_colorbar(self, image):
+        """Displays the color bar for the specified `image`.
+
+        Parameters
+        ----------
+        image
+            image for which to display colorbar.
+        """
+        if image in self.images:
+            self.show_image_colorbar_at_index(self.images.index(image) + 1)
+        else:
+            raise ValueError("Specified image is not in viewer's list.")
 
     def reset(self):
         self.images = []
