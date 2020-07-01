@@ -49,5 +49,3 @@ nl.remove([papaya_image4])
 # ## Set Color Bar by Image
 
 nl.show_image_colorbar(papaya_image1)
-
-

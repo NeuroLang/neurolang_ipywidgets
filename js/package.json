@@ -17,7 +17,6 @@
   ],
   "files": [
     "lib/**/*.js",
-    "css/*.css,",
     "dist/*.js"
   ],
   "scripts": {
@@ -35,10 +34,8 @@
     "@jupyter-widgets/base": "^1.1 || ^2 || ^3",
     "@jupyter-widgets/controls": "^1.1 || ^2",
     "codemirror": "^5.54.0",
-    "css-loader": "^3.6.0",
     "lodash": "^4.17.4",
-    "papaya-viewer": "1.0.1449",
-    "style-loader": "^1.2.1"
+    "papaya-viewer": "1.0.1449"
   },
   "jupyterlab": {
     "extension": "lib/labplugin"
