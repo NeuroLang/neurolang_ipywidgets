@@ -215,7 +215,9 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	mainView : "axial",
 	coordinate : [],
 	images : [],
-	error : ""
+	error : "",
+	colorbar: false,
+	colorbar_index: 0
     }),
 });
 
@@ -226,6 +228,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
     // Defines how the widget gets rendered into the DOM
     render: function() {
 	PapayaView.__super__.render.apply(this, arguments);
+
+	this.loaded = true;
 
 	this.params = [];
         this.params['worldSpace'] = this.model.get('worldSpace');
@@ -239,18 +243,22 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
 
+	height = this.model.get("layout").attributes["height"].replace("px", "");
+	width = this.model.get("layout").attributes["width"].replace("px", "");
+	    
 	// PapayaFrame instance to access papaya viewer functionality
 	this.papayaFrame = papayaGenerator.createFrame(this);
 
 	this.el.appendChild(this.papayaFrame.getDiv());
 
 	this.images = [];
-
 	
 	this.model.on('change:coordinate', this.coordinateChanged, this);
 	this.model.on('change:atlas', this.atlasChanged, this);
 	this.model.on('change:error', this.errorChanged, this);
         this.model.on('change:images', this.imagesChanged, this);
+	this.model.on('change:colorbar', this.colorBarChanged, this);
+	this.model.on('change:colorbar_index', this.colorBarIndexChanged, this);
     },
 
     /**
@@ -258,7 +266,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
     */
     initFrame: function() {
 	var imageParams = {"encodedImages" : ["atlas"]};
- 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'));
+ 	this.papayaFrame.init($.extend({}, this.params, imageParams), this.model.get('atlas'), this.model.get('colorbar'));
+	this.colorBarIndexChanged();
     },
 
     atlasChanged: function() {
@@ -274,8 +283,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     errorChanged: function() {
 	var error = this.model.get("error");
-	console.log("error");
-	console.log(error);
+//	console.log("error");
+//	console.log(error);
 	if (error != "") {
 	    alert(error);
 	    // this.model.set('error', '', { updated_view: this });
@@ -286,24 +295,55 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     },
 
+    imagesChanged: function(event) {
+	console.log("images changed");
+	// papaya image loading is async.
+	// this is to prevent a second call before all images are loaded.
+	if(!this.loaded) {
+            setTimeout(this.imagesChanged.bind(this), 5); // wait 20ms
+            return;
+	}
 
-   imagesChanged: function(event) {
+	console.log("continue");
+	// value of this changed by callback-imagesLoaded when all images are finished loading
+	this.loaded = false;
 
-       var initial_length = this.images.length;
+	var initial_length = this.images.length;
 
-       // remove all images
-       for (var i = initial_length; i > 0; i--) {
-       	   this.papayaFrame.removeImage(i);
-	   this.papayaFrame.unsetImage("image" + this.images[i - 1].id);
-       }
+	// remove all images
+	for (var i = initial_length; i > 0; i--) {
+	    this.papayaFrame.removeImage(i);
+	    this.papayaFrame.unsetImage("image" + this.images[i - 1].id);
+	}
 
-       var index = 0;
+	// this line should be set
+	this.images = this.model.get("images");
 
-       this.images = this.model.get("images");
-       // add new images
-       this.papayaFrame.loadFunction(index, this.images);
-   }
+	// add new images
+	this.papayaFrame.loadFunction(0, this.images, this.imagesLoaded.bind(this));
+    },
+
+    imagesLoaded: function() {
+	console.log("image loaded");
+	this.loaded = true;
+	this.colorBarIndexChanged();
+    },
     
+    colorBarChanged: function() {
+ 	this.papayaFrame.showColorBar(this.model.get('colorbar'));
+    },
+
+    colorBarIndexChanged: function() {
+	// papaya image loading is async.
+	// this is to prevent a second call before all images are loaded. 
+	if(!this.loaded) {
+            setTimeout(this.colorBarIndexChanged.bind(this), 5); // wait 20ms
+            return;
+	}
+
+ 	this.papayaFrame.setColorBar(this.model.get('colorbar_index'));
+   },
+
 });
 
 var CodeEditorModel = widgets.DOMWidgetModel.extend({

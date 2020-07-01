@@ -1,5 +1,5 @@
 from ipywidgets import DOMWidget, register
-from traitlets import Bool, List, Unicode
+from traitlets import Bool, List, Unicode, Int
 import numpy as np
 import nibabel as nib
 from copy import deepcopy
@@ -41,6 +41,9 @@ class NlPapayaViewer(DOMWidget):
     images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
 
+    colorbar = Bool(False).tag(sync=True)
+    colorbar_index = Int(0).tag(sync=True)
+
     # Todo validate mainView value
 
     def __init__(self, **kwargs):
@@ -64,14 +67,29 @@ class NlPapayaViewer(DOMWidget):
             for image in images:
                 self.all_images.append(image)
             self.set_images()
+            # show colorbar for last added image
+            self.show_image_colorbar_at_index(len(self.all_images))
         else:
             self.set_error(
                 "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
 
     def remove(self, images):
+        # get index of image whose colorbar is displayed
+        colorbar_image = self.all_images[self.colorbar_index - 1]
+
+        removed = False
         for image in images:
+            # check if colorbar image is removed
+            if image.id == colorbar_image.id:
+                removed = True
             self.all_images.remove(image)
         self.set_images()
+
+        # set new colorbar index
+        if removed:
+            self.show_image_colorbar_at_index(len(self.all_images))
+        else:
+            self.show_image_colorbar(colorbar_image)
 
     def set_images(self):
         self.images = deepcopy(self.all_images)
@@ -88,6 +106,33 @@ class NlPapayaViewer(DOMWidget):
         # TODO does not propagate error="" in js side to python, so I use the below line to reset error, solve this
         self.error = ""
 
+    def show_image_colorbar_at_index(self, index):
+        """Displays the color bar for the image at specified `index`.
+
+        Parameters
+        ----------
+        index: int
+            zero-based index of the image. Zero corresponds to atlas image.
+        """
+        if index > len(self.images):
+            raise ValueError(f"Invalid image index {index}!")
+        self.colorbar_index = index
+
+    def show_image_colorbar(self, image):
+        """Displays the color bar for the specified `image`.
+
+        Parameters
+        ----------
+        image
+            image for which to display colorbar.
+        """
+
+        index = self._get_image_index(image)
+        if index < 0:
+            raise ValueError("Specified image is not in viewer's list.")
+        else:
+            self.show_image_colorbar_at_index(index + 1)
+
     def reset(self):
         self.images = []
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
@@ -96,3 +141,11 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
 
         # TODO reset other values
+
+    def _get_image_index(self, image):
+        index = 0
+        for im in self.all_images:
+            if im.id == image.id:
+                return index
+            index = index + 1
+        return -1
