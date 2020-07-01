@@ -295,19 +295,16 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     },
 
-    waitLoadImages: function(callback) {
-	if(!this.loaded) {
-            setTimeout(callback, 20); // wait 20ms
-            return;
-	}
-    },
-
-
     imagesChanged: function(event) {
+	console.log("images changed");
 	// papaya image loading is async.
 	// this is to prevent a second call before all images are loaded.
-	this.waitLoadImages(this.imagesChanged.bind(this));
+	if(!this.loaded) {
+            setTimeout(this.imagesChanged.bind(this), 5); // wait 20ms
+            return;
+	}
 
+	console.log("continue");
 	// value of this changed by callback-imagesLoaded when all images are finished loading
 	this.loaded = false;
 
@@ -329,7 +326,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
     imagesLoaded: function() {
 	console.log("image loaded");
 	this.loaded = true;
-//	this.colorBarIndexChanged();
+	this.colorBarIndexChanged();
     },
     
     colorBarChanged: function() {
@@ -339,7 +336,10 @@ var PapayaView = widgets.DOMWidgetView.extend({
     colorBarIndexChanged: function() {
 	// papaya image loading is async.
 	// this is to prevent a second call before all images are loaded. 
-	this.waitLoadImages(this.colorBarIndexChanged.bind(this));
+	if(!this.loaded) {
+            setTimeout(this.colorBarIndexChanged.bind(this), 5); // wait 20ms
+            return;
+	}
 
  	this.papayaFrame.setColorBar(this.model.get('colorbar_index'));
    },
