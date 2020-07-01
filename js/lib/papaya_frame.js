@@ -118,6 +118,7 @@ let PapayaFrame = class {
     constructor(index, parentView) {
 	this.name = "papayaFrame" + index;
 	this.index = index;
+	this.parent = parentView;
 
 	var papayaFrameDiv = document.createElement('div')
 	papayaFrameDiv.style.width = "100%";
@@ -136,9 +137,9 @@ let PapayaFrame = class {
 
 	this.papayaFrameDiv = papayaFrameDiv;
 	
-	var that = parentView;
+	var that = this;
 	this.frameElement.onload = function() {
-	    that.initFrame();
+	    that.parent.initFrame();
 	}
 
     }
@@ -258,26 +259,27 @@ let PapayaFrame = class {
      *
      *
      */
-    loadFunction(index, images) {
+    loadFunction(index, images, callback) {
 	var that = this;
 	if (index < images.length) {
 	    var papayaImage = images[index];
-	    var imageName = "image" + papayaImage.id
+	    var imageName = "image" + papayaImage.id;
 	    var image = papayaImage.image;
 
 	    var config = $.extend({}, papayaImage.config, {loadingComplete: function() {
 		if (index == images.length -1) {
-		    that.setColorBar(index+1);
+		    callback();
 		}
-		that.loadFunction(index + 1, images);
+		that.loadFunction(index + 1, images, callback);
 	    } });
 
 	    var imageParams = [];
 	    imageParams[imageName] = config;	    
-	    
+
 	    this.addImage(imageName, image, imageParams);
 	}
     }
+
 
 };
 

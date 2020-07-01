@@ -229,6 +229,8 @@ var PapayaView = widgets.DOMWidgetView.extend({
     render: function() {
 	PapayaView.__super__.render.apply(this, arguments);
 
+	this.loaded = true;
+
 	this.params = [];
         this.params['worldSpace'] = this.model.get('worldSpace');
         this.params['kioskMode'] = this.model.get('kioskMode');
@@ -293,32 +295,52 @@ var PapayaView = widgets.DOMWidgetView.extend({
 
     },
 
+    waitLoadImages: function(callback) {
+	if(!this.loaded) {
+            setTimeout(callback, 20); // wait 20ms
+            return;
+	}
+    },
 
-   imagesChanged: function(event) {
 
-       var initial_length = this.images.length;
+    imagesChanged: function(event) {
+	// papaya image loading is async.
+	// this is to prevent a second call before all images are loaded.
+	this.waitLoadImages(this.imagesChanged.bind(this));
 
-       // remove all images
-       for (var i = initial_length; i > 0; i--) {
-       	   this.papayaFrame.removeImage(i);
-	   this.papayaFrame.unsetImage("image" + this.images[i - 1].id);
-       }
+	// value of this changed by callback-imagesLoaded when all images are finished loading
+	this.loaded = false;
 
-       var index = 0;
+	var initial_length = this.images.length;
 
-       this.images = this.model.get("images");
-       // add new images
-       this.papayaFrame.loadFunction(index, this.images);
-       this.model.set('colorbar_index', this.images.length, { updated_view: this });
-       this.model.save_changes();
-       this.touch();
-   },
+	// remove all images
+	for (var i = initial_length; i > 0; i--) {
+	    this.papayaFrame.removeImage(i);
+	    this.papayaFrame.unsetImage("image" + this.images[i - 1].id);
+	}
+
+	// this line should be set
+	this.images = this.model.get("images");
+
+	// add new images
+	this.papayaFrame.loadFunction(0, this.images, this.imagesLoaded.bind(this));
+    },
+
+    imagesLoaded: function() {
+	console.log("image loaded");
+	this.loaded = true;
+//	this.colorBarIndexChanged();
+    },
     
-   colorBarChanged: function() {
+    colorBarChanged: function() {
  	this.papayaFrame.showColorBar(this.model.get('colorbar'));
-   },
+    },
 
     colorBarIndexChanged: function() {
+	// papaya image loading is async.
+	// this is to prevent a second call before all images are loaded. 
+	this.waitLoadImages(this.colorBarIndexChanged.bind(this));
+
  	this.papayaFrame.setColorBar(this.model.get('colorbar_index'));
    },
 
