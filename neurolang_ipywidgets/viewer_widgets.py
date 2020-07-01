@@ -75,7 +75,7 @@ class NlPapayaViewer(DOMWidget):
 
     def remove(self, images):
         # get index of image whose colorbar is displayed
-        colorbar_image = self.all_images[self.colorbar_index - 1]
+        colorbar_image = self.get_colorbar_image()
 
         removed = False
         for image in images:
@@ -141,6 +141,9 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
 
         # TODO reset other values
+
+    def get_colorbar_image(self):
+        return self.all_images[self.colorbar_index - 1]
 
     def _get_image_index(self, image):
         index = 0
