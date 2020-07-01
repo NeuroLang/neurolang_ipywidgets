@@ -67,14 +67,29 @@ class NlPapayaViewer(DOMWidget):
             for image in images:
                 self.all_images.append(image)
             self.set_images()
+            # show colorbar for last added image
+            self.show_image_colorbar_at_index(len(self.all_images))
         else:
             self.set_error(
                 "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
 
     def remove(self, images):
+        # get index of image whose colorbar is displayed
+        colorbar_image = self.all_images[self.colorbar_index - 1]
+
+        removed = False
         for image in images:
+            # check if colorbar image is removed
+            if image.id == colorbar_image.id:
+                removed = True
             self.all_images.remove(image)
         self.set_images()
+
+        # set new colorbar index
+        if removed:
+            self.show_image_colorbar_at_index(len(self.all_images))
+        else:
+            self.show_image_colorbar(colorbar_image)
 
     def set_images(self):
         self.images = deepcopy(self.all_images)
@@ -112,7 +127,7 @@ class NlPapayaViewer(DOMWidget):
             image for which to display colorbar.
         """
 
-        index = self._is_image_in_list(image)
+        index = self._get_image_index(image)
         if index < 0:
             raise ValueError("Specified image is not in viewer's list.")
         else:
@@ -127,10 +142,10 @@ class NlPapayaViewer(DOMWidget):
 
         # TODO reset other values
 
-    def _is_image_in_list(self, image):
+    def _get_image_index(self, image):
         index = 0
-        for im in self.images:
+        for im in self.all_images:
             if im.id == image.id:
                 return index
             index = index + 1
-        return False
+        return -1
