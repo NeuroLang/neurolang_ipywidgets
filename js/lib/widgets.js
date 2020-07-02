@@ -221,6 +221,49 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
     }),
 });
 
+var customLuts = [
+    {"name": "lut0",
+     "data": [[0, 0.5, 0.5, 0],
+		      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut1",
+     "data": [[0, 1, 0, 1],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut2",
+     "data": [[0, 0, 1, 1],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut3",
+     "data": [[0, 0.5, 0, 0],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut4",
+     "data": [[0, 1, 0.25, 0],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut5",
+     "data": [[0, 1, 0.9, 0],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut6",
+     "data": [[0, 0.3, 0, 0.5],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    },
+    {"name": "lut7",
+     "data": [[0, 0.35, 0.45, 0.7],
+	      [1, 1, 1, 1]],
+     "gradation": true
+    }
+];
+
 
 // View for NlPapayaViewer widget that renders the widget model.
 var PapayaView = widgets.DOMWidgetView.extend({
@@ -242,6 +285,7 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['orthogonal'] = this.model.get('orthogonal');
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
+	this.params['luts'] = customLuts;
 
 	height = this.model.get("layout").attributes["height"].replace("px", "");
 	width = this.model.get("layout").attributes["width"].replace("px", "");
@@ -296,7 +340,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
     },
 
     imagesChanged: function(event) {
-	console.log("images changed");
 	// papaya image loading is async.
 	// this is to prevent a second call before all images are loaded.
 	if(!this.loaded) {
@@ -304,7 +347,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
             return;
 	}
 
-	console.log("continue");
 	// value of this changed by callback-imagesLoaded when all images are finished loading
 	this.loaded = false;
 
@@ -328,7 +370,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
     },
 
     imagesLoaded: function() {
-	console.log("image loaded");
 	this.loaded = true;
 	this.colorBarIndexChanged();
     },

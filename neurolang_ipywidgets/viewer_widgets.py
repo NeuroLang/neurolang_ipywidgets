@@ -110,6 +110,8 @@ class NlPapayaViewer(DOMWidget):
         """
         if (self.can_add(images)):
             for image in images:
+                if image.is_label:
+                    image.config["lut"] = f"lut{len(self.all_images)}"
                 self.all_images.append(image)
             self.set_images()
             # show colorbar for last added image
