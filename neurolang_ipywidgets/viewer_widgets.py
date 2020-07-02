@@ -59,6 +59,14 @@ class NlPapayaViewer(DOMWidget):
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
 
+    def _get_image_index(self, image):
+        index = 0
+        for im in self.all_images:
+            if im.id == image.id:
+                return index
+            index = index + 1
+        return -1
+
     def can_add(self, images):
         return (len(self.all_images) + len(images)) <= 8
 
@@ -133,6 +141,12 @@ class NlPapayaViewer(DOMWidget):
         else:
             self.show_image_colorbar_at_index(index + 1)
 
+    def get_colorbar_image(self):
+        if self.colorbar_index == 0:
+            return None
+        else:
+            return self.all_images[self.colorbar_index - 1]
+
     def reset(self):
         self.images = []
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
@@ -141,14 +155,3 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
 
         # TODO reset other values
-
-    def get_colorbar_image(self):
-        return self.all_images[self.colorbar_index - 1]
-
-    def _get_image_index(self, image):
-        index = 0
-        for im in self.all_images:
-            if im.id == image.id:
-                return index
-            index = index + 1
-        return -1
