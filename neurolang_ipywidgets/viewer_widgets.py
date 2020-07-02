@@ -59,11 +59,28 @@ class NlPapayaViewer(DOMWidget):
     @staticmethod
     def calculate_coords(image):
         """Calculates coordinates for the specified `image`."""
+        if image is None:
+            raise ValueError("Please specify a valid image!")
         coords = np.transpose(image.get_fdata().nonzero()).mean(0).astype(int)
         coords = nib.affines.apply_affine(image.affine, coords)
         return [int(c) for c in coords]
 
     def _get_image_index(self, image):
+        """Returns the index of the specified `image` in the image list.
+
+        Parameters
+        ----------
+        image:
+            image for which index is required.
+
+        Returns
+        -------
+        int
+            index of the specified `image` in the image list; -1 if the image is not in the list or the specified image is `None`.
+        """
+        if image is None:
+            return -1
+
         index = 0
         for im in self.all_images:
             if im.id == image.id:
@@ -72,9 +89,25 @@ class NlPapayaViewer(DOMWidget):
         return -1
 
     def can_add(self, images):
+        """Check if image list contains enough space to add the specified `images`.
+
+        Parameters
+        ----------
+        images: iterable
+            the list of images to add.
+        """
+        if images is None:
+            return False
         return (len(self.all_images) + len(images)) <= 8
 
     def add(self, images):
+        """Adds the images in the specified `images` list if there is enough space in the image list. Displays error otherwise.
+
+        Parameters
+        ----------
+        images: iterable
+            the list of images to add.
+        """
         if (self.can_add(images)):
             for image in images:
                 self.all_images.append(image)
@@ -126,7 +159,7 @@ class NlPapayaViewer(DOMWidget):
         index: int
             zero-based index of the image. Zero corresponds to atlas image.
         """
-        if index > len(self.images):
+        if index > len(self.images) or index < 0:
             raise ValueError(f"Invalid image index {index}!")
         self.colorbar_index = index
 
@@ -146,12 +179,19 @@ class NlPapayaViewer(DOMWidget):
             self.show_image_colorbar_at_index(index + 1)
 
     def get_colorbar_image(self):
+        """Returns the image for which the colorbar is displayed.
+
+        Returns
+        -------
+           the image for which colorbar is displayed; None if the colorbar is displayed for atlas.
+        """
         if self.colorbar_index == 0:
             return None
         else:
             return self.all_images[self.colorbar_index - 1]
 
     def reset(self):
+        """Resets this viewer to its initial values."""
         self.images = []
         self.all_images = []
 
