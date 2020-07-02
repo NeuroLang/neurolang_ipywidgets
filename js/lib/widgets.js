@@ -216,7 +216,7 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	coordinate : [],
 	images : [],
 	error : "",
-	colorbar: false,
+	colorbar: true,
 	colorbar_index: 0
     }),
 });

@@ -10,10 +10,6 @@ import nibabel as nib
 nl = NlPapayaViewer(layout=Layout(width="800px", height="700px"))
 nl
 
-# ## Display Color Bar
-
-nl.colorbar = True
-
 # ## Add Overlay
 
 papaya_image_overlay = PapayaNiftiImage(nib.load("img/overlay.nii"), dict(max=0.1))
@@ -23,6 +19,12 @@ nl.add([papaya_image_overlay])
 
 # 0 is index for atlas
 nl.show_image_colorbar_at_index(0)
+
+# ## Hide/Show Color Bar
+
+nl.colorbar = False
+
+nl.colorbar = True
 
 # ## Add Labels
 
@@ -53,3 +55,5 @@ nl.show_image_colorbar(papaya_image1)
 # ## Reset viewer
 
 nl.reset()
+
+

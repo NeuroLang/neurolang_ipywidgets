@@ -42,7 +42,7 @@ class NlPapayaViewer(DOMWidget):
     error = Unicode().tag(sync=True)
 
     # shows/hides colorbar
-    colorbar = Bool(False).tag(sync=True)
+    colorbar = Bool(True).tag(sync=True)
     # sets image index for colorbar, 0 displays colorbar for the atlas
     colorbar_index = Int(0).tag(sync=True)
 
@@ -210,5 +210,5 @@ class NlPapayaViewer(DOMWidget):
         self.center_widget = None
 
         self.error = ""
-        self.colorbar = False
+        self.colorbar = True
         self.colorbar_index = 0
