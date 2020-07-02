@@ -41,7 +41,9 @@ class NlPapayaViewer(DOMWidget):
     images = List().tag(sync=True, **papaya_image_serialization)
     error = Unicode().tag(sync=True)
 
+    # shows/hides colorbar
     colorbar = Bool(False).tag(sync=True)
+    # sets image index for colorbar, 0 displays colorbar for the atlas
     colorbar_index = Int(0).tag(sync=True)
 
     # Todo validate mainView value
@@ -50,7 +52,9 @@ class NlPapayaViewer(DOMWidget):
         super(DOMWidget, self).__init__(**kwargs)
         if self.atlas is None:
             self.atlas = nib.load("avg152T1_brain.nii.gz")
-        self.reset()
+
+        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
+        self.all_images = []
 
     @staticmethod
     def calculate_coords(image):
@@ -149,9 +153,22 @@ class NlPapayaViewer(DOMWidget):
 
     def reset(self):
         self.images = []
+        self.all_images = []
+
+        self.worldSpace = True
+        self.kioskMode = True
+        self.fullScreen = False
+        self.allowScroll = True
+        self.showControls = True
+        self.showControlBar = True
+        self.showImageButtons = True
+        self.orthogonal = True
+        self.mainView = 'axial'
+
+        self.atlas = nib.load("avg152T1_brain.nii.gz")
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
         self.center_widget = None
-        self.all_images = []
-        self.error = ""
 
-        # TODO reset other values
+        self.error = ""
+        self.colorbar = False
+        self.colorbar_index = 0
