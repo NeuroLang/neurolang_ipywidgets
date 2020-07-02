@@ -319,6 +319,10 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	// this line should be set
 	this.images = this.model.get("images");
 
+	if (this.images.length == 0) {
+	    this.imagesLoaded();
+	}
+
 	// add new images
 	this.papayaFrame.loadFunction(0, this.images, this.imagesLoaded.bind(this));
     },
