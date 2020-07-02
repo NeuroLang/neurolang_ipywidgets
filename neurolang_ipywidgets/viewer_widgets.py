@@ -31,7 +31,7 @@ class NlPapayaViewer(DOMWidget):
     allowScroll = Bool(True).tag(sync=True)
     showControls = Bool(True).tag(sync=True)
     showControlBar = Bool(True).tag(sync=True)
-    showImageButtons = Bool(True).tag(sync=True)
+    showImageButtons = Bool(False).tag(sync=True)
     orthogonal = Bool(True).tag(sync=True)
     mainView = Unicode('axial').tag(sync=True)
 

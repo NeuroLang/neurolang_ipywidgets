@@ -210,7 +210,7 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	allowScroll : true,
 	showControls : true,
 	showControlBar : true,
-	showImageButtons : true,
+	showImageButtons : false,
 	orthogonal : true,
 	mainView : "axial",
 	coordinate : [],
