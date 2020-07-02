@@ -57,9 +57,17 @@ class PapayaImage(TraitType):
         """
         self.__id = self._generate_id(image)
         self.__image = image
+        flattened = image.get_fdata().flatten()
+        self.__min = flattened[flattened != 0].min()
+        self.__max = flattened.max()
 
         if config is None:
-            self.__config = {}
+            if self.is_label:
+                self.__config = {"min": 0,
+                                 "max": round(self.__max * 2), "lut": "Red Overlay"}
+            else:
+                self.__config = {"min": round(self.__min, 2),
+                                 "max": round(self.__max, 2), "lut": "Red Overlay"}
         else:
             self.__config = config
 
@@ -154,6 +162,14 @@ class PapayaImage(TraitType):
                 if true, sets the negative range of a parametric pair to the same size as the positive range.
         """
         self.__config = config
+
+    @property
+    def is_label(self):
+        return self.__min == self.__max
+
+    @property
+    def range(self):
+        return self.__max - self.__min
 
     def base64_encode(self):
         return None
