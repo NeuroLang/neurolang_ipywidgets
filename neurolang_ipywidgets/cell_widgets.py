@@ -99,6 +99,10 @@ class NlIconTab(Tab):
     # Widget specific properties
     title_icons = List().tag(sync=True)
 
+    def reset(self):
+        self.title_icons = []
+        self.children = []
+
 
 @register
 class NlVBoxOverlay(VBox):
