@@ -54,6 +54,7 @@ class NlPapayaViewer(DOMWidget):
             self.atlas = nib.load("avg152T1_brain.nii.gz")
 
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
+        self.center_widget = None
         self.all_images = []
 
     @staticmethod
