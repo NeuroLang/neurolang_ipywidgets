@@ -224,43 +224,43 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 var customLuts = [
     {"name": "lut0",
      "data": [[0, 0.5, 0.5, 0],
-		      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 0.5, 0.5, 0]],
+     "gradation": false
     },
     {"name": "lut1",
      "data": [[0, 1, 0, 1],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 1, 0, 1]],
+     "gradation": false
     },
     {"name": "lut2",
      "data": [[0, 0, 1, 1],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 0, 1, 1]],
+     "gradation": false
     },
     {"name": "lut3",
      "data": [[0, 0.5, 0, 0],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 0.5, 0, 0]],
+     "gradation": false
     },
     {"name": "lut4",
      "data": [[0, 1, 0.25, 0],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 1, 0.25, 0]],
+     "gradation": false
     },
     {"name": "lut5",
      "data": [[0, 1, 0.9, 0],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 1, 0.9, 0]],
+     "gradation": false
     },
     {"name": "lut6",
      "data": [[0, 0.3, 0, 0.5],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 0.3, 0, 0.5]],
+     "gradation": false
     },
     {"name": "lut7",
      "data": [[0, 0.35, 0.45, 0.7],
-	      [1, 1, 1, 1]],
-     "gradation": true
+	      [1, 0.35, 0.45, 0.7]],
+     "gradation": false
     }
 ];
 
