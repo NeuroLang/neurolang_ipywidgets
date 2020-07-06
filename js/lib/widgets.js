@@ -128,7 +128,8 @@ var NCheckboxView = controls.CheckboxView.extend({
         if (this.model.get('disabled')) {
 	    this.el.childNodes[1].style.opacity=this.model.get('opacity')
         } 
-    }
+    },
+
 });
 
 
@@ -217,52 +218,10 @@ var PapayaModel = widgets.DOMWidgetModel.extend({
 	images : [],
 	error : "",
 	colorbar: true,
-	colorbar_index: 0
+	colorbar_index: 0,
+	luts: []
     }),
 });
-
-var customLuts = [
-    {"name": "lut0",
-     "data": [[0, 0.5, 0.5, 0],
-	      [1, 0.5, 0.5, 0]],
-     "gradation": false
-    },
-    {"name": "lut1",
-     "data": [[0, 1, 0, 1],
-	      [1, 1, 0, 1]],
-     "gradation": false
-    },
-    {"name": "lut2",
-     "data": [[0, 0, 1, 1],
-	      [1, 0, 1, 1]],
-     "gradation": false
-    },
-    {"name": "lut3",
-     "data": [[0, 0.5, 0, 0],
-	      [1, 0.5, 0, 0]],
-     "gradation": false
-    },
-    {"name": "lut4",
-     "data": [[0, 1, 0.25, 0],
-	      [1, 1, 0.25, 0]],
-     "gradation": false
-    },
-    {"name": "lut5",
-     "data": [[0, 1, 0.9, 0],
-	      [1, 1, 0.9, 0]],
-     "gradation": false
-    },
-    {"name": "lut6",
-     "data": [[0, 0.3, 0, 0.5],
-	      [1, 0.3, 0, 0.5]],
-     "gradation": false
-    },
-    {"name": "lut7",
-     "data": [[0, 0.35, 0.45, 0.7],
-	      [1, 0.35, 0.45, 0.7]],
-     "gradation": false
-    }
-];
 
 
 // View for NlPapayaViewer widget that renders the widget model.
@@ -285,8 +244,9 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['orthogonal'] = this.model.get('orthogonal');
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
-	this.params['luts'] = customLuts;
-
+	this.params['luts'] = this.model.get('luts');
+	console.log(this.params['luts']);
+	
 	height = this.model.get("layout").attributes["height"].replace("px", "");
 	width = this.model.get("layout").attributes["width"].replace("px", "");
 	    

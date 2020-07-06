@@ -10,8 +10,58 @@ from .papaya_model import Image, image_serialization, papaya_image_serialization
 class LutOptions:
 
     def __init__(self):
-        self.__options = ["lut0", "lut1", "lut2",
-                          "lut3", "lut4", "lut5", "lut6", "lut7"]
+        self.__custom_luts = {
+            "lut0": {
+                "data": [[0, 0.5, 0.5, 0],
+                         [1, 0.5, 0.5, 0]],
+                "gradation": False,
+                "hex": "#808000"
+            },
+            "lut1": {
+                "data": [[0, 1, 0, 1],
+                         [1, 1, 0, 1]],
+                "gradation": False,
+                "hex": "#FF00FF"
+            },
+            "lut2": {
+                "data": [[0, 0, 1, 1],
+                         [1, 0, 1, 1]],
+                "gradation": False,
+                "hex": "#00FFFF"
+            },
+            "lut3": {
+                "data": [[0, 0.5, 0, 0],
+                         [1, 0.5, 0, 0]],
+                "gradation": False,
+                "hex": "#800000"
+            },
+            "lut4": {
+                "data": [[0, 1, 0.25, 0],
+                         [1, 1, 0.25, 0]],
+                "gradation": False,
+                "hex": ""
+            },
+            "lut5": {
+                "data": [[0, 1, 0.9, 0],
+                         [1, 1, 0.9, 0]],
+                "gradation": False,
+                "hex": ""
+            },
+            "lut6": {
+                "data": [[0, 0.3, 0, 0.5],
+                         [1, 0.3, 0, 0.5]],
+                "gradation": False,
+                "hex": ""
+            },
+            "lut7": {
+                "data": [[0, 0.35, 0.45, 0.7],
+                         [1, 0.35, 0.45, 0.7]],
+                "gradation": False,
+                "hex": ""
+            }
+        }
+
+        self.__options = list(self.__custom_luts.keys())
 
     def next(self):
         if len(self.__options) > 0:
@@ -22,6 +72,12 @@ class LutOptions:
     def return_lut(self, lut):
         if lut is not None:
             self.__options.append(lut)
+
+    def get_hex(self, lut):
+        return self.__custom_luts.get(lut, None)
+
+    def get_luts(self):
+        return [dict(name=lut, data=v['data'], gradation=v["gradation"]) for lut, v in self.__custom_luts.items()]
 
 
 @register
@@ -62,6 +118,7 @@ class NlPapayaViewer(DOMWidget):
     colorbar = Bool(True).tag(sync=True)
     # sets image index for colorbar, 0 displays colorbar for the atlas
     colorbar_index = Int(0).tag(sync=True)
+    luts = List([]).tag(sync=True)
 
     # Todo validate mainView value
 
@@ -74,6 +131,7 @@ class NlPapayaViewer(DOMWidget):
         self.center_widget = None
         self.all_images = []
         self.__lut = LutOptions()
+        self.luts = self.__lut.get_luts()
 
     @staticmethod
     def calculate_coords(image):
