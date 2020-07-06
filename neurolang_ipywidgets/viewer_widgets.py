@@ -7,6 +7,23 @@ from copy import deepcopy
 from .papaya_model import Image, image_serialization, papaya_image_serialization
 
 
+class LutOptions:
+
+    def __init__(self):
+        self.__options = ["lut0", "lut1", "lut2",
+                          "lut3", "lut4", "lut5", "lut6", "lut7"]
+
+    def next(self):
+        if len(self.__options) > 0:
+            return self.__options.pop(0)
+        else:
+            return None
+
+    def return_lut(self, lut):
+        if lut is not None:
+            self.__options.append(lut)
+
+
 @register
 class NlPapayaViewer(DOMWidget):
     """A widget to display papaya viewer.
@@ -56,6 +73,7 @@ class NlPapayaViewer(DOMWidget):
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
         self.center_widget = None
         self.all_images = []
+        self.__lut = LutOptions()
 
     @staticmethod
     def calculate_coords(image):
@@ -112,7 +130,7 @@ class NlPapayaViewer(DOMWidget):
         if (self.can_add(images)):
             for image in images:
                 if image.is_label:
-                    image.config["lut"] = f"lut{len(self.all_images)}"
+                    image.config["lut"] = self.__lut.next()
                 self.all_images.append(image)
             self.set_images()
             # show colorbar for last added image
@@ -129,6 +147,7 @@ class NlPapayaViewer(DOMWidget):
         for image in images:
             # check if colorbar image is removed
             if image.id == colorbar_image.id:
+                self.__lut.return_lut(image.config.get("lut", None))
                 removed = True
             self.all_images.remove(image)
         self.set_images()
