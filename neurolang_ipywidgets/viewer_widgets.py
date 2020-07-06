@@ -11,12 +11,6 @@ class LutOptions:
 
     def __init__(self):
         self.__custom_luts = {
-            "lut0": {
-                "data": [[0, 0.8, 0, 0],
-                         [1, 0.8, 0, 0]],
-                "gradation": False,
-                "hex": "#cc0000"
-            },
             "lut1": {
                 "data": [[0, 1, 0.9, 0],
                          [1, 1, 0.9, 0]],
@@ -59,6 +53,12 @@ class LutOptions:
                 "gradation": False,
                 "hex": "#ff4000"
             },
+            "lut8": {
+                "data": [[0, 0.53, 0.27, 0.27],
+                         [1, 0.53, 0.27, 0.27]],
+                "gradation": False,
+                "hex": "#864646"
+            },
         }
 
         self.__options = list(self.__custom_luts.keys())
@@ -74,7 +74,10 @@ class LutOptions:
             self.__options.append(lut)
 
     def get_hex(self, lut):
-        return self.__custom_luts.get(lut, None).get("hex", None)
+        custom_lut = self.__custom_luts.get(lut, None)
+        if custom_lut is None:
+            return "white"
+        return custom_lut.get("hex", "white")
 
     def get_luts(self):
         return [dict(name=lut, data=v['data'], gradation=v["gradation"]) for lut, v in self.__custom_luts.items()]
