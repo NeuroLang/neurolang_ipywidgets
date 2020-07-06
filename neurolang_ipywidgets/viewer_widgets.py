@@ -12,53 +12,53 @@ class LutOptions:
     def __init__(self):
         self.__custom_luts = {
             "lut0": {
-                "data": [[0, 0.5, 0.5, 0],
-                         [1, 0.5, 0.5, 0]],
+                "data": [[0, 0.8, 0, 0],
+                         [1, 0.8, 0, 0]],
                 "gradation": False,
-                "hex": "#808000"
+                "hex": "#cc0000"
             },
             "lut1": {
-                "data": [[0, 1, 0, 1],
-                         [1, 1, 0, 1]],
+                "data": [[0, 1, 0.9, 0],
+                         [1, 1, 0.9, 0]],
                 "gradation": False,
-                "hex": "#FF00FF"
+                "hex": "#ffe400"
             },
             "lut2": {
+                "data": [[0, 0.49, 0.66, 0.14],
+                         [1, 0.49, 0.66, 0.14]],
+                "gradation": False,
+                "hex": "#7ca923"
+            },
+            "lut3": {
                 "data": [[0, 0, 1, 1],
                          [1, 0, 1, 1]],
                 "gradation": False,
                 "hex": "#00FFFF"
             },
-            "lut3": {
-                "data": [[0, 0.5, 0, 0],
-                         [1, 0.5, 0, 0]],
-                "gradation": False,
-                "hex": "#800000"
-            },
             "lut4": {
-                "data": [[0, 1, 0.25, 0],
-                         [1, 1, 0.25, 0]],
+                "data": [[0, 0.1, 0.56, 1],
+                         [1, 0.1, 0.56, 1]],
                 "gradation": False,
-                "hex": ""
+                "hex": "#1c90fd"
             },
             "lut5": {
-                "data": [[0, 1, 0.9, 0],
-                         [1, 1, 0.9, 0]],
+                "data": [[0, 1, 0, 1],
+                         [1, 1, 0, 1]],
                 "gradation": False,
-                "hex": ""
+                "hex": "#ff00ff"
             },
             "lut6": {
                 "data": [[0, 0.3, 0, 0.5],
                          [1, 0.3, 0, 0.5]],
                 "gradation": False,
-                "hex": ""
+                "hex": "#4f0080"
             },
             "lut7": {
-                "data": [[0, 0.35, 0.45, 0.7],
-                         [1, 0.35, 0.45, 0.7]],
+                "data": [[0, 1, 0.25, 0],
+                         [1, 1, 0.25, 0]],
                 "gradation": False,
-                "hex": ""
-            }
+                "hex": "#ff4000"
+            },
         }
 
         self.__options = list(self.__custom_luts.keys())
@@ -74,7 +74,7 @@ class LutOptions:
             self.__options.append(lut)
 
     def get_hex(self, lut):
-        return self.__custom_luts.get(lut, None)
+        return self.__custom_luts.get(lut, None).get("hex", None)
 
     def get_luts(self):
         return [dict(name=lut, data=v['data'], gradation=v["gradation"]) for lut, v in self.__custom_luts.items()]
@@ -292,3 +292,6 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
         self.colorbar = True
         self.colorbar_index = 0
+
+    def get_hex_for_lut(self, lut):
+        return self.__lut.get_hex(lut)
