@@ -82,6 +82,7 @@ class NlCheckbox(Checkbox):
     # Widget specific properties
     # opacity value to be used when disabled.
     opacity = Float(0.45).tag(sync=True)
+    bg_color = Unicode('white').tag(sync=True)
 
     # TODO check opacity value.
 

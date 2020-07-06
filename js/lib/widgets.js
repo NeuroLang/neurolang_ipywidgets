@@ -99,7 +99,8 @@ var NCheckboxModel = controls.CheckboxModel.extend({
         _view_module : 'neurolang-ipywidgets',
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
-	opacity : '0.45'
+	opacity : '0.45',
+	bg_color : 'white'
     })
 });
 
@@ -114,11 +115,12 @@ var NCheckboxView = controls.CheckboxView.extend({
         // a custom callback.
         this.model.on('change:disabled', this.disabled_changed, this);
         this.model.on('change:opacity', this.opacity_changed, this);
+        this.model.on('change:bg_color', this.bg_color_changed, this);
     },
 
     disabled_changed: function() {
         if (this.model.get('disabled')) {
-	    this.el.childNodes[1].style.opacity=this.model.get('opacity')
+	    this.el.childNodes[1].style.opacity=this.model.get('opacity');
         } else {
             this.el.childNodes[1].style.opacity=1
         }
@@ -126,8 +128,16 @@ var NCheckboxView = controls.CheckboxView.extend({
 
     opacity_changed: function() {
         if (this.model.get('disabled')) {
-	    this.el.childNodes[1].style.opacity=this.model.get('opacity')
+	    this.el.childNodes[1].style.opacity=this.model.get('opacity');
         } 
+    },
+
+    bg_color_changed: function() {
+        if (this.model.get('bg_color') !== "") {
+	    this.el.childNodes[1].style.backgroundColor=this.model.get('bg_color');
+        } else {
+	    this.el.childNodes[1].style.backgroundColor="white";
+	}
     },
 
 });
@@ -245,7 +255,6 @@ var PapayaView = widgets.DOMWidgetView.extend({
 	this.params['mainView'] = this.model.get('mainView');
 	this.params['coordinate'] = this.model.get('coordinate');
 	this.params['luts'] = this.model.get('luts');
-	console.log(this.params['luts']);
 	
 	height = this.model.get("layout").attributes["height"].replace("px", "");
 	width = this.model.get("layout").attributes["width"].replace("px", "");
