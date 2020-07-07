@@ -11,6 +11,12 @@ class LutOptions:
 
     def __init__(self):
         self.__custom_luts = {
+            "lut0": {
+                "data": [[0, 0.53, 0.27, 0.27],
+                         [1, 0.53, 0.27, 0.27]],
+                "gradation": False,
+                "hex": "#864646"
+            },
             "lut1": {
                 "data": [[0, 1, 0.9, 0],
                          [1, 1, 0.9, 0]],
@@ -53,19 +59,14 @@ class LutOptions:
                 "gradation": False,
                 "hex": "#ff4000"
             },
-            "lut8": {
-                "data": [[0, 0.53, 0.27, 0.27],
-                         [1, 0.53, 0.27, 0.27]],
-                "gradation": False,
-                "hex": "#864646"
-            },
         }
 
         self.__options = list(self.__custom_luts.keys())
 
     def next(self):
-        if len(self.__options) > 0:
-            return self.__options.pop(0)
+        len_options = len(self.__options)
+        if len_options > 0:
+            return self.__options.pop(len_options - 1)
         else:
             return None
 
@@ -208,8 +209,8 @@ class NlPapayaViewer(DOMWidget):
         for image in images:
             # check if colorbar image is removed
             if image.id == colorbar_image.id:
-                self.__lut.return_lut(image.config.get("lut", None))
                 removed = True
+            self.__lut.return_lut(image.config.get("lut", None))
             self.all_images.remove(image)
         self.set_images()
 
