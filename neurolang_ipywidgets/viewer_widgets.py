@@ -189,6 +189,8 @@ class NlPapayaViewer(DOMWidget):
         images: iterable
             the list of images to add.
         """
+        if images is None or len(images) == 0:
+            return
         if (self.can_add(images)):
             for image in images:
                 if image.is_label:
@@ -202,6 +204,8 @@ class NlPapayaViewer(DOMWidget):
                 "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
 
     def remove(self, images):
+        if images is None or len(images) == 0:
+            return
         # get index of image whose colorbar is displayed
         colorbar_image = self.get_colorbar_image()
 
