@@ -475,6 +475,84 @@ var VBoxOverlayView = controls.VBoxView.extend({
     }
 });
 
+
+// Model with default values for NlDownload widget
+var DownloadLinkModel = widgets.DOMWidgetModel.extend({
+    defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
+        _model_name : 'DownloadLinkModel',
+        _view_name : 'DownloadLinkView',
+        _model_module : 'neurolang-ipywidgets',
+        _view_module : 'neurolang-ipywidgets',
+        _model_module_version : '0.1.0',
+        _view_module_version : '0.1.0',
+	content : '',
+	mimetype : 'text/csv',
+	filename : ''
+
+    })
+});
+
+
+// View for NlDownload widget that renders the widget model.
+var DownloadLinkView = widgets.DOMWidgetView.extend({
+    // Defines how the widget gets rendered into the DOM
+    render: function() {
+	this.link = document.createElement('a');
+        this.link.setAttribute('target', '_blank');
+        this.link.innerHTML = "Download";
+	
+	this.link.setAttribute('download', this.model.get('filename'));
+	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+
+	this.el.appendChild(this.link);
+
+
+        // Observe changes in the value traitlet in Python, and define
+        // a custom callback.
+        this.model.on('change:filename, change:mimetype', this.value_changed, this);
+        this.model.on('change:content', this.content_changed, this);
+    },
+
+    filename_changed: function() {
+	this.link.setAttribute('download', this.model.get('filename'));
+	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+    },
+
+    content_changed: function() {
+	this.link.setAttribute('download', this.model.get('filename'));
+	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+	this.link.click();
+	this.model.set('content', '');
+	this.touch();
+    },
+
+    // events and _handle_click methods are copied from ButtonView to handle click on the link
+      /**
+       * Dictionary of events and handlers
+       */
+    events: function() {
+	return { click: '_handle_click' };
+    },
+
+    /**
+     * Handles when the button is clicked.
+     */
+    _handle_click: function(event) {
+	// this is necessary when data is big and it content should not be set at when widget is initialized
+	if (this.model.get('content') === '') {
+	    event.preventDefault();
+	    this.send({ event: 'click' });
+	    return false;
+	}
+	else {
+	    return true;
+	}
+    }
+    
+});
+
+
+
 module.exports = {
     LinkModel: LinkModel,
     LinkView: LinkView,
@@ -489,5 +567,7 @@ module.exports = {
     CodeEditorModel,
     CodeEditorView,
     VBoxOverlayModel,
-    VBoxOverlayView
+    VBoxOverlayView,
+    DownloadLinkModel,
+    DownloadLinkView
 };
