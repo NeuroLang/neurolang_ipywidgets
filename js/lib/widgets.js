@@ -512,7 +512,7 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 	this.tooltip_changed();
 
 	this.el.appendChild(this.link);
-
+	this.el.classList.add('jupyter-widgets');
 
         // Observe changes in the value traitlet in Python, and define
         // a custom callback.
