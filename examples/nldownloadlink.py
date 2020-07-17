@@ -68,7 +68,7 @@ dl_4
 
 papaya_image = PapayaNiftiImage(nib.load("img/L_G_front_sup.nii"))
 
-image_link = NlDownloadLink(filename="image.nii", content=papaya_image.image.to_bytes())
+image_link = NlDownloadLink(filename="image.nii", content=papaya_image.to_bytes())
 image_link
 
 papaya_image_test = PapayaNiftiImage(nib.load("img/image.nii"))

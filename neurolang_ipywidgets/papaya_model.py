@@ -55,8 +55,8 @@ class PapayaImage(TraitType):
            symmetric : bool
                 if true, sets the negative range of a parametric pair to the same size as the positive range.
         """
-        self.__id = self._generate_id(image)
         self.__image = image
+        self.__id = self._generate_id()
         flattened = image.get_fdata().flatten()
         self.__min = flattened[flattened != 0].min()
         self.__max = flattened.max()
@@ -70,7 +70,7 @@ class PapayaImage(TraitType):
         else:
             self.__config = config
 
-    def _generate_id(self, image):
+    def _generate_id(self):
         """Returns hash of the specified `image`.
 
         Parameters
@@ -79,10 +79,10 @@ class PapayaImage(TraitType):
             image from which the hash is generated.
         """
         m = hashlib.sha256()
-        m.update(self._image_to_bytes(image))
+        m.update(self.to_bytes())
         return m.hexdigest()
 
-    def _image_to_bytes(self, image):
+    def to_bytes(self):
         raise ValueError("Image format not supported!")
 
     @property
@@ -186,8 +186,8 @@ class PapayaSpatialImage(PapayaImage):
     def __init__(self, image, config=None):
         super().__init__(image, config)
 
-    def _image_to_bytes(self, image):
-        return image.dataobj.tobytes()
+    def to_bytes(self):
+        return self.image.dataobj.tobytes()
 
     def base64_encode(self):
         image = self.image
@@ -204,8 +204,8 @@ class PapayaNiftiImage(PapayaImage):
     def __init__(self, image, config=None):
         super().__init__(image, config)
 
-    def _image_to_bytes(self, image):
-        return image.to_bytes()
+    def to_bytes(self):
+        return self.image.to_bytes()
 
     def base64_encode(self):
         return base64_encode_nifti(self.image)
