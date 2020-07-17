@@ -130,7 +130,6 @@ def content_to_json(pydt, manager):
         return None
     else:
         b64 = base64.b64encode(pydt.encode()).decode()
-        print(b64)
         return b64
 
 
