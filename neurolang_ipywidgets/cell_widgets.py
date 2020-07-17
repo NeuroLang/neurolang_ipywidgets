@@ -177,8 +177,8 @@ class NlDownloadLink(DOMWidget, CoreWidget):
 
     # below lines are copied from button widget to handle click on the link
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._click_handlers = CallbackDispatcher()
         self.on_msg(self._handle_button_msg)
 
