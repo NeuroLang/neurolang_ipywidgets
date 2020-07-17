@@ -1,6 +1,6 @@
 import base64
 from ipywidgets import CallbackDispatcher, Checkbox, CoreWidget, DOMWidget, register, Tab, VBox
-from traitlets import Unicode, Float, Int, List
+from traitlets import Bytes, Float, Int, List, Unicode
 
 
 @register
@@ -129,7 +129,7 @@ def content_to_json(pydt, manager):
     if pydt is None:
         return None
     else:
-        b64 = base64.b64encode(pydt.encode()).decode()
+        b64 = base64.encodebytes(pydt).decode()
         return b64
 
 
@@ -146,7 +146,7 @@ class NlDownloadLink(DOMWidget, CoreWidget):
     Parameters
     ----------
     content: str
-        content of the file as string
+        content of the file as bytes
     filename: str
         file name
     mimetype: str
@@ -162,7 +162,7 @@ class NlDownloadLink(DOMWidget, CoreWidget):
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
 
     # Widget specific properties
-    content = Unicode().tag(sync=True, **content_serialization)
+    content = Bytes().tag(sync=True, **content_serialization)
     mimetype = Unicode("text/csv").tag(sync=True)
     filename = Unicode().tag(sync=True)
 
