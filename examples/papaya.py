@@ -18,7 +18,7 @@ nl.add([papaya_image_overlay])
 # ## Set Color Bar by Image Index
 
 # 0 is index for atlas
-nl.show_image_colorbar_at_index(2)
+nl.show_image_colorbar_at_index(0)
 
 # ## Hide/Show Color Bar
 
