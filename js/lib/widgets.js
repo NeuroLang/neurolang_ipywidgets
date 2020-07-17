@@ -9,6 +9,8 @@ var index = -1;
 
 var papayaGenerator = require('./papaya_frame.js');
 
+require('../css/styles.css');
+
 
 // Model with default values for NlLink widget
 var LinkModel = widgets.DOMWidgetModel.extend({
@@ -487,7 +489,10 @@ var DownloadLinkModel = widgets.DOMWidgetModel.extend({
         _view_module_version : '0.1.0',
 	content : '',
 	mimetype : 'text/csv',
-	filename : ''
+	filename : '',
+	html: 'Download',
+	tooltip: '',
+	disabled: false
 
     })
 });
@@ -499,23 +504,50 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     render: function() {
 	this.link = document.createElement('a');
         this.link.setAttribute('target', '_blank');
-        this.link.innerHTML = "Download";
 	
-	this.link.setAttribute('download', this.model.get('filename'));
-	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+	this.filename_changed();
+	this.mimetype_changed();
+        this.html_changed();
+	this.disabled_changed();
+	this.tooltip_changed();
 
 	this.el.appendChild(this.link);
 
 
         // Observe changes in the value traitlet in Python, and define
         // a custom callback.
-        this.model.on('change:filename, change:mimetype', this.value_changed, this);
+        this.model.on('change:filename', this.filename_changed, this);
+        this.model.on('change:mimetype', this.mimetype_changed, this);
+        this.model.on('change:html', this.html_changed, this);
+        this.model.on('change:disabled', this.disabled_changed, this);
+        this.model.on('change:tooltip', this.tooltip_changed, this);
         this.model.on('change:content', this.content_changed, this);
     },
 
     filename_changed: function() {
 	this.link.setAttribute('download', this.model.get('filename'));
+    },
+
+    mimetype_changed: function() {
 	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+    },
+
+    html_changed: function() {
+        this.link.innerHTML = this.model.get('html');
+    },
+
+    disabled_changed: function() {
+        this.link.disabled = this.model.get('disabled');
+	if (this.link.disabled) {
+	    console.log("setting class");
+	    this.link.classList.add("disabled");
+	}
+	else
+	    this.link.classList.remove("disabled");
+    },
+
+    tooltip_changed: function() {
+	this.link.setAttribute('title', this.model.get('tooltip'));
     },
 
     content_changed: function() {

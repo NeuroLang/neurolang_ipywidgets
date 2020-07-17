@@ -36,22 +36,33 @@ df_csv = df.to_csv(index=False).encode()
 
 # #### Download link
 
-download_link = NlDownloadLink(filename="random.csv", content=df_csv)
-download_link
+dl_1 = NlDownloadLink(filename="random.csv", content=df_csv)
+dl_1 
 
 # #### Lazy download link
 
 # +
 # When files are big, this helps generate csv file only when link is clicked
-download_link_lazy = NlDownloadLink(filename="random_lazy.csv")
+dl_2 = NlDownloadLink(filename="random_lazy.csv")
 
 
 def clicked(event):
-    download_link_lazy.content = df_csv
+    dl_2.content = df_csv
 
-download_link_lazy.on_click(clicked)
-download_link_lazy
+dl_2.on_click(clicked)
+dl_2 
 # -
+# #### Named link with tooltip
+
+dl_3 = NlDownloadLink(filename="random.csv", content=df_csv, 
+                      html="<h3>random</h3>", tooltip="Download random.csv")
+dl_3
+
+# #### Disabled link
+
+dl_4 = NlDownloadLink(filename="random.csv", tooltip="Download disabled", disabled=True)
+dl_4
+
 # # Download Nifti image
 
 

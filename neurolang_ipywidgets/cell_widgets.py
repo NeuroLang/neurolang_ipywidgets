@@ -1,6 +1,6 @@
 import base64
 from ipywidgets import CallbackDispatcher, Checkbox, CoreWidget, DOMWidget, register, Tab, VBox
-from traitlets import Bytes, Float, Int, List, Unicode
+from traitlets import Bool, Bytes, Float, Int, List, Unicode
 
 
 @register
@@ -151,6 +151,12 @@ class NlDownloadLink(DOMWidget, CoreWidget):
         file name
     mimetype: str
         text/csv by default
+    html: str
+        link text as HTML
+    tooltip: str
+        tooltip to display when link hovered
+    disabled: bool
+        boolean value to indicate if the link is disabled
     """
 
     _view_name = Unicode("DownloadLinkView").tag(sync=True)
@@ -165,6 +171,9 @@ class NlDownloadLink(DOMWidget, CoreWidget):
     content = Bytes().tag(sync=True, **content_serialization)
     mimetype = Unicode("text/csv").tag(sync=True)
     filename = Unicode().tag(sync=True)
+    html = Unicode("Download").tag(sync=True)
+    tooltip = Unicode("Download").tag(sync=True)
+    disabled = Bool(False).tag(sync=True)
 
     # below lines are copied from button widget to handle click on the link
 
