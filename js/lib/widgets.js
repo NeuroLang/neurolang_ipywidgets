@@ -490,7 +490,6 @@ var DownloadLinkModel = widgets.DOMWidgetModel.extend({
 	content : '',
 	mimetype : 'text/csv',
 	filename : '',
-	html: 'Download',
 	tooltip: '',
 	disabled: false
 
@@ -507,9 +506,11 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 	
 	this.filename_changed();
 	this.mimetype_changed();
-        this.html_changed();
 	this.disabled_changed();
 	this.tooltip_changed();
+
+	this.link.innerHTML = '<i class="fa fa-download" style="color:black"></i>';
+
 
 	this.el.appendChild(this.link);
 	this.el.classList.add('jupyter-widgets');
@@ -518,7 +519,6 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
         // a custom callback.
         this.model.on('change:filename', this.filename_changed, this);
         this.model.on('change:mimetype', this.mimetype_changed, this);
-        this.model.on('change:html', this.html_changed, this);
         this.model.on('change:disabled', this.disabled_changed, this);
         this.model.on('change:tooltip', this.tooltip_changed, this);
         this.model.on('change:content', this.content_changed, this);
@@ -530,10 +530,6 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 
     mimetype_changed: function() {
 	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
-    },
-
-    html_changed: function() {
-        this.link.innerHTML = this.model.get('html');
     },
 
     disabled_changed: function() {

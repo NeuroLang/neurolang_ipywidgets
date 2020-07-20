@@ -54,8 +54,7 @@ dl_2
 # -
 # #### Named link with tooltip
 
-dl_3 = NlDownloadLink(filename="random.csv", content=df_csv, 
-                      html="<h3>random</h3>", tooltip="Download random.csv")
+dl_3 = NlDownloadLink(filename="random.csv", content=df_csv, tooltip="Download random.csv")
 dl_3
 
 # #### Disabled link
