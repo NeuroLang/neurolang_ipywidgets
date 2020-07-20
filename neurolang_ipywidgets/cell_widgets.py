@@ -151,6 +151,8 @@ class NlDownloadLink(DOMWidget, CoreWidget):
         file name
     mimetype: str
         text/csv by default
+    description: str
+        description for link
     tooltip: str
         tooltip to display when link hovered
     disabled: bool
@@ -169,6 +171,7 @@ class NlDownloadLink(DOMWidget, CoreWidget):
     content = Bytes().tag(sync=True, **content_serialization)
     mimetype = Unicode("text/csv").tag(sync=True)
     filename = Unicode().tag(sync=True)
+    description = Unicode().tag(sync=True)
     tooltip = Unicode("Download").tag(sync=True)
     disabled = Bool(False).tag(sync=True)
 

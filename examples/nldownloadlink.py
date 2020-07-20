@@ -52,9 +52,10 @@ def clicked(event):
 dl_2.on_click(clicked)
 dl_2 
 # -
-# #### Named link with tooltip
+# #### Named link with description and tooltip
 
-dl_3 = NlDownloadLink(filename="random.csv", content=df_csv, tooltip="Download random.csv")
+dl_3 = NlDownloadLink(filename="random.csv", content=df_csv, 
+                      tooltip="Download random.csv", description= "random.csv")
 dl_3
 
 # #### Disabled link
@@ -71,5 +72,3 @@ image_link = NlDownloadLink(filename="image.nii", content=papaya_image.to_bytes(
 image_link
 
 papaya_image_test = PapayaNiftiImage(nib.load("img/image.nii"))
-
-

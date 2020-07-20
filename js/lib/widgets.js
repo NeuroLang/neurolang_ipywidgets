@@ -478,7 +478,7 @@ var VBoxOverlayView = controls.VBoxView.extend({
 });
 
 
-// Model with default values for NlDownload widget
+// Model with default values for NlDownloadLink widget
 var DownloadLinkModel = widgets.DOMWidgetModel.extend({
     defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
         _model_name : 'DownloadLinkModel',
@@ -497,7 +497,7 @@ var DownloadLinkModel = widgets.DOMWidgetModel.extend({
 });
 
 
-// View for NlDownload widget that renders the widget model.
+// View for NlDownloadLink widget that renders the widget model.
 var DownloadLinkView = widgets.DOMWidgetView.extend({
     // Defines how the widget gets rendered into the DOM
     render: function() {
@@ -508,12 +508,12 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 	this.mimetype_changed();
 	this.disabled_changed();
 	this.tooltip_changed();
-
-	this.link.innerHTML = '<i class="fa fa-download" style="color:black"></i>';
+	this.description_changed();
 
 
 	this.el.appendChild(this.link);
 	this.el.classList.add('jupyter-widgets');
+	this.el.classList.add('jupyter-button');
 
         // Observe changes in the value traitlet in Python, and define
         // a custom callback.
@@ -522,6 +522,7 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
         this.model.on('change:disabled', this.disabled_changed, this);
         this.model.on('change:tooltip', this.tooltip_changed, this);
         this.model.on('change:content', this.content_changed, this);
+        this.model.on('change:description', this.description_changed, this);
     },
 
     filename_changed: function() {
@@ -544,6 +545,10 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 
     tooltip_changed: function() {
 	this.link.setAttribute('title', this.model.get('tooltip'));
+    },
+
+    description_changed: function() {
+	this.link.innerHTML = '<i class="fa fa-download" style="color:black; margin-left:auto; margin-right:auto;"></i>  ' + this.model.get('description');;
     },
 
     content_changed: function() {
@@ -578,8 +583,6 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     }
     
 });
-
-
 
 module.exports = {
     LinkModel: LinkModel,
