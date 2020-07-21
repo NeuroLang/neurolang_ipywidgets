@@ -501,6 +501,11 @@ var DownloadLinkModel = widgets.DOMWidgetModel.extend({
 var DownloadLinkView = widgets.DOMWidgetView.extend({
     // Defines how the widget gets rendered into the DOM
     render: function() {
+	DownloadLinkView.__super__.render.apply(this, arguments);
+	this.el.classList.add('jupyter-widgets');
+	this.el.classList.add('jupyter-button');
+	this.el.classList.add('widget-button');
+
 	this.link = document.createElement('a');
         this.link.setAttribute('target', '_blank');
 	
@@ -512,8 +517,6 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 
 
 	this.el.appendChild(this.link);
-	this.el.classList.add('jupyter-widgets');
-	this.el.classList.add('jupyter-button');
 
         // Observe changes in the value traitlet in Python, and define
         // a custom callback.
@@ -536,7 +539,6 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     disabled_changed: function() {
         this.link.disabled = this.model.get('disabled');
 	if (this.link.disabled) {
-	    console.log("setting class");
 	    this.link.classList.add("disabled");
 	}
 	else
