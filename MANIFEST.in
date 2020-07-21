@@ -1,2 +1,3 @@
 recursive-include neurolang_ipywidgets/static *.*
 include neurolang-ipywidgets.json
+include data

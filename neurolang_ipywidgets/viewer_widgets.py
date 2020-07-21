@@ -1,10 +1,17 @@
-from ipywidgets import DOMWidget, register
-from traitlets import Bool, List, Unicode, Int
-import numpy as np
-import nibabel as nib
 from copy import deepcopy
 
+from ipywidgets import DOMWidget, register
+import numpy as np
+
+import nibabel as nib
+import os
+from traitlets import Bool, List, Unicode, Int
+
 from .papaya_model import Image, image_serialization, papaya_image_serialization
+
+
+ATLAS_IMAGE = os.path.join(os.path.dirname(
+    __file__), '../data/avg152T1_brain.nii.gz')
 
 
 class LutOptions:
@@ -129,7 +136,7 @@ class NlPapayaViewer(DOMWidget):
     def __init__(self, **kwargs):
         super(DOMWidget, self).__init__(**kwargs)
         if self.atlas is None:
-            self.atlas = nib.load("avg152T1_brain.nii.gz")
+            self.atlas = nib.load(ATLAS_IMAGE)
 
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
         self.center_widget = None
