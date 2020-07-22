@@ -539,9 +539,11 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     disabled_changed: function() {
         this.link.disabled = this.model.get('disabled');
 	if (this.link.disabled) {
+	    this.el.classList.add("disabled");
 	    this.link.classList.add("disabled");
 	}
 	else
+	    this.el.classList.remove("disabled");
 	    this.link.classList.remove("disabled");
     },
 
