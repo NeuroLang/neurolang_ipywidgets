@@ -138,7 +138,7 @@ class NlPapayaViewer(DOMWidget):
         if self.atlas is None:
             self.atlas = nib.load(ATLAS_IMAGE)
 
-        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
+        self.reset_center()
         self.center_widget = None
         self.all_images = []
         self.__lut = LutOptions()
@@ -240,6 +240,10 @@ class NlPapayaViewer(DOMWidget):
                 self.center_widget.remove_center()
             self.center_widget = widget
             self.coordinate = NlPapayaViewer.calculate_coords(image.image)
+
+    def reset_center(self):
+        self.center_widget = None
+        self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
 
     def set_error(self, error):
         self.error = error
