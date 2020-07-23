@@ -304,7 +304,7 @@ class NlPapayaViewer(DOMWidget):
         self.orthogonal = True
         self.mainView = 'axial'
 
-        self.atlas = nib.load("avg152T1_brain.nii.gz")
+        self.atlas = nib.load(ATLAS_IMAGE)
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
         self.center_widget = None
 
