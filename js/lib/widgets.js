@@ -508,6 +508,8 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
 
 	this.link = document.createElement('a');
         this.link.setAttribute('target', '_blank');
+	this.link.style.width = "100%";
+	this.link.style.height = "100%";
 	
 	this.filename_changed();
 	this.mimetype_changed();
@@ -539,11 +541,9 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     disabled_changed: function() {
         this.link.disabled = this.model.get('disabled');
 	if (this.link.disabled) {
-	    this.el.classList.add("disabled");
 	    this.link.classList.add("disabled");
 	}
 	else
-	    this.el.classList.remove("disabled");
 	    this.link.classList.remove("disabled");
     },
 
