@@ -1,42 +1,23 @@
+// static assets are put under nbextensions directory following
+// https://minrk-ipywidgets.readthedocs.io/en/latest/examples/Widget%20Low%20Level.html#Static-assets
+// this is necessary to be able to copy static assets under nbextensions directory
+require('../custom/css/frame_styles.css');
+require('../custom/css/papaya.css');
+require('../custom/lib/papaya.js');
+
+// Links to static assets are set under `/nbextensions/neurolang-ipywidgets` directory
 var papaya_src = `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
-        <link rel="stylesheet" type="text/css" href="https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.css" />
-        <script type="text/javascript" src="https://raw.githack.com/rii-mango/Papaya/master/release/current/standard/papaya.js"></script>
+        <link rel="stylesheet" type="text/css" href="/nbextensions/neurolang-ipywidgets/css/frame_styles.css" />
+        <link rel="stylesheet" type="text/css" href="/nbextensions/neurolang-ipywidgets/css/papaya.css" />
+        <script type="text/javascript" src="/nbextensions/neurolang-ipywidgets/lib/papaya.js"></script>
         <title>Papaya Viewer</title>
 
         <script type="text/javascript">
             var params = [];
         </script>
-<style>
-#colorBar {
-    position: relative;
-    left: 30px;
-    height: 20px;
-    transform-origin: left;
-    transform: rotate(90deg);
-}
-
-
-.values {
-    position: absolute;
-    top: -50%;
-    transform: rotate(-90deg);
-    transform-origin: bottom left;
-    color: beige;
-    font: 13px Arial, sans-serif;
-}
-
-.minValue {
-    left: 0px;
-}
-
-.maxValue {
-    left: calc(100% + 15px);
-}
-
-</style>
     </head>
 
     <body>
@@ -133,6 +114,8 @@ let PapayaFrame = class {
 	this.frameElement.style.width="100%";
 	this.frameElement.style.height="100%";
 	this.frameElement.style.display = "inline-block";
+
+	
 
 	papayaFrameDiv.appendChild(this.frameElement);
 

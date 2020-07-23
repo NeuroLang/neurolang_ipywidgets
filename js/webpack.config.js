@@ -4,7 +4,48 @@ var version = require('./package.json').version;
 // Custom webpack rules are generally the same for all webpack bundles, hence
 // stored in a separate local variable.
 var rules = [
-    { test: /\.css$/, use: ['style-loader', 'css-loader']}
+    {
+	test: /\.css$/,
+	include: [
+            path.resolve(__dirname, "custom/css")
+	],
+	use: [
+    	    {
+		loader: 'file-loader',
+		options: {
+    		    context: 'public',
+    		    name: 'css/[name].[ext]',
+    		    publicPath: path.resolve(__dirname, '..', 'neurolang_ipywidgets', 'static'),
+		},
+    	    }
+	]
+    },
+    {
+	test: /\.js$/,
+	include: [
+            path.resolve(__dirname, "custom/lib")
+	],
+	use: [
+    	    {
+		loader: 'file-loader',
+		options: {
+    		    context: 'public',
+    		    name: 'lib/[name].[ext]',
+    		    publicPath: path.resolve(__dirname, '..', 'neurolang_ipywidgets', 'static'),
+		},
+    	    }
+	]
+    },
+    {
+	test: /\.css$/,
+	include: [
+            path.resolve(__dirname, "css")
+	],
+	use: [
+    	    'style-loader',
+    	    'css-loader'
+	]
+    }
 ]
 
 
@@ -40,7 +81,7 @@ module.exports = [
         module: {
             rules: rules
         },
-        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls', 'papaya-viewer/lib', 'papaya-viewer/release/current/standard']
+        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls']
     },
     {// Embeddable neurolang-ipywidgets bundle
      //
@@ -67,6 +108,6 @@ module.exports = [
         module: {
             rules: rules
         },
-        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls', 'papaya-viewer/lib', 'papaya-viewer/release/current/standard']
+        externals: ['@jupyter-widgets/base', '@jupyter-widgets/controls']
     }
 ];

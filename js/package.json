@@ -18,7 +18,8 @@
   "files": [
     "lib/**/*.js",
     "dist/*.js",
-    "css/*.css"
+    "css/*.css",
+    "custom/**/*.css"
   ],
   "scripts": {
     "clean": "rimraf dist/",
@@ -35,10 +36,10 @@
     "@jupyter-widgets/base": "^1.1 || ^2 || ^3",
     "@jupyter-widgets/controls": "^1.1 || ^2",
     "codemirror": "^5.54.0",
-    "css-loader": "^3.6.0",
     "lodash": "^4.17.4",
-    "papaya-viewer": "1.0.1449",
-    "style-loader": "^1.2.1"
+    "style-loader": "^1.2.1",
+    "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0"
   },
   "jupyterlab": {
     "extension": "lib/labplugin"
