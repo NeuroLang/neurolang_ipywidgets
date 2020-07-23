@@ -69,7 +69,7 @@ class NPM(Command):
 
     targets = [
         os.path.join(here, 'neurolang_ipywidgets', 'static', 'extension.js'),
-        os.path.join(here, 'neurolang_ipywidgets', 'static', 'index.js')
+        os.path.join(here, 'neurolang_ipywidgets', 'static', 'index.js'),
     ]
 
     def initialize_options(self):
@@ -136,11 +136,17 @@ setup_args = {
     'description': 'A custom jupyter widget library for neurolang web application.',
     'long_description': LONG_DESCRIPTION,
     'include_package_data': True,
+    # static assets are copied under nbextensions directory following
+    # https://minrk-ipywidgets.readthedocs.io/en/latest/examples/Widget%20Low%20Level.html#Static-assets
+
     'data_files': [
         ('share/jupyter/nbextensions/neurolang-ipywidgets', [
             'neurolang_ipywidgets/static/extension.js',
             'neurolang_ipywidgets/static/index.js',
             'neurolang_ipywidgets/static/index.js.map',
+            'neurolang_ipywidgets/static/lib/papaya.js',
+            'neurolang_ipywidgets/static/css/frame_styles.css',
+            'neurolang_ipywidgets/static/css/papaya.css',
         ],),
         ('etc/jupyter/nbconfig/notebook.d', ['neurolang-ipywidgets.json'])
     ],
