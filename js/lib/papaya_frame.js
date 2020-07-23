@@ -23,16 +23,17 @@ var papaya_src = `
     position: absolute;
     top: -50%;
     transform: rotate(-90deg);
+    transform-origin: bottom left;
     color: beige;
     font: 13px Arial, sans-serif;
 }
 
 .minValue {
-    left: -20px;
+    left: 0px;
 }
 
 .maxValue {
-    right: -20px;
+    left: calc(100% + 15px);
 }
 
 </style>
