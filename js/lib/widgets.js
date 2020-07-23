@@ -556,11 +556,13 @@ var DownloadLinkView = widgets.DOMWidgetView.extend({
     },
 
     content_changed: function() {
-	this.link.setAttribute('download', this.model.get('filename'));
-	this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
-	this.link.click();
-	this.model.set('content', '');
-	this.touch();
+	if (this.model.get('content') != '') {
+	    this.link.setAttribute('download', this.model.get('filename'));
+	    this.link.setAttribute('href', "data:" + this.model.get('mimetype') + ";base64," + this.model.get('content'));
+	    this.link.click();
+	    this.model.set('content', '');
+	    this.touch();
+	}
     },
 
     // events and _handle_click methods are copied from ButtonView to handle click on the link
