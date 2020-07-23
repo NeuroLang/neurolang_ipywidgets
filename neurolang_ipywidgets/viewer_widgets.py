@@ -19,52 +19,52 @@ class LutOptions:
     def __init__(self):
         self.__custom_luts = {
             "lut0": {
-                "data": [[0, 0.53, 0.27, 0.27],
-                         [1, 0.53, 0.27, 0.27]],
-                "gradation": False,
-                "hex": "#864646"
-            },
-            "lut1": {
-                "data": [[0, 1, 0.9, 0],
-                         [1, 1, 0.9, 0]],
-                "gradation": False,
-                "hex": "#ffe400"
-            },
-            "lut2": {
-                "data": [[0, 0.49, 0.66, 0.14],
-                         [1, 0.49, 0.66, 0.14]],
-                "gradation": False,
-                "hex": "#7ca923"
-            },
-            "lut3": {
-                "data": [[0, 0, 1, 1],
-                         [1, 0, 1, 1]],
-                "gradation": False,
-                "hex": "#00FFFF"
-            },
-            "lut4": {
-                "data": [[0, 0.1, 0.56, 1],
-                         [1, 0.1, 0.56, 1]],
-                "gradation": False,
-                "hex": "#1c90fd"
-            },
-            "lut5": {
-                "data": [[0, 1, 0, 1],
-                         [1, 1, 0, 1]],
-                "gradation": False,
-                "hex": "#ff00ff"
-            },
-            "lut6": {
                 "data": [[0, 0.3, 0, 0.5],
                          [1, 0.3, 0, 0.5]],
                 "gradation": False,
                 "hex": "#4f0080"
             },
-            "lut7": {
+            "lut1": {
                 "data": [[0, 1, 0.25, 0],
                          [1, 1, 0.25, 0]],
                 "gradation": False,
                 "hex": "#ff4000"
+            },
+            "lut2": {
+                "data": [[0, 0.53, 0.27, 0.27],
+                         [1, 0.53, 0.27, 0.27]],
+                "gradation": False,
+                "hex": "#864646"
+            },
+            "lut3": {
+                "data": [[0, 1, 0.9, 0],
+                         [1, 1, 0.9, 0]],
+                "gradation": False,
+                "hex": "#ffe400"
+            },
+            "lut4": {
+                "data": [[0, 0.49, 0.66, 0.14],
+                         [1, 0.49, 0.66, 0.14]],
+                "gradation": False,
+                "hex": "#7ca923"
+            },
+            "lut5": {
+                "data": [[0, 0, 1, 1],
+                         [1, 0, 1, 1]],
+                "gradation": False,
+                "hex": "#00FFFF"
+            },
+            "lut6": {
+                "data": [[0, 0.1, 0.56, 1],
+                         [1, 0.1, 0.56, 1]],
+                "gradation": False,
+                "hex": "#1c90fd"
+            },
+            "lut7": {
+                "data": [[0, 1, 0, 1],
+                         [1, 1, 0, 1]],
+                "gradation": False,
+                "hex": "#ff00ff"
             },
         }
 
