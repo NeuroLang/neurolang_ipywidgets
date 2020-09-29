@@ -11,7 +11,7 @@ from .papaya_model import Image, image_serialization, papaya_image_serialization
 
 
 ATLAS_IMAGE = os.path.join(os.path.dirname(
-    __file__), '../data/avg152T1_brain.nii.gz')
+    __file__), 'data/avg152T1_brain.nii.gz')
 
 
 class LutOptions:
