@@ -1,14 +1,4 @@
-[bdist_wheel]
-universal=1
-
-[options.extras_require]
-dev =
-    jupytext
-    yapf
-    pre-commit
-    flake8
-
-[yapf]
+[style]
 based_on_style = pep8
 dedent_closing_brackets = True
 coalesce_brackets = True
