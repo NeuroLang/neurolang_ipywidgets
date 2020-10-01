@@ -1,9 +1,9 @@
-from ._version import version_info, __version__
+from ._version import version_info, __version__  # noqa
 
-from .cell_widgets import *
-from .editor_widgets import *
-from .viewer_widgets import *
-from .papaya_model import Image, PapayaNiftiImage, PapayaSpatialImage
+from .cell_widgets import *  # noqa
+from .editor_widgets import *  # noqa
+from .viewer_widgets import *  # noqa
+from .papaya_model import Image, PapayaNiftiImage, PapayaSpatialImage  # noqa
 
 
 def _jupyter_nbextension_paths():
@@ -23,9 +23,11 @@ def _jupyter_nbextension_paths():
     require: Path to importable AMD Javascript module inside the
         <jupyter path>/nbextensions/<dest> directory
     """
-    return [{
-        'section': 'notebook',
-        'src': 'static',
-        'dest': 'neurolang-ipywidgets',
-        'require': 'neurolang-ipywidgets/extension'
-    }]
+    return [
+        {
+            "section": "notebook",
+            "src": "static",
+            "dest": "neurolang-ipywidgets",
+            "require": "neurolang-ipywidgets/extension",
+        }
+    ]
