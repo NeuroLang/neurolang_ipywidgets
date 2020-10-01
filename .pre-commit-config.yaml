@@ -1,9 +1,8 @@
 repos:
-  - repo: git@github.com:pre-commit/mirrors-yapf.git
-    rev: v0.30.0
+  - repo: https://github.com/ambv/black
+    rev: stable
     hooks:
-      - id: yapf
-        args: ['--style=.style.yapf', '--parallel', '--in-place']
+      - id: black
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.3
     hooks:
