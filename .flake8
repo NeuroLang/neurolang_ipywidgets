@@ -2,9 +2,10 @@
 ignore = E501
 exclude =
     .git,
+    .github,
+    js,
     __pycache__,
-    docs/source/conf.py,
-    old,
-    build,
-    dist
+    .pytest_cache,
+    data,
+    static
 max-complexity = 10
