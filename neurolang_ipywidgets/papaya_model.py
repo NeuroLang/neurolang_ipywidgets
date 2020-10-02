@@ -1,7 +1,8 @@
 import base64
 import hashlib
 
-from nibabel import Nifti2Image  # type: ignore
+from nibabel import Nifti1Image  # type: ignore
+from numpy import asanyarray, float32
 
 from traitlets import TraitType
 
@@ -65,8 +66,11 @@ class PapayaImage(TraitType):
             if self.is_label:
                 self.__config = {"lut": "lut0"}
             else:
-                self.__config = {"min": round(self.__min, 2),
-                                 "max": round(self.__max, 2), "lut": "Red Overlay"}
+                self.__config = {
+                    "min": round(self.__min, 2),
+                    "max": round(self.__max, 2),
+                    "lut": "Red Overlay"
+                }
         else:
             self.__config = config
 
@@ -157,7 +161,7 @@ class PapayaImage(TraitType):
                 the display range minimum.
             minPercent : int
                 the display range minimum as a percentage of image min.
-           symmetric : bool
+            symmetric : bool
                 if true, sets the negative range of a parametric pair to the same size as the positive range.
         """
         self.__config = config
@@ -191,8 +195,8 @@ class PapayaSpatialImage(PapayaImage):
 
     def base64_encode(self):
         image = self.image
-        nifti_image = Nifti2Image(
-            image.get_fdata(), affine=image.affine, header=image.header)
+        nifti_image = Nifti1Image(asanyarray(image.dataobj, dtype=float32),
+                                  affine=image.affine)
 
         return base64_encode_nifti(nifti_image)
 
@@ -224,14 +228,17 @@ def papaya_image_to_json(pydt, manager):
         return None
     else:
         if isinstance(pydt, list):
-            return [dict(id=x.id, image=x.base64_encode(), config=x.config) for x in pydt]
+            return [
+                dict(id=x.id, image=x.base64_encode(), config=x.config)
+                for x in pydt
+            ]
         else:
-            return dict(id=pydt.id, image=pydt.base64_encode(), config=pydt.config)
+            return dict(id=pydt.id,
+                        image=pydt.base64_encode(),
+                        config=pydt.config)
 
 
-papaya_image_serialization = {
-    'to_json': papaya_image_to_json
-}
+papaya_image_serialization = {'to_json': papaya_image_to_json}
 
 
 def image_to_json(pydt, manager):
@@ -246,6 +253,4 @@ def image_to_json(pydt, manager):
             return base64_encode_nifti(pydt)
 
 
-image_serialization = {
-    'to_json': image_to_json
-}
+image_serialization = {'to_json': image_to_json}
