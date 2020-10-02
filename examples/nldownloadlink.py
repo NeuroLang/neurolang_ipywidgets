@@ -103,5 +103,3 @@ image_link_2 = NlDownloadLink(
 image_link_2
 
 papaya_image_2_test = PapayaNiftiImage(nib.load("img/image.nii.gz"))
-
-
