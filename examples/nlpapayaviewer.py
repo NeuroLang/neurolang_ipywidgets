@@ -49,5 +49,3 @@ nl.show_image_colorbar(papaya_image1)
 # ## Reset viewer
 
 nl.reset()
-
-
