@@ -3,6 +3,7 @@ ignore = E501
 per-file-ignores =
     # imported but unused
     __init__.py: F401, F403
+    setup.py: E722, F841
 exclude =
     .git,
     .github,
@@ -10,5 +11,6 @@ exclude =
     __pycache__,
     .pytest_cache,
     data,
-    static
+    static,
+    setup.cfg
 max-complexity = 10
