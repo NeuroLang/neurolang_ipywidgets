@@ -21,8 +21,7 @@ class TestNlLink:
         """
         widget = NlLink(
             value="neurolang",
-            href="https://github.com/NeuroLang/neurolang-ipywidgets"
-        )
+            href="https://github.com/NeuroLang/neurolang-ipywidgets")
 
         assert widget.value == "neurolang"
         assert widget.href == "https://github.com/NeuroLang/neurolang-ipywidgets"
