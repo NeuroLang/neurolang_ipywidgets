@@ -1,9 +1,9 @@
-from ._version import version_info, __version__  # noqa
+from ._version import version_info, __version__
 
-from .cell_widgets import *  # noqa
-from .editor_widgets import *  # noqa
-from .viewer_widgets import *  # noqa
-from .papaya_model import Image, PapayaNiftiImage, PapayaSpatialImage  # noqa
+from .cell_widgets import *
+from .editor_widgets import *
+from .viewer_widgets import *
+from .papaya_model import Image, PapayaNiftiImage, PapayaSpatialImage
 
 
 def _jupyter_nbextension_paths():
