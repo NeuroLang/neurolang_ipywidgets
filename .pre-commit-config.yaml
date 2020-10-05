@@ -1,9 +1,13 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: 'v1.5.4'
+    rev: "v1.5.4"
     hooks:
-    -   id: autopep8
+      - id: autopep8
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.3
     hooks:
       - id: flake8
+  - repo: https://github.com/prettier/prettier
+    rev: "2.1.2"
+    hooks:
+      - id: prettier

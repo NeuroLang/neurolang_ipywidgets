@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "eslint": "^7.10.0",
+    "prettier": "2.1.2",
     "rimraf": "^2.6.1",
     "webpack": "^3.5.5"
   },
