@@ -1,5 +1,5 @@
 # +
-from ipywidgets import BoundedIntText, Button, Checkbox, Dropdown, FloatSlider, FloatText, HBox, Layout
+from ipywidgets import BoundedIntText, Checkbox, Dropdown, FloatSlider, FloatText, HBox, Layout
 
 from neurolang_ipywidgets import NlVBoxOverlay
 
@@ -91,19 +91,12 @@ vb_layout = Layout(width="400px")
 hb_sub_layout = Layout(width="350px", display="flex", flex_flow="row", align_content="flex-start")
 
 vb = NlVBoxOverlay([
-            alpha,
-            lut,
-            nlut,
-            HBox([min, minp], 
-#                 layout=hb_sub_layout
-                ),
-            HBox([max, maxp], 
-#                 layout = hb_sub_layout
-                ),
-            sym]
-        )
-#vb.layout = vb_layout
+    alpha,
+    lut,
+    nlut,
+    HBox([min, minp]),
+    HBox([max, maxp]),
+    sym]
+)
+# vb.layout = vb_layout
 vb
-# -
-
-

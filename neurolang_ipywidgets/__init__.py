@@ -23,9 +23,11 @@ def _jupyter_nbextension_paths():
     require: Path to importable AMD Javascript module inside the
         <jupyter path>/nbextensions/<dest> directory
     """
-    return [{
-        'section': 'notebook',
-        'src': 'static',
-        'dest': 'neurolang-ipywidgets',
-        'require': 'neurolang-ipywidgets/extension'
-    }]
+    return [
+        {
+            "section": "notebook",
+            "src": "static",
+            "dest": "neurolang-ipywidgets",
+            "require": "neurolang-ipywidgets/extension",
+        }
+    ]

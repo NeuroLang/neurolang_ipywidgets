@@ -9,62 +9,51 @@ from traitlets import Bool, List, Unicode, Int
 
 from .papaya_model import Image, image_serialization, papaya_image_serialization
 
-
-ATLAS_IMAGE = os.path.join(os.path.dirname(
-    __file__), 'data/avg152T1_brain.nii.gz')
+ATLAS_IMAGE = os.path.join(os.path.dirname(__file__), "data/avg152T1_brain.nii.gz")
 
 
 class LutOptions:
-
     def __init__(self):
         self.__custom_luts = {
             "lut0": {
-                "data": [[0, 0.3, 0, 0.5],
-                         [1, 0.3, 0, 0.5]],
+                "data": [[0, 0.3, 0, 0.5], [1, 0.3, 0, 0.5]],
                 "gradation": False,
-                "hex": "#4f0080"
+                "hex": "#4f0080",
             },
             "lut1": {
-                "data": [[0, 1, 0.25, 0],
-                         [1, 1, 0.25, 0]],
+                "data": [[0, 1, 0.25, 0], [1, 1, 0.25, 0]],
                 "gradation": False,
-                "hex": "#ff4000"
+                "hex": "#ff4000",
             },
             "lut2": {
-                "data": [[0, 0.53, 0.27, 0.27],
-                         [1, 0.53, 0.27, 0.27]],
+                "data": [[0, 0.53, 0.27, 0.27], [1, 0.53, 0.27, 0.27]],
                 "gradation": False,
-                "hex": "#864646"
+                "hex": "#864646",
             },
             "lut3": {
-                "data": [[0, 1, 0.9, 0],
-                         [1, 1, 0.9, 0]],
+                "data": [[0, 1, 0.9, 0], [1, 1, 0.9, 0]],
                 "gradation": False,
-                "hex": "#ffe400"
+                "hex": "#ffe400",
             },
             "lut4": {
-                "data": [[0, 0.49, 0.66, 0.14],
-                         [1, 0.49, 0.66, 0.14]],
+                "data": [[0, 0.49, 0.66, 0.14], [1, 0.49, 0.66, 0.14]],
                 "gradation": False,
-                "hex": "#7ca923"
+                "hex": "#7ca923",
             },
             "lut5": {
-                "data": [[0, 0, 1, 1],
-                         [1, 0, 1, 1]],
+                "data": [[0, 0, 1, 1], [1, 0, 1, 1]],
                 "gradation": False,
-                "hex": "#00FFFF"
+                "hex": "#00FFFF",
             },
             "lut6": {
-                "data": [[0, 0.1, 0.56, 1],
-                         [1, 0.1, 0.56, 1]],
+                "data": [[0, 0.1, 0.56, 1], [1, 0.1, 0.56, 1]],
                 "gradation": False,
-                "hex": "#1c90fd"
+                "hex": "#1c90fd",
             },
             "lut7": {
-                "data": [[0, 1, 0, 1],
-                         [1, 1, 0, 1]],
+                "data": [[0, 1, 0, 1], [1, 1, 0, 1]],
                 "gradation": False,
-                "hex": "#ff00ff"
+                "hex": "#ff00ff",
             },
         }
 
@@ -88,24 +77,25 @@ class LutOptions:
         return custom_lut.get("hex", "white")
 
     def get_luts(self):
-        return [dict(name=lut, data=v['data'], gradation=v["gradation"]) for lut, v in self.__custom_luts.items()]
+        return [
+            dict(name=lut, data=v["data"], gradation=v["gradation"])
+            for lut, v in self.__custom_luts.items()
+        ]
 
 
 @register
 class NlPapayaViewer(DOMWidget):
-    """A widget to display papaya viewer.
-
-    """
+    """A widget to display papaya viewer."""
 
     MAX_IMAGE_COUNT = 8
 
     _view_name = Unicode("PapayaView").tag(sync=True)
-    _model_name = Unicode('PapayaModel').tag(sync=True)
+    _model_name = Unicode("PapayaModel").tag(sync=True)
     _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _model_module = Unicode("neurolang-ipywidgets").tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
-    _model_module_version = Unicode('^0.1.0').tag(sync=True)
+    _model_module_version = Unicode("^0.1.0").tag(sync=True)
 
     # these are not updated when changed, as papaya expects them to be set
     # once upon initialization
@@ -117,7 +107,7 @@ class NlPapayaViewer(DOMWidget):
     showControlBar = Bool(True).tag(sync=True)
     showImageButtons = Bool(False).tag(sync=True)
     orthogonal = Bool(True).tag(sync=True)
-    mainView = Unicode('axial').tag(sync=True)
+    mainView = Unicode("axial").tag(sync=True)
 
     # these can be changed
     coordinate = List().tag(sync=True)
@@ -198,7 +188,7 @@ class NlPapayaViewer(DOMWidget):
         """
         if images is None or len(images) == 0:
             return
-        if (self.can_add(images)):
+        if self.can_add(images):
             for image in images:
                 if image.is_label:
                     image.config["lut"] = self.__lut.next()
@@ -208,7 +198,8 @@ class NlPapayaViewer(DOMWidget):
             self.show_image_colorbar_at_index(len(self.all_images))
         else:
             self.set_error(
-                "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!")
+                "Papaya viewer does not allow more than 8 overlays. \nPlease unselect a region to be able to add a new one!"
+            )
 
     def remove(self, images):
         if images is None or len(images) == 0:
@@ -302,7 +293,7 @@ class NlPapayaViewer(DOMWidget):
         self.showControlBar = True
         self.showImageButtons = True
         self.orthogonal = True
-        self.mainView = 'axial'
+        self.mainView = "axial"
 
         self.atlas = nib.load(ATLAS_IMAGE)
         self.coordinate = NlPapayaViewer.calculate_coords(self.atlas)
