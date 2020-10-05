@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist/",
-    "prepublish": "webpack",
+    "prepare": "webpack",
     "build": "webpack",
     "watch": "webpack --watch --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -32,7 +32,8 @@
     "eslint": "^7.10.0",
     "prettier": "2.1.2",
     "rimraf": "^2.6.1",
-    "webpack": "^4.44.2"
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "@jupyter-widgets/base": "^1.1 || ^2 || ^3",
