@@ -5,9 +5,6 @@ on:
     branches:
       - master
       - github_workflows
-  pull_request:
-    branches:
-      - master
 
 jobs:
   trigger_test_on_neurolang_web:
