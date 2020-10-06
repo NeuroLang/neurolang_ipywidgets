@@ -13,7 +13,7 @@ jobs:
       - name: Post request to neurolang_web
         run: |
           curl \
-          -XPOST -u "CI_TRIGGER:${{ secrets.CI_TRIGGER_TOKEN }}" \
+          -XPOST -u "CI_TRIGGER_TOKEN:${{ secrets.CI_TRIGGER_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/NeuroLang/neurolang_web/dispatches \
           -d '{"event_type":"neurolang_ipywidgets"}'
