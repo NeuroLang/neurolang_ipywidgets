@@ -13,7 +13,7 @@ jobs:
   trigger_test_on_neurolang_web:
     runs-on: ubuntu-latest
     steps:
-      - name: Post request
+      - name: Post request to neurolang_web
         run: |
           curl \
           -XPOST -u "CI_TRIGGER:${{ secrets.CI_TRIGGER_TOKEN }}" \
