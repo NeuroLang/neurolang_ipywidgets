@@ -69,7 +69,7 @@ class PapayaImage(TraitType):
                 self.__config = {
                     "min": round(self.__min, 2),
                     "max": round(self.__max, 2),
-                    "lut": "lut0"
+                    "lut": "Red Overlay"
                 }
         else:
             self.__config = config
