@@ -108,7 +108,10 @@ class NlIconTab(Tab):
     title_icons = List().tag(sync=True)
 
     def reset(self):
+        self.unobserve_all()
+        self.selected_index = None
         self.title_icons = []
+        self._titles = {}
         self.children = []
 
 
