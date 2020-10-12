@@ -1,6 +1,6 @@
 import base64
 from ipywidgets import CallbackDispatcher, Checkbox, CoreWidget, DOMWidget, register, Tab, VBox
-from traitlets import Bool, Bytes, Float, Int, List, Unicode
+from traitlets import Bool, Bytes, Float, Int, List, TraitError, Unicode, validate
 
 
 @register
@@ -59,7 +59,13 @@ class NlProgress(DOMWidget):
     # maximum value
     max = Int().tag(sync=True)
 
-    # TODO check value to be between 0 and max value inclusive.
+    @validate('value')
+    def _valid_value(self, proposal):
+        if proposal['value'] < 0:
+            raise TraitError('Value should be greater than 0.')
+        if proposal['value'] > self.max:
+            raise TraitError(f"Value should be less then max value {self.max}")
+        return proposal['value']
 
 
 @register
