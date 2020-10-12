@@ -9,7 +9,8 @@ from traitlets import Bool, List, Unicode, Int
 
 from .papaya_model import Image, image_serialization, papaya_image_serialization
 
-ATLAS_IMAGE = os.path.join(os.path.dirname(__file__), "data/avg152T1_brain.nii.gz")
+ATLAS_IMAGE = os.path.join(os.path.dirname(
+    __file__), "data/avg152T1_brain.nii.gz")
 
 
 class LutOptions:
@@ -302,6 +303,7 @@ class NlPapayaViewer(DOMWidget):
         self.error = ""
         self.colorbar = True
         self.colorbar_index = 0
+        self.unobserve_all()
 
     def get_hex_for_lut(self, lut):
         return self.__lut.get_hex(lut)
