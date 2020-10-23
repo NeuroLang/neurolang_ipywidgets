@@ -146,13 +146,6 @@ setup_args = {
             'neurolang_ipywidgets/static/index.js',
             'neurolang_ipywidgets/static/index.js.map',
         ],),
-        ('share/jupyter/nbextensions/neurolang-ipywidgets/css', [
-            'neurolang_ipywidgets/static/css/frame_styles.css',
-            'neurolang_ipywidgets/static/css/papaya.css',
-        ],),
-        ('share/jupyter/nbextensions/neurolang-ipywidgets/lib', [
-            'neurolang_ipywidgets/static/lib/papaya.js',
-        ],),
         ('etc/jupyter/nbconfig/notebook.d', ['neurolang-ipywidgets.json'])
     ],
     'install_requires': [
