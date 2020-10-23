@@ -1,9 +1,5 @@
-// static assets are put under nbextensions directory following
-// https://minrk-ipywidgets.readthedocs.io/en/latest/examples/Widget%20Low%20Level.html#Static-assets
-// this is necessary to be able to copy static assets under nbextensions directory
 var $ = require("jquery");
 
-// Links to static assets are set under `/nbextensions/neurolang-ipywidgets` directory
 var papaya_src = `
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -140,6 +136,7 @@ let PapayaFrame = class {
     this.frameElement.style.width = "100%";
     this.frameElement.style.height = "100%";
     this.frameElement.style.display = "inline-block";
+    this.frameElement.style.border = "none";
 
     papayaFrameDiv.appendChild(this.frameElement);
 
