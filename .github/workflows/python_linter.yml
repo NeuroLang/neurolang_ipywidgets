@@ -6,8 +6,9 @@ on:
       - "**.py"
     branches:
       - master
-      - github_workflows
   pull_request:
+    paths:
+      - "**.py"
     branches:
       - master
 

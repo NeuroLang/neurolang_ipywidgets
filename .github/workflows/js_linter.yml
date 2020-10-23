@@ -6,8 +6,9 @@ on:
       - "**.js"
     branches:
       - master
-      - github_workflows
   pull_request:
+    paths:
+      - "**.js"
     branches:
       - master
 
