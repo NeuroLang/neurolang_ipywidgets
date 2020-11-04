@@ -7,14 +7,14 @@
 // dynamically.
 __webpack_public_path__ =
   document.querySelector("body").getAttribute("data-base-url") +
-  "nbextensions/neurolang-ipywidgets";
+  "nbextensions/neurolang_ipywidgets";
 
 // Configure requirejs
 if (window.require) {
   window.require.config({
     map: {
       "*": {
-        "neurolang-ipywidgets": "nbextensions/neurolang-ipywidgets/index",
+        neurolang_ipywidgets: "nbextensions/neurolang_ipywidgets/index",
       },
     },
   });

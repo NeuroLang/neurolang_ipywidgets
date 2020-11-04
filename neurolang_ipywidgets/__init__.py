@@ -27,7 +27,7 @@ def _jupyter_nbextension_paths():
         {
             "section": "notebook",
             "src": "static",
-            "dest": "neurolang-ipywidgets",
-            "require": "neurolang-ipywidgets/extension",
+            "dest": "neurolang_ipywidgets",
+            "require": "neurolang_ipywidgets/extension",
         }
     ]

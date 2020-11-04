@@ -18,8 +18,8 @@ class NlLink(DOMWidget):
 
     _view_name = Unicode("LinkView").tag(sync=True)
     _model_name = Unicode('LinkModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
@@ -47,8 +47,8 @@ class NlProgress(DOMWidget):
 
     _view_name = Unicode("ProgressView").tag(sync=True)
     _model_name = Unicode('ProgressModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
@@ -80,8 +80,8 @@ class NlCheckbox(Checkbox):
 
     _view_name = Unicode('NCheckboxView').tag(sync=True)
     _model_name = Unicode('NCheckboxModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
@@ -98,8 +98,8 @@ class NlCheckbox(Checkbox):
 class NlIconTab(Tab):
     _view_name = Unicode('IconTabView').tag(sync=True)
     _model_name = Unicode('IconTabModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
@@ -125,8 +125,8 @@ class NlVBoxOverlay(VBox):
 
     _view_name = Unicode('VBoxOverlayView').tag(sync=True)
     _model_name = Unicode('VBoxOverlayModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
@@ -170,8 +170,8 @@ class NlDownloadLink(DOMWidget, CoreWidget):
 
     _view_name = Unicode("DownloadLinkView").tag(sync=True)
     _model_name = Unicode('DownloadLinkModel').tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode('neurolang-ipywidgets').tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode('neurolang_ipywidgets').tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode('^0.1.0').tag(sync=True)

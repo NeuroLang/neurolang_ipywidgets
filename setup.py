@@ -141,12 +141,12 @@ setup_args = {
     # https://minrk-ipywidgets.readthedocs.io/en/latest/examples/Widget%20Low%20Level.html#Static-assets
 
     'data_files': [
-        ('share/jupyter/nbextensions/neurolang-ipywidgets', [
+        ('share/jupyter/nbextensions/neurolang_ipywidgets', [
             'neurolang_ipywidgets/static/extension.js',
             'neurolang_ipywidgets/static/index.js',
             'neurolang_ipywidgets/static/index.js.map',
         ],),
-        ('etc/jupyter/nbconfig/notebook.d', ['neurolang-ipywidgets.json'])
+        ('etc/jupyter/nbconfig/notebook.d', ['neurolang_ipywidgets.json'])
     ],
     'install_requires': [
         'ipywidgets>=7.0.0',
@@ -164,7 +164,7 @@ setup_args = {
 
     'author': 'Hande Gözükan, Romain Primet, Demian Wassermann',
     'author_email': 'hande.gozukan@inria.fr, romain.primet@inria.fr, demian.wassermann@inria.fr',
-    'url': 'https://github.com/NeuroLang/neurolang-ipywidgets',
+    'url': 'https://github.com/NeuroLang/neurolang_ipywidgets',
     'keywords': [
         'ipython',
         'jupyter',

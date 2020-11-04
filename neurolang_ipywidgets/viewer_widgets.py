@@ -92,8 +92,8 @@ class NlPapayaViewer(DOMWidget):
 
     _view_name = Unicode("PapayaView").tag(sync=True)
     _model_name = Unicode("PapayaModel").tag(sync=True)
-    _view_module = Unicode("neurolang-ipywidgets").tag(sync=True)
-    _model_module = Unicode("neurolang-ipywidgets").tag(sync=True)
+    _view_module = Unicode("neurolang_ipywidgets").tag(sync=True)
+    _model_module = Unicode("neurolang_ipywidgets").tag(sync=True)
 
     _view_module_version = Unicode("0.1.0").tag(sync=True)
     _model_module_version = Unicode("^0.1.0").tag(sync=True)

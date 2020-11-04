@@ -87,7 +87,7 @@ module.exports = [
     externals: ["@jupyter-widgets/base", "@jupyter-widgets/controls"],
   },
   {
-    // Embeddable neurolang-ipywidgets bundle
+    // Embeddable neurolang_ipywidgets bundle
     //
     // This bundle is generally almost identical to the notebook bundle
     // containing the custom widget views and models.
@@ -107,7 +107,7 @@ module.exports = [
       path: path.resolve(__dirname, "dist"),
       libraryTarget: "amd",
       publicPath:
-        "https://unpkg.com/neurolang-ipywidgets@" + version + "/dist/",
+        "https://unpkg.com/neurolang_ipywidgets@" + version + "/dist/",
     },
     devtool: "source-map",
     module: {

@@ -21,10 +21,10 @@ class TestNlLink:
         """
         widget = NlLink(
             value="neurolang",
-            href="https://github.com/NeuroLang/neurolang-ipywidgets")
+            href="https://github.com/NeuroLang/neurolang_ipywidgets")
 
         assert widget.value == "neurolang"
-        assert widget.href == "https://github.com/NeuroLang/neurolang-ipywidgets"
+        assert widget.href == "https://github.com/NeuroLang/neurolang_ipywidgets"
 
     def test_create_value_none(self):
         """Tests NlLink constructor setting `value` as `None`."""

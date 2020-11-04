@@ -1,12 +1,12 @@
 {
-  "name": "neurolang-ipywidgets",
+  "name": "neurolang_ipywidgets",
   "version": "0.1.0",
   "description": "A custom jupyter widget library for neurolang web application.",
   "author": "Hande Gözükan, Romain Primet, Demian Wassermann",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NeuroLang/neurolang-ipywidgets.git"
+    "url": "https://github.com/NeuroLang/neurolang_ipywidgets.git"
   },
   "keywords": [
     "jupyter",

@@ -7,5 +7,5 @@ Package Install
 - [node](http://nodejs.org/)
 
 ```bash
-npm install --save neurolang-ipywidgets
+npm install --save neurolang_ipywidgets
 ```

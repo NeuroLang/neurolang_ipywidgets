@@ -1,16 +1,15 @@
-var plugin = require('./index');
-var base = require('@jupyter-widgets/base');
+var plugin = require("./index");
+var base = require("@jupyter-widgets/base");
 
 module.exports = {
-  id: 'neurolang-ipywidgets',
+  id: "neurolang_ipywidgets",
   requires: [base.IJupyterWidgetRegistry],
-  activate: function(app, widgets) {
-      widgets.registerWidget({
-          name: 'neurolang-ipywidgets',
-          version: plugin.version,
-          exports: plugin
-      });
+  activate: function (app, widgets) {
+    widgets.registerWidget({
+      name: "neurolang_ipywidgets",
+      version: plugin.version,
+      exports: plugin,
+    });
   },
-  autoStart: true
+  autoStart: true,
 };
-

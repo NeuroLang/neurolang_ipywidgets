@@ -18,4 +18,4 @@ jobs:
           -XPOST -u "token:${{ secrets.CI_TRIGGER_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/NeuroLang/neurolang_web/dispatches \
-          -d '{"event_type":"neurolang-ipywidgets"}'
+          -d '{"event_type":"neurolang_ipywidgets"}'
