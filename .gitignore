@@ -4,6 +4,7 @@ dist/
 build/
 *.py[cod]
 node_modules/
+pip-wheel-metadata/
 
 # Compiled javascript
 neurolang_ipywidgets/static/
