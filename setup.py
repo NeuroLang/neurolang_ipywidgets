@@ -164,7 +164,7 @@ setup_args = {
 
     'author': 'Hande Gözükan, Romain Primet, Demian Wassermann',
     'author_email': 'hande.gozukan@inria.fr, romain.primet@inria.fr, demian.wassermann@inria.fr',
-    'url': 'https://github.com/NeuroLang/neurolang-ipywidgets',
+    'url': 'https://github.com/NeuroLang/neurolang_ipywidgets',
     'keywords': [
         'ipython',
         'jupyter',
