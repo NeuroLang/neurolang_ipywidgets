@@ -45,7 +45,7 @@
     "codemirror": "^5.54.0",
     "css-loader": "^3.6.0",
     "file-loader": "^6.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "style-loader": "^1.2.1"
   },
   "jupyterlab": {
