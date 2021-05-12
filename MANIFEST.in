@@ -1,3 +1,23 @@
+graft neurolang_ipywidgets/nbextension
+graft neurolang_ipywidgets/labextension
+
+graft js
+graft tests
+prune **/node_modules
+
 recursive-include neurolang_ipywidgets/static *.*
 include neurolang-ipywidgets.json
 recursive-include neurolang_ipywidgets/data *.*
+
+include LICENSE
+include setup.py
+include pyproject.toml
+include install.json
+
+# Patterns to exclude from any directory
+global-exclude *~
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .git
+global-exclude .ipynb_checkpoints
+global-exclude *.map

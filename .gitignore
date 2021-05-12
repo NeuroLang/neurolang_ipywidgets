@@ -7,7 +7,8 @@ node_modules/
 pip-wheel-metadata/
 
 # Compiled javascript
-neurolang_ipywidgets/static/
+neurolang_ipywidgets/nbextension/
+neurolang_ipywidgets/labextension/
 
 # OS X
 .DS_Store
