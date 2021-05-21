@@ -10,7 +10,7 @@ To install use pip:
 
     $ pip install neurolang_ipywidgets
 
-For a development installation (requires [Node.js](https://nodejs.org) and [Yarn version 1](https://classic.yarnpkg.com/)),
+For a development installation (requires [Node.js](https://nodejs.org)),
 
     $ git clone https://github.com/NeuroLang/neurolang_ipywidgets.git
     $ cd neurolang_ipywidgets
@@ -25,6 +25,6 @@ When actively developing your extension for JupyterLab, run the command:
 Then you need to rebuild the JS when you make a code change:
 
     $ cd js
-    $ yarn run build
+    $ npm run build
 
 You then need to refresh the JupyterLab page when your javascript changes.
