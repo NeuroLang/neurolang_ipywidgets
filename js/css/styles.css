@@ -6,8 +6,8 @@
 }
 
 .nl-code-container + .CodeMirror {
-  min-height: 100px;
-  height: auto;
+  height: 200px;
+  min-height:100px;
   resize: vertical;
   overflow: auto !important;
 }
