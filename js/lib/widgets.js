@@ -361,6 +361,7 @@ var CodeEditorModel = widgets.DOMWidgetModel.extend({
 var CodeEditorView = widgets.DOMWidgetView.extend({
   render: function () {
     let ta = document.createElement("textarea");
+    ta.className = "nl-code-container";
     this.el.appendChild(ta);
     this.editor = CodeMirror.fromTextArea(ta, {
       autoRefresh: true,
@@ -371,7 +372,6 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
         { className: "marks", style: "width: .9em" },
       ],
     });
-    this.editor.setSize(null, 100);
     this.editor.on("change", this.text_edited.bind(this));
 
     this.model.on("change:text", this.text_changed, this);

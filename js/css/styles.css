@@ -4,3 +4,10 @@
   opacity: 0.5;
   text-decoration: none;
 }
+
+.nl-code-container + .CodeMirror {
+  min-height: 100px;
+  height: auto;
+  resize: vertical;
+  overflow: auto !important;
+}
