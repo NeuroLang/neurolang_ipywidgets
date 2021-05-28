@@ -3,12 +3,15 @@ var $ = require("jquery");
 var widgets = require("@jupyter-widgets/base");
 var controls = require("@jupyter-widgets/controls");
 const CodeMirror = require("codemirror");
+require("codemirror/mode/python/python");
+require("./datalog");
 require("codemirror/addon/display/autorefresh");
 
 var _ = require("lodash");
 
 var papayaGenerator = require("./papaya_frame.js");
 
+require("codemirror/theme/solarized.css");
 require("../css/styles.css");
 
 // Model with default values for NlLink widget
@@ -364,6 +367,8 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
     ta.className = "nl-code-container";
     this.el.appendChild(ta);
     this.editor = CodeMirror.fromTextArea(ta, {
+      mode: "datalog",
+      theme: "solarized",
       autoRefresh: true,
       lineNumbers: true,
       lineWrapping: true,

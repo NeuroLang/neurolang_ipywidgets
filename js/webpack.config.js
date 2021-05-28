@@ -45,7 +45,7 @@ var rules = [
   },
   {
     test: /\.css$/,
-    include: [path.resolve(__dirname, "css")],
+    // include: [path.resolve(__dirname, "css")],
     use: ["style-loader", "css-loader"],
   },
 ];

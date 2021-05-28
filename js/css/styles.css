@@ -11,3 +11,7 @@
   resize: vertical;
   overflow: auto !important;
 }
+
+.nl-code-container + .CodeMirror pre {
+  padding-bottom: .7em;
+}
