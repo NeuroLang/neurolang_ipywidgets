@@ -11,7 +11,7 @@ var _ = require("lodash");
 
 var papayaGenerator = require("./papaya_frame.js");
 
-require("codemirror/theme/solarized.css");
+require("codemirror/theme/xq-light.css");
 require("../css/styles.css");
 
 // Model with default values for NlLink widget
@@ -368,7 +368,7 @@ var CodeEditorView = widgets.DOMWidgetView.extend({
     this.el.appendChild(ta);
     this.editor = CodeMirror.fromTextArea(ta, {
       mode: "datalog",
-      theme: "solarized",
+      theme: "xq-light",
       autoRefresh: true,
       lineNumbers: true,
       lineWrapping: true,
