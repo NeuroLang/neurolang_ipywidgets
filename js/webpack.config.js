@@ -117,4 +117,4 @@ module.exports = (env, argv) => {
       externals: ['@jupyter-widgets/base', "@jupyter-widgets/controls"]
     }
   ];
-}
+};
